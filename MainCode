@@ -1,0 +1,55 @@
+(require rsound)
+(require rsound/piano-tones)
+
+;; a note is (make-note note-num frames frames)
+(define-struct note (pitch time duration))
+(define t 62)
+(define D 
+  (list
+   (make-note (+ t 0) 88200 88200)
+   (make-note (+ t 4) 88200 88200)
+   (make-note (+ t 7) 88200 88200)
+   (make-note (+ t -5) 132300 88200)
+   (make-note (+ t -1) 132300 88200)
+   (make-note (+ t 2) 132300 88200)
+   (make-note (+ t -3) 176400 88200)
+   (make-note (+ t 0) 176400 88200)
+   (make-note (+ t 4) 176400 88200)
+   (make-note (+ t -7) 220500 88200)
+   (make-note (+ t -3) 220500 88200)
+   (make-note (+ t 0) 220500 88200)))
+
+;; string -> list-of-three-notes
+
+(define-struct prog (first third fifth))
+  
+(define one (make-prog (make-note (+ t 0) 88200 88200)
+  (make-note (+ t 4) 88200 88200)
+  (make-note (+ t 7) 88200 88200)))
+
+
+
+
+(define ps (make-pstream))
+
+(define (both a b) b)
+
+;; play the notes in a list
+;; list-of-notes -> pstream
+(define (play-notes lon)
+  (cond [(empty? lon) ps]
+        [else
+         (both (play-note (first lon)) 
+               (play-notes (rest lon)))]))
+
+
+;; play a single note
+;; note -> pstream
+(define (play-note n)
+  (pstream-queue
+   ps
+   (clip (piano-tone (note-pitch n))
+         0 (note-duration n))
+   (note-time n)))
+
+(play-notes D)
