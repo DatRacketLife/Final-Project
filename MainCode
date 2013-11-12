@@ -1,39 +1,37 @@
-(require rsound)
+ (require rsound)
 (require rsound/piano-tones)
-
+(define beats-per-minute 160)
+(define (s x)(* 44100 x))
+(define (b x)(* x (s (/ 60 beats-per-minute))))
+(define (m x)(* x (b 4)))
+(define-struct chord (first third fifth))
+(define (I when duration)
+  (make-note (+ t 0) when duration))
 ;; a note is (make-note note-num frames frames)
 (define-struct note (pitch time duration))
 (define t 62)
 (define D 
   (list
-   (make-note (+ t 0) 88200 88200)
-   (make-note (+ t 4) 88200 88200)
-   (make-note (+ t 7) 88200 88200)
-   (make-note (+ t -5) 132300 88200)
-   (make-note (+ t -1) 132300 88200)
-   (make-note (+ t 2) 132300 88200)
-   (make-note (+ t -3) 176400 88200)
-   (make-note (+ t 0) 176400 88200)
-   (make-note (+ t 4) 176400 88200)
-   (make-note (+ t -7) 220500 88200)
-   (make-note (+ t -3) 220500 88200)
-   (make-note (+ t 0) 220500 88200)))
-
+   (I (m 1) (s 2))
+   (make-note (+ t 2) (m 2) 88200)
+   (make-note (+ t 6) (m 2) 88200)
+   (make-note (+ t 9) (m 2) 88200)
+   
+   (make-note (+ t 5) (m 3) 88200)
+   (make-note (+ t 9) (m 3) 88200)
+   (make-note (+ t 12) (m 3) 88200)
+   
+   (make-note (+ t 7) (m 4) 88200)
+   (make-note (+ t 11) (m 4) 88200)
+   (make-note (+ t 14) (m 4) 88200)))
 ;; string -> list-of-three-notes
-
 (define-struct prog (first third fifth))
   
 (define one (make-prog (make-note (+ t 0) 88200 88200)
   (make-note (+ t 4) 88200 88200)
   (make-note (+ t 7) 88200 88200)))
-
-
-
-
 (define ps (make-pstream))
-
 (define (both a b) b)
-
 ;; play the notes in a list
 ;; list-of-notes -> pstream
 (define (play-notes lon)
@@ -41,8 +39,6 @@
         [else
          (both (play-note (first lon)) 
                (play-notes (rest lon)))]))
-
-
 ;; play a single note
 ;; note -> pstream
 (define (play-note n)
@@ -51,5 +47,4 @@
    (clip (piano-tone (note-pitch n))
          0 (note-duration n))
    (note-time n)))
-
 (play-notes D)
