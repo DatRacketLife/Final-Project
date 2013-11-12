@@ -1,10 +1,12 @@
- (require rsound)
+(require rsound)
 (require rsound/piano-tones)
 (define beats-per-minute 160)
 (define (s x)(* 44100 x))
 (define (b x)(* x (s (/ 60 beats-per-minute))))
 (define (m x)(* x (b 4)))
+
 (define-struct chord (first third fifth))
+
 
 ;; a note is (make-note note-num frames frames)
 (define-struct note (pitch time duration))
@@ -49,4 +51,45 @@
    (clip (piano-tone (note-pitch n))
          0 (note-duration n))
    (note-time n)))
-(play-notes D)
+
+
+
+(define (psq a b) (pstream-queue ps a b))
+;Poop is a structure
+
+(define-struct poop (sound length))
+
+;rock-loop is a list of poops
+(define rock-loop
+  (list
+   (make-poop c-hi-hat-1 (b 1))
+   (make-poop c-hi-hat-1 (b 2))
+   (make-poop c-hi-hat-1 (b 3))
+   (make-poop c-hi-hat-1 (b 4))
+   (make-poop c-hi-hat-1 (b 5))
+   (make-poop c-hi-hat-1 (b 6))
+   (make-poop c-hi-hat-1 (b 7))
+   (make-poop c-hi-hat-1 (b 8))
+   (make-poop kick (b 1))
+   (make-poop kick (b 2.5))
+   (make-poop snare (b 3))
+   (make-poop kick (b 4))
+   (make-poop kick (b 6.5))
+   (make-poop snare (b 7))
+   (make-poop kick (b 8))
+   (make-poop snare (b 8.5))
+   (make-poop kick (b 8))
+   (make-poop snare (b 8.5))))
+
+(define (play-poop p)
+  (pstream-queue
+   ps
+   (rs-scale .5 (poop-sound p))
+   (round (poop-length p))))
+
+(define (play-poops lop)
+  (cond [(empty? lop) ps]
+        [else
+         (both (play-poop (first lop)) 
+               (play-poops (rest lop)))]))
+   
