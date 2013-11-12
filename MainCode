@@ -5,14 +5,12 @@
 (define (b x)(* x (s (/ 60 beats-per-minute))))
 (define (m x)(* x (b 4)))
 (define-struct chord (first third fifth))
-(define (I when duration)
-  (make-note (+ t 0) when duration))
+
 ;; a note is (make-note note-num frames frames)
 (define-struct note (pitch time duration))
 (define t 62)
 (define D 
   (list
-   (I (m 1) (s 2))
    (make-note (+ t 2) (m 2) 88200)
    (make-note (+ t 6) (m 2) 88200)
    (make-note (+ t 9) (m 2) 88200)
