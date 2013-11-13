@@ -13,7 +13,7 @@
 
 (define ps (make-pstream))
 (define (both a b) b)
-(define (other-both a b) a)
+
 
 
 (define D 
@@ -54,8 +54,8 @@
 (define (play-note n)
   (pstream-queue
    ps
-   (clip (piano-tone (note-pitch n))
-         0 (note-duration n))
+   (rs-scale 3 (clip (piano-tone (note-pitch n))
+         0 (note-duration n)))
    (note-time n)))
 
 
@@ -121,9 +121,9 @@
     (make-note (+ t 0) (m 3) 88200)
     (make-note (+ t 4) (m 3) 88200))
    (list 
-    (make-note (+ t 7) (m 4) 88200)
-    (make-note (+ t 11) (m 4) 88200)
-    (make-note (+ t 14) (m 4) 88200)))
+    (make-note (- t 7) (m 4) 88200)
+    (make-note (- t 3) (m 4) 88200)
+    (make-note (+ t 0) (m 4) 88200)))
   )
 
 ;; plays a list of lists
@@ -131,8 +131,8 @@
 (define (play-list loch)
   (cond [(empty? loch) empty]
         [else
-         (play-notes (other-both (first loch)
-                                 (play-list (rest loch))))]))
+         (play-notes (both (play-list (rest loch))
+                                 (first loch)))]))
 
 
 (play-list lolists)
@@ -183,7 +183,7 @@
 (define (play-beat p)
   (pstream-queue
    ps
-   (rs-scale .5 (beat-sound p))
+   (rs-scale .25 (beat-sound p))
    (round (beat-length p))))
 
 (define (play-beats lop)
