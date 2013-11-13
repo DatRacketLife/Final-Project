@@ -1,5 +1,4 @@
 
-
 (require rsound)
 (require rsound/piano-tones)
 (define beats-per-minute 160)
@@ -106,7 +105,7 @@
 ;; - empty, or
 ;; - (cons (cons list-of-lists empty) empty)
 
-(define lolists
+(define let-it-be
   (list 
    (list
     (make-note (+ t 0) (m 1) 88200)
@@ -119,12 +118,20 @@
    (list 
     (make-note (+ t -3) (m 3) 88200)
     (make-note (+ t 0) (m 3) 88200)
-    (make-note (+ t 4) (m 3) 88200))
+    (make-note (+ t 4) (m 3) 88200)
+    (make-note (+ t -3) (+ (b 2) (m 3)) 88200)
+    (make-note (+ t 0) (+ (b 2) (m 3)) 88200)
+    (make-note (+ t 4) (+ (b 2) (m 3)) 88200)
+    (make-note (+ t -5) (+ (b 3) (m 3)) 88200)
+    (make-note (+ t -1) (+ (b 3) (m 3)) 88200)
+    (make-note (+ t 2) (+ (b 3) (m 3)) 88200))
    (list 
-    (make-note (- t 7) (m 4) 88200)
-    (make-note (- t 3) (m 4) 88200)
-    (make-note (+ t 0) (m 4) 88200)))
-  )
+    (make-note (+ t -7) (m 4) 88200)
+    (make-note (+ t -3) (m 4) 88200)
+    (make-note (+ t 0) (m 4) 88200))
+   (list
+   (make-note (+ t -8) (+ (m 1) (b 3)) 44100)
+   (make-note (+ t -7) (+ (m 1) (b 3.5)) 44100))))
 
 ;; plays a list of lists
 ;; list-of-lists -> pstream
@@ -135,7 +142,7 @@
                                  (first loch)))]))
 
 
-(play-list lolists)
+(play-list let-it-be)
 
 
 
