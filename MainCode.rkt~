@@ -1,7 +1,5 @@
-;; The first three lines of this file were inserted by DrRacket. They record metadata
-;; about the language level of this file in a form that our tools can easily process.
-#reader(lib "htdp-intermediate-reader.ss" "lang")((modname MainCode) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f ())))
-; Definitions Poop
+
+#;; Definitions Poop
 
 (require rsound)
 (require rsound/piano-tones)
@@ -62,48 +60,47 @@
    (note-time n)))
 
 
-; Chord Poop
+#;; Chord Poop
 
 ;; create chords from key
 ;; string -> list
-(define (chordmaker x)
-  (cond [(string-ci=? x "I")
+(define (chordmaker root)
+  (cond [(string-ci=? root "d")
          (list 
           (make-note (+ t 0) (m 1) 88200)
           (make-note (+ t 4) (m 1) 88200)
           (make-note (+ t 7) (m 1) 88200))]
-        [(string-ci=? x "II")
+        [(string-ci=? root "e")
          (list 
           (make-note (+ t 2) (m 1) 88200)
           (make-note (+ t 6) (m 1) 88200)
-          (make-note (+ t 1) 88200))]
-        [(string-ci=? x "III")
+          (make-note (+ t 9) (m 1) 88200))]
+        [(string-ci=? root "f")
          (list 
           (make-note (+ t 4) (m 1) 88200)
           (make-note (+ t 7) (m 1) 88200)
           (make-note (+ t 11) (m 1) 88200))]
-        [(string-ci=? x "IV")
+        [(string-ci=? root "g")
          (list 
           (make-note (+ t 5) (m 1) 88200)
           (make-note (+ t 9) (m 1) 88200)
           (make-note (+ t 12) (m 1) 88200))]
-        [(string-ci=? x "V")
+        [(string-ci=? root "a")
          (list 
           (make-note (+ t 7) (m 1) 88200)
           (make-note (+ t 11) (m 1) 88200)
           (make-note (+ t 14) (m 1) 88200))]
-        [(string-ci=? x "VI")
+        [(string-ci=? root "b")
          (list 
           (make-note (+ t 9) (m 1) 88200)
           (make-note (+ t 12) (m 1) 88200)
           (make-note (+ t 16) (m 1) 88200))]
-        [(string-ci=? x "VII")
+        [(string-ci=? root "c")
          (list 
           (make-note (+ t 11) (m 1) 88200)
           (make-note (+ t 14) (m 1) 88200)
           (make-note (+ t 18) (m 1) 88200))]
-        [else x]))
-
+        [else root]))
 
 ;; a list-of-lists is either
 ;; - empty, or
@@ -142,7 +139,7 @@
 
 
 
-; Beat Poop
+#;; Beat Poop
 
 (define (psq a b) (pstream-queue ps a b))
 ;beat is a structure
