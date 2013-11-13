@@ -63,43 +63,44 @@
 
 ;; create chords from key
 ;; string -> list
-(define (chordmaker root x)
+(define (chordmaker x)
   (cond [(string-ci=? x "I")
          (list 
-          (make-note (+ root 0) (m 1) 88200)
-          (make-note (+ root 4) (m 1) 88200)
-          (make-note (+ root 7) (m 1) 88200))]
+          (make-note (+ t 0) (m 1) 88200)
+          (make-note (+ t 4) (m 1) 88200)
+          (make-note (+ t 7) (m 1) 88200))]
         [(string-ci=? x "II")
          (list 
-          (make-note (+ root 2) (m 1) 88200)
-          (make-note (+ root 6) (m 1) 88200)
-          (make-note (+ root 9) (m 1) 88200))]
+          (make-note (+ t 2) (m 1) 88200)
+          (make-note (+ t 6) (m 1) 88200)
+          (make-note (+ t 1) 88200))]
         [(string-ci=? x "III")
          (list 
-          (make-note (+ root 4) (m 1) 88200)
-          (make-note (+ root 7) (m 1) 88200)
-          (make-note (+ root 11) (m 1) 88200))]
+          (make-note (+ t 4) (m 1) 88200)
+          (make-note (+ t 7) (m 1) 88200)
+          (make-note (+ t 11) (m 1) 88200))]
         [(string-ci=? x "IV")
          (list 
-          (make-note (+ root 5) (m 1) 88200)
-          (make-note (+ root 9) (m 1) 88200)
-          (make-note (+ root 12) (m 1) 88200))]
+          (make-note (+ t 5) (m 1) 88200)
+          (make-note (+ t 9) (m 1) 88200)
+          (make-note (+ t 12) (m 1) 88200))]
         [(string-ci=? x "V")
          (list 
-          (make-note (+ root 7) (m 1) 88200)
-          (make-note (+ root 11) (m 1) 88200)
-          (make-note (+ root 14) (m 1) 88200))]
+          (make-note (+ t 7) (m 1) 88200)
+          (make-note (+ t 11) (m 1) 88200)
+          (make-note (+ t 14) (m 1) 88200))]
         [(string-ci=? x "VI")
          (list 
-          (make-note (+ root 9) (m 1) 88200)
-          (make-note (+ root 12) (m 1) 88200)
-          (make-note (+ root 16) (m 1) 88200))]
+          (make-note (+ t 9) (m 1) 88200)
+          (make-note (+ t 12) (m 1) 88200)
+          (make-note (+ t 16) (m 1) 88200))]
         [(string-ci=? x "VII")
          (list 
-          (make-note (+ root 11) (m 1) 88200)
-          (make-note (+ root 14) (m 1) 88200)
-          (make-note (+ root 18) (m 1) 88200))]
-        [else root]))
+          (make-note (+ t 11) (m 1) 88200)
+          (make-note (+ t 14) (m 1) 88200)
+          (make-note (+ t 18) (m 1) 88200))]
+        [else x]))
+
 
 ;; a list-of-lists is either
 ;; - empty, or
