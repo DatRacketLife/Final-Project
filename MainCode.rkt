@@ -10,7 +10,7 @@
 (define-struct chord (first third fifth))
 ;; a note is (make-note note-num frames frames)
 (define-struct note (pitch time duration))
-(define t 62)
+(define t 60)
 
 (define ps (make-pstream))
 (define (both a b) b)
@@ -148,7 +148,7 @@
     (make-note (+ t -8) (+ (m 1) (b 3)) 44100)
     (make-note (+ t -7) (+ (m 1) (b 3.5)) 44100))))
 
-(play-list let-it-be) 
+
 
 ; Beat Poop
 
@@ -204,7 +204,7 @@
                (play-beats (rest lop)))]))
 
 
-(play-beats rock-loop)
+
 
 
 
@@ -309,9 +309,50 @@
   (cond [(key=? k "\t") (cond [(<= (world-has-focus w) 2)(make-world (world-tbs w) (+ 1 (world-has-focus w)))]
                               [(= 3 (world-has-focus w)) (make-world (world-tbs w) 0)])
                         ]
+        [(key=? k "\r") 
+<<<<<<< HEAD
+         (cond [(empty? w) "empty"]
+               [else
+                (both (play-notes (list->notes (list->tones (list-tb w)) one-four)) w)])]
+=======
+              (cond [(empty? w) "empty"]
+                    [else
+                     (both (play-notes (list->notes (list->tones (list-tb w)) one-four)) w)])]
+>>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
         [else (make-world
                (update-appropriate-text-box (world-tbs w) k (world-has-focus w))
                (world-has-focus w))]))
+
+;;list one to four
+
+(define one-four (list 1 2 3 4))
+
+;;takes list of numbers, returs list of notes
+(define (list->notes lon loc)
+  (cond
+    [(empty? lon) empty]
+    [else
+     (cons (make-note (first lon) (+ (pstream-current-frame ps) (m (first loc))) 44100)
+           (list->notes (rest lon) (rest loc)))]))
+;;takes list of make-tones-> played sound
+
+(define (play-tone p)
+  (pstream-queue
+   ps
+<<<<<<< HEAD
+   p
+   (rs-frames p)
+=======
+    p
+    (rs-frames p)
+>>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
+   ))
+
+(define (play-tones lot)
+  (cond [(empty? lot) ps]
+        [else
+         (both (play-tone (first lot)) 
+               (play-tones (rest lot)))]))
 
 ;; list-of-text-boxes key number -> list-of-text-boxes
 ;; update the text box corresponding to the idx
@@ -347,10 +388,6 @@
              [(key=? k "g") "G"]
              [(key=? k "G") "G"]
              [(key=? k " ") #f]
-             [(key=? k "\r") 
-              (cond [(empty? tb) "empty"]
-                    [else
-                     (play-list (list->tones (list-tb tb)))])]
              
              
              [else (text-box-content tb)]))]
@@ -358,20 +395,44 @@
                    (text-box-x tb)
                    (text-box-y tb))))
 
-; takes list -> list of make tones
+; takes list -> list of note pitches
 (define (list->tones lol)
   (cond [(empty? lol) empty]
         [else
-         (cond [(string-ci=? (first lol) "a") (cons (make-tone 440 1 (s 1)) (list->tones (rest lol)))]
-               [(string-ci=? (first lol) "b") (cons (make-tone 500 1 (s 1)) (list->tones (rest lol)))]) ]))
+<<<<<<< HEAD
+         (if (string? (first lol)) 
+                  (cond
+                    [(string-ci=? (first lol) "a") (cons 57 (list->tones (rest lol)))]
+                    [(string-ci=? (first lol) "b") (cons 59 (list->tones (rest lol)))]
+                    [(string-ci=? (first lol) "c") (cons 60 (list->tones (rest lol)))]
+                    [(string-ci=? (first lol) "d") (cons 62 (list->tones (rest lol)))]
+                    [(string-ci=? (first lol) "e") (cons 64 (list->tones (rest lol)))]
+                    [(string-ci=? (first lol) "f") (cons 65 (list->tones (rest lol)))]
+                    [(string-ci=? (first lol) "g") (cons 67 (list->tones (rest lol)))])
+         ;else do something so a blank square won't play anything somehow?)]))
+=======
+         (cond [(string-ci=? (first lol) "a") (cons 57 (list->tones (rest lol)))]
+               [(string-ci=? (first lol) "b") (cons 59 (list->tones (rest lol)))]) ]))
+>>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
 
 ; make list from tbs
 (define (list-tb tb)
   (cond
     [(empty? tb) empty]
-    [(cons
-      (text-box-content tb)
-      (list-tb (first tb)))]))
+    [else (list
+<<<<<<< HEAD
+           (text-box-content (first (world-tbs tb)))
+           (text-box-content (second (world-tbs tb)))
+           (text-box-content (third (world-tbs tb)))
+           (text-box-content (fourth (world-tbs tb))))]))
+
+=======
+      (text-box-content (first (world-tbs tb)))
+      (text-box-content (second (world-tbs tb)))
+      (text-box-content (third (world-tbs tb)))
+      (text-box-content (fourth (world-tbs tb))))]))
+      
+>>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
 
 ;; calling update-appropriate-text-box with empty list is an error!
 
@@ -412,4 +473,8 @@
           [on-key text-box-input-key]
           [state true])
 
+<<<<<<< HEAD
 ;(text-box-content (first (world-tbs world)))
+=======
+;(text-box-content (first (world-tbs world)))
+>>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
