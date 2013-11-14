@@ -1,10 +1,12 @@
+#lang racket
 
-(require rsound)
-(require rsound/piano-tones)
+(require rsound
+         rsound/piano-tones)
+
 (define beats-per-minute 160)
 (define (s x)(* 44100 x))
 (define (b x)(round (* x (s (/ 60 beats-per-minute)))))
-(define (m x)(* x (b 4)))
+(define (m x)(+ (s 0.5) (* x (b 4))))
 (define-struct chord (first third fifth))
 ;; a note is (make-note note-num frames frames)
 (define-struct note (pitch time duration))
@@ -12,6 +14,7 @@
 
 (define ps (make-pstream))
 (define (both a b) b)
+(pstream-current-frame ps)
 
 
 
@@ -35,10 +38,10 @@
 
 ;; string -> list-of-three-notes
 (define-struct prog (first third fifth))
-  
+
 (define one (make-prog (make-note (+ t 0) 88200 88200)
-  (make-note (+ t 4) 88200 88200)
-  (make-note (+ t 7) 88200 88200)))
+                       (make-note (+ t 4) 88200 88200)
+                       (make-note (+ t 7) 88200 88200)))
 
 
 ;; play the notes in a list
@@ -53,8 +56,8 @@
 (define (play-note n)
   (pstream-queue
    ps
-   (rs-scale 3 (clip (piano-tone (note-pitch n))
-         0 (note-duration n)))
+   (rs-scale 2 (clip (piano-tone (note-pitch n))
+                     0 (note-duration n)))
    (note-time n)))
 
 
@@ -62,43 +65,46 @@
 
 ;; create chords from key
 ;; string -> list
-(define (chordmaker x)
+(define (chordmaker x measure)
   (cond [(string-ci=? x "I")
          (list 
-          (make-note (+ t 0) (m 1) 88200)
-          (make-note (+ t 4) (m 1) 88200)
-          (make-note (+ t 7) (m 1) 88200))]
+          (make-note (+ t 0) (m measure) 88200)
+          (make-note (+ t 4) (m measure) 88200)
+          (make-note (+ t 7) (m measure) 88200))]
         [(string-ci=? x "II")
          (list 
-          (make-note (+ t 2) (m 1) 88200)
-          (make-note (+ t 6) (m 1) 88200)
+          (make-note (+ t 2) (m measure) 88200)
+          (make-note (+ t 6) (m measure) 88200)
           (make-note (+ t 1) 88200))]
         [(string-ci=? x "III")
          (list 
-          (make-note (+ t 4) (m 1) 88200)
-          (make-note (+ t 7) (m 1) 88200)
-          (make-note (+ t 11) (m 1) 88200))]
+          (make-note (+ t 4) (m measure) 88200)
+          (make-note (+ t 7) (m measure) 88200)
+          (make-note (+ t 11) (m measure) 88200))]
         [(string-ci=? x "IV")
          (list 
-          (make-note (+ t 5) (m 1) 88200)
-          (make-note (+ t 9) (m 1) 88200)
-          (make-note (+ t 12) (m 1) 88200))]
+          (make-note (+ t 5) (m measure) 88200)
+          (make-note (+ t 9) (m measure) 88200)
+          (make-note (+ t 12) (m measure) 88200))]
         [(string-ci=? x "V")
          (list 
-          (make-note (+ t 7) (m 1) 88200)
-          (make-note (+ t 11) (m 1) 88200)
-          (make-note (+ t 14) (m 1) 88200))]
+          (make-note (+ t 7) (m measure) 88200)
+          (make-note (+ t 11) (m measure) 88200)
+          (make-note (+ t 14) (m measure) 88200))]
         [(string-ci=? x "VI")
          (list 
-          (make-note (+ t 9) (m 1) 88200)
-          (make-note (+ t 12) (m 1) 88200)
-          (make-note (+ t 16) (m 1) 88200))]
+          (make-note (+ t 9) (m measure) 88200)
+          (make-note (+ t 12) (m measure) 88200)
+          (make-note (+ t 16) (m measure) 88200))]
         [(string-ci=? x "VII")
          (list 
-          (make-note (+ t 11) (m 1) 88200)
-          (make-note (+ t 14) (m 1) 88200)
-          (make-note (+ t 18) (m 1) 88200))]
+          (make-note (+ t 11) (m measure) 88200)
+          (make-note (+ t 14) (m measure) 88200)
+          (make-note (+ t 18) (m measure) 88200))]
         [else x]))
+
+;; make a list form chordmaker
+;; list-of-strings ->
 
 
 ;; a list-of-lists is either
@@ -130,8 +136,8 @@
     (make-note (+ t -3) (m 4) 88200)
     (make-note (+ t 0) (m 4) 88200))
    (list
-   (make-note (+ t -8) (+ (m 1) (b 3)) 44100)
-   (make-note (+ t -7) (+ (m 1) (b 3.5)) 44100))))
+    (make-note (+ t -8) (+ (m 1) (b 3)) 44100)
+    (make-note (+ t -7) (+ (m 1) (b 3.5)) 44100))))
 
 ;; plays a list of lists
 ;; list-of-lists -> pstream
@@ -139,11 +145,15 @@
   (cond [(empty? loch) empty]
         [else
          (play-notes (both (play-list (rest loch))
-                                 (first loch)))]))
+                           (first loch)))]))
 
-
-(play-list let-it-be)
-
+#;(play-list 
+ (list
+  (chordmaker "i" 1)
+  (chordmaker "iii" 2)
+  (chordmaker "v" 3)
+  (chordmaker "vi" 4))
+ )
 
 
 ; Beat Poop
@@ -199,5 +209,171 @@
          (both (play-beat (first lop)) 
                (play-beats (rest lop)))]))
 
-   
-(play-beats rock-loop)
+
+;(play-beats rock-loop)
+
+
+
+; GUI Poop
+
+
+(require 2htdp/universe
+         2htdp/image
+         rackunit)
+
+;; a text-box-content is a string or false
+
+;; a text-box is (make-text-box text-box-content pixels pixels)
+(define-struct text-box (content x y) #:transparent)
+
+;; a world is (make-world (listof text-box) number)
+;; side condition: number can't be >= number of boxes
+(define-struct world (tbs has-focus) #:transparent)
+
+(define SCREEN-BACKGROUND 
+  (rectangle 300 300 "solid" "light gray"))
+(define TEXT-SIZE 40)
+(define TEXT-BOX-BACKGROUND 
+  (rectangle 50 50 "solid" "white"))
+
+;; draw the text box
+;; content boolean -> image
+(define (draw-text-box-content w)
+  (cond [w
+         (overlay
+          (text w TEXT-SIZE "black")
+          TEXT-BOX-BACKGROUND)]
+        [else TEXT-BOX-BACKGROUND]))
+
+;; draw a world
+;; world -> image
+(define (draw-world world)
+  (draw-all-text-boxes
+   (world-tbs world)
+   SCREEN-BACKGROUND))
+
+;; list-of-text-boxes image -> image
+;; draw all of the text boxes on the given image
+(define (draw-all-text-boxes lotb back)
+  (cond [(empty? lotb) back]
+        [else (draw-text-box
+               (first lotb)
+               (draw-all-text-boxes (rest lotb) back))]))
+
+;; text-box image -> image
+;; draw a single text box on an image
+(define (draw-text-box tb back)
+  (place-image
+   (draw-text-box-content (text-box-content tb))
+   (text-box-x tb) (text-box-y tb)
+   back))
+
+
+(check-equal?
+ (draw-text-box (make-text-box #f 150 80)
+                SCREEN-BACKGROUND)
+ (place-image
+  (rectangle 50 50 "solid" "white")
+  150 80
+  SCREEN-BACKGROUND))
+
+
+(check-equal? 
+ (draw-all-text-boxes empty SCREEN-BACKGROUND)
+ SCREEN-BACKGROUND)
+
+(check-equal?
+ (draw-all-text-boxes (list (make-text-box #f 50 50)
+                            (make-text-box #f 150 80))
+                      SCREEN-BACKGROUND)
+ (place-image
+  (rectangle 50 50 "solid" "white")
+  150 80
+  (place-image
+   (rectangle 50 50 "solid" "white")
+   50 50
+   SCREEN-BACKGROUND)))
+
+(check-equal? 
+ (draw-all-text-boxes (list (make-text-box "E" 50 80)
+                            (make-text-box "Q" 150 80))
+                      SCREEN-BACKGROUND)
+ (place-image
+  (draw-text-box-content "Q")
+  150 80
+  (place-image
+   (overlay
+    (text "E" 40 "black")
+    (rectangle 50 50 "solid" "white"))
+   50 80
+   SCREEN-BACKGROUND)))
+
+
+;; take the key, put the character in the world if necessary
+;; w key -> world 
+(define (text-box-input-key w k)
+  (cond [(key=? k "\t") (cond [(<= (world-has-focus w) 2)(make-world (world-tbs w) (+ 1 (world-has-focus w)))]
+                              [(= 3 (world-has-focus w)) (make-world (world-tbs w) 0)])
+                        ]
+        [else (make-world
+               (update-appropriate-text-box (world-tbs w) k (world-has-focus w))
+               (world-has-focus w))]))
+
+;; list-of-text-boxes key number -> list-of-text-boxes
+;; update the text box corresponding to the idx
+(define (update-appropriate-text-box lotb k idx)
+  (cond [(= 0 idx) (cond [(empty? lotb) (error
+                                         'update-appropriate-text-box
+                                         "ran out of text boxes!")]
+                         [else (cons (update-text-box (first lotb) k)
+                                     (rest lotb))])]
+        [else (cons (first lotb)
+                    (update-appropriate-text-box
+                     (rest lotb)
+                     k
+                     (- idx 1)))]))
+
+;; text-box key -> text-box
+;; update the text box with the given key
+(define (update-text-box tb k)
+  (local
+    [(define new-content
+       (cond [(key=? k "a") "A"]
+             [(key=? k "A") "A"]
+             [(key=? k "b") "B"]
+             [(key=? k "B") "B"]
+             [(key=? k " ") #f]
+             [else (text-box-content tb)]))]
+    (make-text-box new-content
+                   (text-box-x tb)
+                   (text-box-y tb))))
+
+;; calling update-appropriate-text-box with empty list is an error!
+
+(check-equal? (update-appropriate-text-box (list (make-text-box "A" 10 12)
+                                                 (make-text-box "B" 20 132)
+                                                 (make-text-box "C" 30 112342))
+                                           "A"
+                                           1)
+              (list (make-text-box "A" 10 12)
+                    (make-text-box "A" 20 132)
+                    (make-text-box "C" 30 112342)))
+
+(check-equal? (update-text-box (make-text-box "A" 30 79) "B")
+              (make-text-box "B" 30 79))
+
+(check-equal? (update-text-box (make-text-box #f 50 50) "a") 
+              (make-text-box "A" 50 50))
+(check-equal? (update-text-box (make-text-box #f 50 50) "A")
+              (make-text-box "A" 50 50))
+(check-equal? (update-text-box (make-text-box #f 50 50) "f")
+              (make-text-box #f 50 50))
+
+
+(big-bang (make-world (list (make-text-box #f 45 150)
+                            (make-text-box #f 115 150)
+                            (make-text-box #f 185 150)
+                            (make-text-box #f 255 150))
+                      0)
+          [to-draw draw-world]
+          [on-key text-box-input-key])
