@@ -10,7 +10,7 @@
 (define-struct chord (first third fifth))
 ;; a note is (make-note note-num frames frames)
 (define-struct note (pitch time duration))
-(define t 62)
+(define t 60)
 
 (define ps (make-pstream))
 (define (both a b) b)
@@ -148,7 +148,7 @@
     (make-note (+ t -8) (+ (m 1) (b 3)) 44100)
     (make-note (+ t -7) (+ (m 1) (b 3.5)) 44100))))
 
-(play-list let-it-be) 
+
 
 ; Beat Poop
 
@@ -204,7 +204,7 @@
                (play-beats (rest lop)))]))
 
 
-(play-beats rock-loop)
+
 
 
 
@@ -312,18 +312,29 @@
         [(key=? k "\r") 
               (cond [(empty? w) "empty"]
                     [else
-                     (both (play-tones (list->tones (list-tb w))) w)])]
+                     (both (play-notes (list->notes (list->tones (list-tb w)) one-four)) w)])]
         [else (make-world
                (update-appropriate-text-box (world-tbs w) k (world-has-focus w))
                (world-has-focus w))]))
 
+;;list one to four
+
+(define one-four (list 1 2 3 4))
+
+;;takes list of numbers, returs list of notes
+(define (list->notes lon loc)
+  (cond
+    [(empty? lon) empty]
+    [else
+     (cons (make-note (first lon) (first loc) 44100)
+           (list->notes (rest lon) (rest loc)))]))
 ;;takes list of make-tones-> played sound
 
 (define (play-tone p)
   (pstream-queue
    ps
     p
-    (pstream-current-frame ps)
+    (rs-frames p)
    ))
 
 (define (play-tones lot)
@@ -373,12 +384,12 @@
                    (text-box-x tb)
                    (text-box-y tb))))
 
-; takes list -> list of make tones
+; takes list -> list of note pitches
 (define (list->tones lol)
   (cond [(empty? lol) empty]
         [else
-         (cond [(string-ci=? (first lol) "a") (cons (make-tone 440 .5 (s 1)) (list->tones (rest lol)))]
-               [(string-ci=? (first lol) "b") (cons (make-tone 500 .5 (s 1)) (list->tones (rest lol)))]) ]))
+         (cond [(string-ci=? (first lol) "a") (cons 57 (list->tones (rest lol)))]
+               [(string-ci=? (first lol) "b") (cons 59 (list->tones (rest lol)))]) ]))
 
 ; make list from tbs
 (define (list-tb tb)
