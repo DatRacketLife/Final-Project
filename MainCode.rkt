@@ -326,7 +326,7 @@
   (cond
     [(empty? lon) empty]
     [else
-     (cons (make-note (first lon) (first loc) 44100)
+     (cons (make-note (first lon) (+ (pstream-current-frame ps) (m (first loc))) 44100)
            (list->notes (rest lon) (rest loc)))]))
 ;;takes list of make-tones-> played sound
 
