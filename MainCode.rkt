@@ -311,9 +311,15 @@
                         ]
         [(key=? k "\r") 
 <<<<<<< HEAD
+<<<<<<< HEAD
          (cond [(empty? w) "empty"]
                [else
                 (both (play-notes (list->notes (list->tones (list-tb w)) one-four)) w)])]
+=======
+              (cond [(empty? w) "empty"]
+                    [else
+                     (both (play-notes (list->notes (list->tones (list-tb w)) one-four)) w)])]
+>>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
 =======
               (cond [(empty? w) "empty"]
                     [else
@@ -340,8 +346,13 @@
   (pstream-queue
    ps
 <<<<<<< HEAD
+<<<<<<< HEAD
    p
    (rs-frames p)
+=======
+    p
+    (rs-frames p)
+>>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
 =======
     p
     (rs-frames p)
@@ -400,6 +411,7 @@
   (cond [(empty? lol) empty]
         [else
 <<<<<<< HEAD
+<<<<<<< HEAD
          (if (string? (first lol)) 
                   (cond
                     [(string-ci=? (first lol) "a") (cons 57 (list->tones (rest lol)))]
@@ -414,6 +426,10 @@
          (cond [(string-ci=? (first lol) "a") (cons 57 (list->tones (rest lol)))]
                [(string-ci=? (first lol) "b") (cons 59 (list->tones (rest lol)))]) ]))
 >>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
+=======
+         (cond [(string-ci=? (first lol) "a") (cons 57 (list->tones (rest lol)))]
+               [(string-ci=? (first lol) "b") (cons 59 (list->tones (rest lol)))]) ]))
+>>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
 
 ; make list from tbs
 (define (list-tb tb)
@@ -421,17 +437,23 @@
     [(empty? tb) empty]
     [else (list
 <<<<<<< HEAD
+<<<<<<< HEAD
            (text-box-content (first (world-tbs tb)))
            (text-box-content (second (world-tbs tb)))
            (text-box-content (third (world-tbs tb)))
            (text-box-content (fourth (world-tbs tb))))]))
 
 =======
+=======
+>>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
       (text-box-content (first (world-tbs tb)))
       (text-box-content (second (world-tbs tb)))
       (text-box-content (third (world-tbs tb)))
       (text-box-content (fourth (world-tbs tb))))]))
       
+<<<<<<< HEAD
+>>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
+=======
 >>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
 
 ;; calling update-appropriate-text-box with empty list is an error!
@@ -474,7 +496,11 @@
           [state true])
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ;(text-box-content (first (world-tbs world)))
+=======
+;(text-box-content (first (world-tbs world)))
+>>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
 =======
 ;(text-box-content (first (world-tbs world)))
 >>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
