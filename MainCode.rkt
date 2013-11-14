@@ -57,7 +57,7 @@
   (pstream-queue
    ps
    (clip (piano-tone (note-pitch n))
-                     0 (note-duration n))
+         0 (note-duration n))
    (note-time n)))
 
 ;; plays a list of lists
@@ -347,10 +347,31 @@
              [(key=? k "g") "G"]
              [(key=? k "G") "G"]
              [(key=? k " ") #f]
+             [(key=? k "\r") 
+              (cond [(empty? tb) "empty"]
+                    [else
+                     (play-list (list->tones (list-tb tb)))])]
+             
+             
              [else (text-box-content tb)]))]
     (make-text-box new-content
                    (text-box-x tb)
                    (text-box-y tb))))
+
+; takes list -> list of make tones
+(define (list->tones lol)
+  (cond [(empty? lol) empty]
+        [else
+         (cond [(string-ci=? (first lol) "a") (cons (make-tone 440 1 (s 1)) (list->tones (rest lol)))]
+               [(string-ci=? (first lol) "b") (cons (make-tone 500 1 (s 1)) (list->tones (rest lol)))]) ]))
+
+; make list from tbs
+(define (list-tb tb)
+  (cond
+    [(empty? tb) empty]
+    [(cons
+      (text-box-content tb)
+      (list-tb (first tb)))]))
 
 ;; calling update-appropriate-text-box with empty list is an error!
 
@@ -370,14 +391,25 @@
               (make-text-box "A" 50 50))
 (check-equal? (update-text-box (make-text-box #f 50 50) "A")
               (make-text-box "A" 50 50))
-(check-equal? (update-text-box (make-text-box #f 50 50) "f")
+(check-equal? (update-text-box (make-text-box #f 50 50) " ")
               (make-text-box #f 50 50))
+(define boxes
+  (make-world 
+   (list (make-text-box #f 45 150)
+         (make-text-box #f 115 150)
+         (make-text-box #f 185 150)
+         (make-text-box #f 255 150))
+   0))
 
-
-(big-bang (make-world (list (make-text-box #f 45 150)
-                            (make-text-box #f 115 150)
-                            (make-text-box #f 185 150)
-                            (make-text-box #f 255 150))
-                      0)
+(big-bang (make-world 
+           (list (make-text-box #f 45 150)
+                 (make-text-box #f 115 150)
+                 (make-text-box #f 185 150)
+                 (make-text-box #f 255 150))
+           0)
+          
           [to-draw draw-world]
-          [on-key text-box-input-key])
+          [on-key text-box-input-key]
+          [state true])
+
+;(text-box-content (first (world-tbs world)))
