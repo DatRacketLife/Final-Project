@@ -310,21 +310,9 @@
                               [(= 3 (world-has-focus w)) (make-world (world-tbs w) 0)])
                         ]
         [(key=? k "\r") 
-<<<<<<< HEAD
-<<<<<<< HEAD
          (cond [(empty? w) "empty"]
                [else
                 (both (play-notes (list->notes (list->tones (list-tb w)) one-four)) w)])]
-=======
-              (cond [(empty? w) "empty"]
-                    [else
-                     (both (play-notes (list->notes (list->tones (list-tb w)) one-four)) w)])]
->>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
-=======
-              (cond [(empty? w) "empty"]
-                    [else
-                     (both (play-notes (list->notes (list->tones (list-tb w)) one-four)) w)])]
->>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
         [else (make-world
                (update-appropriate-text-box (world-tbs w) k (world-has-focus w))
                (world-has-focus w))]))
@@ -345,18 +333,8 @@
 (define (play-tone p)
   (pstream-queue
    ps
-<<<<<<< HEAD
-<<<<<<< HEAD
    p
    (rs-frames p)
-=======
-    p
-    (rs-frames p)
->>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
-=======
-    p
-    (rs-frames p)
->>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
    ))
 
 (define (play-tones lot)
@@ -410,8 +388,6 @@
 (define (list->tones lol)
   (cond [(empty? lol) empty]
         [else
-<<<<<<< HEAD
-<<<<<<< HEAD
          (if (string? (first lol)) 
                   (cond
                     [(string-ci=? (first lol) "a") (cons 57 (list->tones (rest lol)))]
@@ -422,39 +398,17 @@
                     [(string-ci=? (first lol) "f") (cons 65 (list->tones (rest lol)))]
                     [(string-ci=? (first lol) "g") (cons 67 (list->tones (rest lol)))])
          ;else do something so a blank square won't play anything somehow?)]))
-=======
-         (cond [(string-ci=? (first lol) "a") (cons 57 (list->tones (rest lol)))]
-               [(string-ci=? (first lol) "b") (cons 59 (list->tones (rest lol)))]) ]))
->>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
-=======
-         (cond [(string-ci=? (first lol) "a") (cons 57 (list->tones (rest lol)))]
-               [(string-ci=? (first lol) "b") (cons 59 (list->tones (rest lol)))]) ]))
->>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
 
 ; make list from tbs
 (define (list-tb tb)
   (cond
     [(empty? tb) empty]
     [else (list
-<<<<<<< HEAD
-<<<<<<< HEAD
            (text-box-content (first (world-tbs tb)))
            (text-box-content (second (world-tbs tb)))
            (text-box-content (third (world-tbs tb)))
            (text-box-content (fourth (world-tbs tb))))]))
 
-=======
-=======
->>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
-      (text-box-content (first (world-tbs tb)))
-      (text-box-content (second (world-tbs tb)))
-      (text-box-content (third (world-tbs tb)))
-      (text-box-content (fourth (world-tbs tb))))]))
-      
-<<<<<<< HEAD
->>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
-=======
->>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
 
 ;; calling update-appropriate-text-box with empty list is an error!
 
@@ -495,12 +449,4 @@
           [on-key text-box-input-key]
           [state true])
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 ;(text-box-content (first (world-tbs world)))
-=======
-;(text-box-content (first (world-tbs world)))
->>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
-=======
-;(text-box-content (first (world-tbs world)))
->>>>>>> 5efa5335b15703f1cc3893780deed24f04919b7d
