@@ -309,9 +309,28 @@
   (cond [(key=? k "\t") (cond [(<= (world-has-focus w) 2)(make-world (world-tbs w) (+ 1 (world-has-focus w)))]
                               [(= 3 (world-has-focus w)) (make-world (world-tbs w) 0)])
                         ]
+        [(key=? k "\r") 
+              (cond [(empty? w) "empty"]
+                    [else
+                     (both (play-tones (list->tones (list-tb w))) w)])]
         [else (make-world
                (update-appropriate-text-box (world-tbs w) k (world-has-focus w))
                (world-has-focus w))]))
+
+;;takes list of make-tones-> played sound
+
+(define (play-tone p)
+  (pstream-queue
+   ps
+    p
+    (pstream-current-frame ps)
+   ))
+
+(define (play-tones lot)
+  (cond [(empty? lot) ps]
+        [else
+         (both (play-tone (first lot)) 
+               (play-tones (rest lot)))]))
 
 ;; list-of-text-boxes key number -> list-of-text-boxes
 ;; update the text box corresponding to the idx
@@ -347,10 +366,6 @@
              [(key=? k "g") "G"]
              [(key=? k "G") "G"]
              [(key=? k " ") #f]
-             [(key=? k "\r") 
-              (cond [(empty? tb) "empty"]
-                    [else
-                     (play-list (list->tones (list-tb tb)))])]
              
              
              [else (text-box-content tb)]))]
@@ -362,16 +377,19 @@
 (define (list->tones lol)
   (cond [(empty? lol) empty]
         [else
-         (cond [(string-ci=? (first lol) "a") (cons (make-tone 440 1 (s 1)) (list->tones (rest lol)))]
-               [(string-ci=? (first lol) "b") (cons (make-tone 500 1 (s 1)) (list->tones (rest lol)))]) ]))
+         (cond [(string-ci=? (first lol) "a") (cons (make-tone 440 .5 (s 1)) (list->tones (rest lol)))]
+               [(string-ci=? (first lol) "b") (cons (make-tone 500 .5 (s 1)) (list->tones (rest lol)))]) ]))
 
 ; make list from tbs
 (define (list-tb tb)
   (cond
     [(empty? tb) empty]
-    [(cons
-      (text-box-content tb)
-      (list-tb (first tb)))]))
+    [else (list
+      (text-box-content (first (world-tbs tb)))
+      (text-box-content (second (world-tbs tb)))
+      (text-box-content (third (world-tbs tb)))
+      (text-box-content (fourth (world-tbs tb))))]))
+      
 
 ;; calling update-appropriate-text-box with empty list is an error!
 
