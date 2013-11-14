@@ -5,8 +5,8 @@
 
 (define beats-per-minute 160)
 (define (s x)(* 44100 x))
-(define (b x)(round (* x (s (/ 60 beats-per-minute)))))
-(define (m x)(+ (s 0.5) (* x (b 4))))
+(define (b x)(bigfloat->integer (bfround (bf (* x (s (/ 60 beats-per-minute)))))))
+(define (m x)(* x (b 4)))
 (define-struct chord (first third fifth))
 ;; a note is (make-note note-num frames frames)
 (define-struct note (pitch time duration))
@@ -16,7 +16,7 @@
 (define (both a b) b)
 (pstream-current-frame ps)
 
-
+(require math/bigfloat)
 
 (define D 
   (list
@@ -56,9 +56,18 @@
 (define (play-note n)
   (pstream-queue
    ps
-   (rs-scale 2 (clip (piano-tone (note-pitch n))
-                     0 (note-duration n)))
+   (clip (piano-tone (note-pitch n))
+                     0 (note-duration n))
    (note-time n)))
+
+;; plays a list of lists
+;; list-of-lists -> pstream
+(define (play-list loch)
+  (cond [(empty? loch) empty]
+        [else
+         (play-notes (both (play-list (rest loch))
+                           (first loch)))]))
+
 
 
 ; Chord Poop
@@ -139,22 +148,7 @@
     (make-note (+ t -8) (+ (m 1) (b 3)) 44100)
     (make-note (+ t -7) (+ (m 1) (b 3.5)) 44100))))
 
-;; plays a list of lists
-;; list-of-lists -> pstream
-(define (play-list loch)
-  (cond [(empty? loch) empty]
-        [else
-         (play-notes (both (play-list (rest loch))
-                           (first loch)))]))
-
-#;(play-list 
- (list
-  (chordmaker "i" 1)
-  (chordmaker "iii" 2)
-  (chordmaker "v" 3)
-  (chordmaker "vi" 4))
- )
-
+(play-list let-it-be) 
 
 ; Beat Poop
 
@@ -210,7 +204,7 @@
                (play-beats (rest lop)))]))
 
 
-;(play-beats rock-loop)
+(play-beats rock-loop)
 
 
 
