@@ -54,11 +54,15 @@
 ;; play a single note
 ;; note -> pstream
 (define (play-note n)
-  (pstream-queue
+  (cond
+    [(equal? (note-pitch n) 0) 
+     (pstream-queue ps 
+            (silence (note-duration n)) (note-time n))] 
+  [else (pstream-queue
    ps
    (clip (piano-tone (note-pitch n))
          0 (note-duration n))
-   (note-time n)))
+   (note-time n))]))
 
 ;; plays a list of lists
 ;; list-of-lists -> pstream
@@ -390,14 +394,14 @@
         [else
          (if (string? (first lol)) 
                   (cond
-                    [(string-ci=? (first lol) "a") (cons 57 (list->tones (rest lol)))]
-                    [(string-ci=? (first lol) "b") (cons 59 (list->tones (rest lol)))]
+                    [(string-ci=? (first lol) "a") (cons 69 (list->tones (rest lol)))]
+                    [(string-ci=? (first lol) "b") (cons 71 (list->tones (rest lol)))]
                     [(string-ci=? (first lol) "c") (cons 60 (list->tones (rest lol)))]
                     [(string-ci=? (first lol) "d") (cons 62 (list->tones (rest lol)))]
                     [(string-ci=? (first lol) "e") (cons 64 (list->tones (rest lol)))]
                     [(string-ci=? (first lol) "f") (cons 65 (list->tones (rest lol)))]
                     [(string-ci=? (first lol) "g") (cons 67 (list->tones (rest lol)))])
-         ;else do something so a blank square won't play anything somehow?)]))
+          (cons 0 (list->tones (rest lol))))]))
 
 ; make list from tbs
 (define (list-tb tb)
