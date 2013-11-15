@@ -147,11 +147,31 @@
    (list 
     (make-note (+ t -7) (m 4) 88200)
     (make-note (+ t -3) (m 4) 88200)
-    (make-note (+ t 0) (m 4) 88200))
-   (list
+    (make-note (+ t 0) (m 4) 88200)
+    (make-note (+ t -12) (m 5) 88200)
+    (make-note (+ t -8) (m 5) 88200)
+    (make-note (+ t -5) (m 5) 88200)
+    (make-note (+ t 0) (m 5) 88200)
+    (make-note (+ t -8) (+ (m 5) (b 3)) (b 1))
+    (make-note (+ t -7) (+ (m 5) (b 3.5)) (b .5))
+    (make-note (+ t -5) (m 6) 88200)
+    (make-note (+ t -1) (m 6) 88200)
+    (make-note (+ t 2) (m 6) 88200)
+    (make-note (+ t 5) (m 7) 88200)
+    (make-note (+ t 9) (m 7) 88200)
+    (make-note (+ t 12) (m 7) 88200)
+    (make-note (+ t 4) (+ (b 2) (m 7)) (b .5))
+    (make-note (+ t 7) (+ (b 2) (m 7)) (b .5))
+    (make-note (+ t 11) (+ (b 2) (m 7)) (b .5))
+    (make-note (+ t 2) (+ (b 3) (m 7)) (b 1))
+    (make-note (+ t 6) (+ (b 3) (m 7)) (b 1))
+    (make-note (+ t 9) (+ (b 3) (m 7)) (b 1))
+    (make-note (+ t 0) (m 8) 88200)
+    (make-note (+ t 4) (m 8) 88200)
+    (make-note (+ t 7) (m 8) 88200))
+   #;(list
     (make-note (+ t -8) (+ (m 1) (b 3)) 44100)
     (make-note (+ t -7) (+ (m 1) (b 3.5)) 44100))))
-
 
 
 ; Beat Poop
