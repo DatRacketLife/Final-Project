@@ -266,40 +266,32 @@
 (define (draw-world world)
    (cond [(= (world-has-focus world) 0)
          (place-image
-          (overlay/align "middle" "bottom"
            (rectangle 50 2 "solid" "red")
-           TEXT-BOX-BACKGROUND )
-          45 150
+          45 175
           (draw-all-text-boxes
    (world-tbs world)
    SCREEN-BACKGROUND)
           )]
          [(= (world-has-focus world) 1)
          (place-image
-          (overlay/align "middle" "bottom"
            (rectangle 50 2 "solid" "red")
-           TEXT-BOX-BACKGROUND )
-          115 150
+          115 175
           (draw-all-text-boxes
    (world-tbs world)
    SCREEN-BACKGROUND)
           )]
          [(= (world-has-focus world) 2)
          (place-image
-          (overlay/align "middle" "bottom"
            (rectangle 50 2 "solid" "red")
-           TEXT-BOX-BACKGROUND )
-          185 150
+          185 175
           (draw-all-text-boxes
    (world-tbs world)
    SCREEN-BACKGROUND)
           )]
          [(= (world-has-focus world) 3)
-         (place-image
-          (overlay/align "middle" "bottom"
-           (rectangle 50 2 "solid" "red")
-           TEXT-BOX-BACKGROUND )
-          255 150
+         (place-image         
+           (rectangle 50 2 "solid" "red")           
+          255 175
           (draw-all-text-boxes
    (world-tbs world)
    SCREEN-BACKGROUND)
