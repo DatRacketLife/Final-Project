@@ -5,7 +5,7 @@
 
 (define beats-per-minute 150)
 (define (s x)(* 44100 x))
-(define (b x)(bigfloat->integer (bfround (bf (* x (s (/ 60 beats-per-minute)))))))
+(define (b x)(inexact->exact (* x (s (/ 60 beats-per-minute)))))
 (define (m x)(* x (b 4)))
 (define-struct chord (first third fifth))
 ;; a note is (make-note note-num frames frames)
@@ -88,7 +88,7 @@
          (list 
           (make-note (+ t 2) (m measure) 88200)
           (make-note (+ t 6) (m measure) 88200)
-          (make-note (+ t 1) 88200))]
+          (make-note (+ t 1) (m measure) 88200))]
         [(string-ci=? x "III")
          (list 
           (make-note (+ t 4) (m measure) 88200)
@@ -465,7 +465,7 @@
          (make-text-box #f 255 150))
    0))
 
-(big-bang (make-world 
+#;(big-bang (make-world 
            (list (make-text-box #f 45 150)
                  (make-text-box #f 115 150)
                  (make-text-box #f 185 150)
@@ -489,4 +489,4 @@
 
 
 ;(play-beats rock-loop)
-;(play-list let-it-be)
+(play-list let-it-be)
