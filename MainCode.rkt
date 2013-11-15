@@ -320,7 +320,7 @@
   (place-image
    (overlay
     (text "E" 40 "black")
-    (rectangle 50 50 "solid" "white"))
+    TEXT-BOX-BACKGROUND)
    50 80
    SCREEN-BACKGROUND)))
 
@@ -337,7 +337,8 @@
          (cond [(empty? w) "empty"]
                [else
                 (both (play-notes (list->notes (list->tones (list-tb w)) one-four)) w)])]
-      
+       
+        
         [else (make-world
                (update-appropriate-text-box (world-tbs w) k (world-has-focus w))
                (world-has-focus w))]))
@@ -465,15 +466,27 @@
    0))
 
 (big-bang (make-world 
-             (list (make-text-box #f 45 150)
-                   (make-text-box #f 115 150)
-                   (make-text-box #f 185 150)
-                   (make-text-box #f 255 150))
-             0)
-            
-            [to-draw draw-world]
-            [on-key text-box-input-key]
-            [state true])
+           (list (make-text-box #f 45 150)
+                 (make-text-box #f 115 150)
+                 (make-text-box #f 185 150)
+                 (make-text-box #f 255 150))
+           0)
+          
+          [to-draw draw-world]
+          [on-key text-box-input-key]
+          [state true])
+
+;; TO BE IMPLEMENTED:
+
+;[(= (world-has-focus w) 0)
+         (place-image
+          (overlay/align "middle" "bottom"
+           (rectangle 50 2 "solid" "red")
+           (rectangle 50 50 "solid" "white"))
+          45 150
+          SCREEN-BACKGROUND
+          )
+
 
 ;(play-beats rock-loop)
 ;(play-list let-it-be)
