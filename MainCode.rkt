@@ -347,7 +347,11 @@
          (cond [(empty? w) "empty"]
                [else
                 (both (play-notes (list->notes (list->tones (list-tb w)) one-four)) w)])]
+<<<<<<< HEAD
         
+=======
+       
+>>>>>>> d548af11f562016ed5cdea643f61696b165db087
         
         [else (make-world
                (update-appropriate-text-box (world-tbs w) k (world-has-focus w))
@@ -475,7 +479,11 @@
          (make-text-box #f 255 150))
    0))
 
+<<<<<<< HEAD
 (big-bang (make-world 
+=======
+#;(big-bang (make-world 
+>>>>>>> d548af11f562016ed5cdea643f61696b165db087
            (list (make-text-box #f 45 150)
                  (make-text-box #f 115 150)
                  (make-text-box #f 185 150)
@@ -489,6 +497,7 @@
 ;; TO BE IMPLEMENTED:
 
 ;[(= (world-has-focus w) 0)
+<<<<<<< HEAD
 (place-image
  (overlay/align "middle" "bottom"
                 (rectangle 50 2 "solid" "red")
@@ -500,3 +509,16 @@
 
 ;(play-beats rock-loop)
 ;(play-list let-it-be)
+=======
+         (place-image
+          (overlay/align "middle" "bottom"
+           (rectangle 50 2 "solid" "red")
+           (rectangle 50 50 "solid" "white"))
+          45 150
+          SCREEN-BACKGROUND
+          )
+
+
+;(play-beats rock-loop)
+(play-list let-it-be)
+>>>>>>> d548af11f562016ed5cdea643f61696b165db087
