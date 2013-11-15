@@ -57,21 +57,12 @@
   (cond
     [(equal? (note-pitch n) 0) 
      (pstream-queue ps 
-<<<<<<< HEAD
                     (silence (note-duration n)) (note-time n))] 
     [else (pstream-queue
            ps
            (clip (piano-tone (note-pitch n))
                  0 (note-duration n))
            (note-time n))]))
-=======
-            (silence (note-duration n)) (note-time n))] 
-  [else (pstream-queue
-   ps
-   (clip (piano-tone (note-pitch n))
-         0 (note-duration n))
-   (note-time n))]))
->>>>>>> bd8d3dbcc906675e82d216e87c4c5f798b670648
 
 ;; plays a list of lists
 ;; list-of-lists -> pstream
@@ -171,27 +162,15 @@
     (make-note (+ t 12) (m 7) 88200)
     (make-note (+ t 4) (+ (b 2) (m 7)) (b .5))
     (make-note (+ t 7) (+ (b 2) (m 7)) (b .5))
-<<<<<<< HEAD
     (make-note (+ t 2) (+ (b 3) (m 7)) (b 1))
     (make-note (+ t 5) (+ (b 3) (m 7)) (b 1))
-=======
-    (make-note (+ t 11) (+ (b 2) (m 7)) (b .5))
-    (make-note (+ t 2) (+ (b 3) (m 7)) (b 1))
-    (make-note (+ t 6) (+ (b 3) (m 7)) (b 1))
-    (make-note (+ t 9) (+ (b 3) (m 7)) (b 1))
->>>>>>> bd8d3dbcc906675e82d216e87c4c5f798b670648
     (make-note (+ t 0) (m 8) 88200)
     (make-note (+ t 4) (m 8) 88200)
     (make-note (+ t 7) (m 8) 88200))
    #;(list
-<<<<<<< HEAD
       (make-note (+ t -8) (+ (m 1) (b 3)) 44100)
       (make-note (+ t -7) (+ (m 1) (b 3.5)) 44100))))
-=======
-    (make-note (+ t -8) (+ (m 1) (b 3)) 44100)
-    (make-note (+ t -7) (+ (m 1) (b 3.5)) 44100))))
 
->>>>>>> bd8d3dbcc906675e82d216e87c4c5f798b670648
 
 ; Beat Poop
 
@@ -358,10 +337,7 @@
          (cond [(empty? w) "empty"]
                [else
                 (both (play-notes (list->notes (list->tones (list-tb w)) one-four)) w)])]
-<<<<<<< HEAD
       
-=======
->>>>>>> bd8d3dbcc906675e82d216e87c4c5f798b670648
         [else (make-world
                (update-appropriate-text-box (world-tbs w) k (world-has-focus w))
                (world-has-focus w))]))
@@ -439,7 +415,6 @@
   (cond [(empty? lol) empty]
         [else
          (if (string? (first lol)) 
-<<<<<<< HEAD
              (cond
                [(string-ci=? (first lol) "a") (cons 69 (list->tones (rest lol)))]
                [(string-ci=? (first lol) "b") (cons 71 (list->tones (rest lol)))]
@@ -449,17 +424,6 @@
                [(string-ci=? (first lol) "f") (cons 65 (list->tones (rest lol)))]
                [(string-ci=? (first lol) "g") (cons 67 (list->tones (rest lol)))])
              (cons 0 (list->tones (rest lol))))]))
-=======
-                  (cond
-                    [(string-ci=? (first lol) "a") (cons 69 (list->tones (rest lol)))]
-                    [(string-ci=? (first lol) "b") (cons 71 (list->tones (rest lol)))]
-                    [(string-ci=? (first lol) "c") (cons 60 (list->tones (rest lol)))]
-                    [(string-ci=? (first lol) "d") (cons 62 (list->tones (rest lol)))]
-                    [(string-ci=? (first lol) "e") (cons 64 (list->tones (rest lol)))]
-                    [(string-ci=? (first lol) "f") (cons 65 (list->tones (rest lol)))]
-                    [(string-ci=? (first lol) "g") (cons 67 (list->tones (rest lol)))])
-          (cons 0 (list->tones (rest lol))))]))
->>>>>>> bd8d3dbcc906675e82d216e87c4c5f798b670648
 
 ; make list from tbs
 (define (list-tb tb)
@@ -501,7 +465,6 @@
    0))
 
 (big-bang (make-world 
-<<<<<<< HEAD
              (list (make-text-box #f 45 150)
                    (make-text-box #f 115 150)
                    (make-text-box #f 185 150)
@@ -514,16 +477,3 @@
 
 ;(play-beats rock-loop)
 ;(play-list let-it-be)
-=======
-           (list (make-text-box #f 45 150)
-                 (make-text-box #f 115 150)
-                 (make-text-box #f 185 150)
-                 (make-text-box #f 255 150))
-           0)
-          
-          [to-draw draw-world]
-          [on-key text-box-input-key]
-          [state true])
-
-;(text-box-content (first (world-tbs world)))
->>>>>>> bd8d3dbcc906675e82d216e87c4c5f798b670648
