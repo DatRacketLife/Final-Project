@@ -64,13 +64,12 @@
                  0 (note-duration n))
            (note-time n))]))
 
-;; plays a list of lists
 ;; list-of-lists -> pstream
 (define (play-list loch)
   (cond [(empty? loch) empty]
         [else
-         (play-notes (both (play-list (rest loch))
-                           (first loch)))]))
+         (both (play-notes (first loch))
+               (play-list (rest loch)))]))
 
 
 
@@ -129,7 +128,9 @@
    (list
     (make-note (+ t 0) (m 1) 88200)
     (make-note (+ t 4) (m 1) 88200)
-    (make-note (+ t 7) (m 1) 88200))
+    (make-note (+ t 7) (m 1) 88200)
+   (make-note (+ t -8) (+ (m 1) (b 3)) 44100)
+      (make-note (+ t -7) (+ (m 1) (b 3.5)) 44100))
    (list 
     (make-note (+ t -5) (m 2) 88200)
     (make-note (+ t -1) (m 2) 88200)
@@ -166,11 +167,7 @@
     (make-note (+ t 5) (+ (b 3) (m 7)) (b 1))
     (make-note (+ t 0) (m 8) 88200)
     (make-note (+ t 4) (m 8) 88200)
-    (make-note (+ t 7) (m 8) 88200))
-   #;(list
-      (make-note (+ t -8) (+ (m 1) (b 3)) 44100)
-      (make-note (+ t -7) (+ (m 1) (b 3.5)) 44100))))
-
+    (make-note (+ t 7) (m 8) 88200))))
 
 ; Beat Poop
 
