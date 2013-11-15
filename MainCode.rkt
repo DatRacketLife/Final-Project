@@ -264,9 +264,49 @@
 ;; draw a world
 ;; world -> image
 (define (draw-world world)
-  (draw-all-text-boxes
+   (cond [(= (world-has-focus world) 0)
+         (place-image
+          (overlay/align "middle" "bottom"
+           (rectangle 50 2 "solid" "red")
+           TEXT-BOX-BACKGROUND )
+          45 150
+          (draw-all-text-boxes
    (world-tbs world)
-   SCREEN-BACKGROUND))
+   SCREEN-BACKGROUND)
+          )]
+         [(= (world-has-focus world) 1)
+         (place-image
+          (overlay/align "middle" "bottom"
+           (rectangle 50 2 "solid" "red")
+           TEXT-BOX-BACKGROUND )
+          115 150
+          (draw-all-text-boxes
+   (world-tbs world)
+   SCREEN-BACKGROUND)
+          )]
+         [(= (world-has-focus world) 2)
+         (place-image
+          (overlay/align "middle" "bottom"
+           (rectangle 50 2 "solid" "red")
+           TEXT-BOX-BACKGROUND )
+          185 150
+          (draw-all-text-boxes
+   (world-tbs world)
+   SCREEN-BACKGROUND)
+          )]
+         [(= (world-has-focus world) 3)
+         (place-image
+          (overlay/align "middle" "bottom"
+           (rectangle 50 2 "solid" "red")
+           TEXT-BOX-BACKGROUND )
+          255 150
+          (draw-all-text-boxes
+   (world-tbs world)
+   SCREEN-BACKGROUND)
+          )]
+         [else (draw-all-text-boxes
+   (world-tbs world)
+   SCREEN-BACKGROUND)]))
 
 ;; list-of-text-boxes image -> image
 ;; draw all of the text boxes on the given image
