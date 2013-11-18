@@ -115,9 +115,13 @@
           (make-note (+ t 18) (m measure) 88200))]
         [else x]))
 
-;; make a list form chordmaker
-;; list-of-strings ->
-
+;; make a list-of-chords from chordmaker
+;; list-of-strings -> list-of-chords
+(define (progmaker los)
+  (cond [(empty? los) empty]
+        [else
+         (cons (chordmaker (first los) (first one-four))
+               (progmaker (rest los)))]))
 
 ;; a list-of-lists is either
 ;; - empty, or
@@ -129,8 +133,8 @@
     (make-note (+ t 0) (m 1) 88200)
     (make-note (+ t 4) (m 1) 88200)
     (make-note (+ t 7) (m 1) 88200)
-   (make-note (+ t -8) (+ (m 1) (b 3)) 44100)
-      (make-note (+ t -7) (+ (m 1) (b 3.5)) 44100))
+    (make-note (+ t -8) (+ (m 1) (b 3)) 44100)
+    (make-note (+ t -7) (+ (m 1) (b 3.5)) 44100))
    (list 
     (make-note (+ t -5) (m 2) 88200)
     (make-note (+ t -1) (m 2) 88200)
@@ -268,6 +272,22 @@
          2htdp/image
          rackunit)
 
+(define TEXTBOX-ROW-HEIGHT 150)
+(define BOX-0-X 185)
+(define BOX-0-Y 75)
+(define BOX-1-X 45)
+(define BOX-1-Y TEXTBOX-ROW-HEIGHT)
+(define BOX-2-X 115)
+(define BOX-2-Y TEXTBOX-ROW-HEIGHT)
+(define BOX-3-X 185)
+(define BOX-3-Y TEXTBOX-ROW-HEIGHT)
+(define BOX-4-X 255)
+(define BOX-4-Y TEXTBOX-ROW-HEIGHT)
+(define BOX-5-X 325)
+(define BOX-5-Y TEXTBOX-ROW-HEIGHT)
+(define BOX-6-X 395)
+(define BOX-6-Y TEXTBOX-ROW-HEIGHT)
+
 ;; a text-box-content is a string or false
 
 ;; a text-box is (make-text-box text-box-content pixels pixels)
@@ -278,7 +298,7 @@
 (define-struct world (tbs has-focus) #:transparent)
 
 (define SCREEN-BACKGROUND 
-  (rectangle 300 300 "solid" "light gray"))
+  (rectangle 370 300 "solid" "light gray"))
 (define TEXT-SIZE 40)
 (define TEXT-BOX-BACKGROUND 
   (rectangle 50 50 "solid" "white"))
@@ -295,41 +315,57 @@
 ;; draw a world
 ;; world -> image
 (define (draw-world world)
-   (cond [(= (world-has-focus world) 0)
+  (cond [(= (world-has-focus world) 0)
          (place-image
-           (rectangle 50 2 "solid" "red")
-          45 175
+          (rectangle 50 2 "solid" "blue")
+          BOX-0-X (+ 25 BOX-0-Y)
           (draw-all-text-boxes
-   (world-tbs world)
-   SCREEN-BACKGROUND)
+           (world-tbs world)
+           SCREEN-BACKGROUND)
           )]
-         [(= (world-has-focus world) 1)
+        [(= (world-has-focus world) 1)
          (place-image
-           (rectangle 50 2 "solid" "red")
-          115 175
+          (rectangle 50 2 "solid" "red")
+          BOX-1-X (+ 25 BOX-1-Y)
           (draw-all-text-boxes
-   (world-tbs world)
-   SCREEN-BACKGROUND)
+           (world-tbs world)
+           SCREEN-BACKGROUND)
           )]
-         [(= (world-has-focus world) 2)
+        [(= (world-has-focus world) 2)
          (place-image
-           (rectangle 50 2 "solid" "red")
-          185 175
+          (rectangle 50 2 "solid" "red")
+          BOX-2-X (+ 25 BOX-2-Y)
           (draw-all-text-boxes
-   (world-tbs world)
-   SCREEN-BACKGROUND)
+           (world-tbs world)
+           SCREEN-BACKGROUND)
           )]
-         [(= (world-has-focus world) 3)
+        [(= (world-has-focus world) 3)
          (place-image         
-           (rectangle 50 2 "solid" "red")           
-          255 175
+          (rectangle 50 2 "solid" "red")           
+          BOX-3-X (+ 25 BOX-3-Y)
           (draw-all-text-boxes
-   (world-tbs world)
-   SCREEN-BACKGROUND)
+           (world-tbs world)
+           SCREEN-BACKGROUND)
           )]
-         [else (draw-all-text-boxes
-   (world-tbs world)
-   SCREEN-BACKGROUND)]))
+        [(= (world-has-focus world) 4)
+         (place-image         
+          (rectangle 50 2 "solid" "red")           
+          BOX-4-X (+ 25 BOX-4-Y)
+          (draw-all-text-boxes
+           (world-tbs world)
+           SCREEN-BACKGROUND)
+          )]
+        [(= (world-has-focus world) 5)
+         (place-image         
+          (rectangle 50 2 "solid" "red")           
+          BOX-5-X (+ 25 BOX-5-Y)
+          (draw-all-text-boxes
+           (world-tbs world)
+           SCREEN-BACKGROUND)
+          )]
+        [else (draw-all-text-boxes
+               (world-tbs world)
+               SCREEN-BACKGROUND)]))
 
 ;; list-of-text-boxes image -> image
 ;; draw all of the text boxes on the given image
@@ -391,20 +427,22 @@
 ;; take the key, put the character in the world if necessary
 ;; w key -> world 
 (define (text-box-input-key w k)
-  (cond [(key=? k "\t") (cond [(<= (world-has-focus w) 2)
+  (cond [(key=? k "\t") (cond [(<= (world-has-focus w) 4)
                                (make-world (world-tbs w)
                                            (+ 1 (world-has-focus w)))]
-                              [(= 3 (world-has-focus w)) (make-world (world-tbs w) 0)])
+                              [(= 5 (world-has-focus w)) (make-world (world-tbs w) 0)])
                         ]
-        [(key=? k "right") (cond [(<= (world-has-focus w) 2)
+        [(key=? k "right") (cond [(<= (world-has-focus w) 4)
                                   (make-world (world-tbs w)
                                               (+ 1 (world-has-focus w)))]
-                                 [(= 3 (world-has-focus w)) (make-world (world-tbs w) 0)])
+                                 [(= 5 (world-has-focus w)) (make-world (world-tbs w) 0)])
                            ]
-        [(key=? k "left") (cond [(= 3 (world-has-focus w)) (make-world (world-tbs w) 2)]
+        [(key=? k "left") (cond [(= 5 (world-has-focus w)) (make-world (world-tbs w) 4)]
+                                [(= 4 (world-has-focus w)) (make-world (world-tbs w) 3)]
+                                [(= 3 (world-has-focus w)) (make-world (world-tbs w) 2)]
                                 [(= 2 (world-has-focus w)) (make-world (world-tbs w) 1)]
                                 [(= 1 (world-has-focus w)) (make-world (world-tbs w) 0)]
-                                [(= 0 (world-has-focus w)) (make-world (world-tbs w) 3)])
+                                [(= 0 (world-has-focus w)) (make-world (world-tbs w) 5)])
                           ]
         [(key=? k "\r") 
          (cond [(empty? w) "empty"]
@@ -418,7 +456,7 @@
 
 ;;list one to four
 
-(define one-four (list 1 2 3 4))
+(define one-four (list 1 2 3 4 5 6))
 
 ;;takes list of numbers, returs list of notes
 (define (list->notes lon loc)
@@ -538,11 +576,15 @@
          (make-text-box #f 255 150))
    0))
 
+
+
 (big-bang (make-world 
-           (list (make-text-box #f 45 150)
+           (list (make-text-box #f 185 75)
+                 (make-text-box #f 45 150)
                  (make-text-box #f 115 150)
                  (make-text-box #f 185 150)
-                 (make-text-box #f 255 150))
+                 (make-text-box #f 255 150)
+                 (make-text-box #f 325 150))
            0)
           
           [to-draw draw-world]
@@ -551,14 +593,7 @@
 
 ;; TO BE IMPLEMENTED:
 
-;[(= (world-has-focus w) 0)
-(place-image
- (overlay/align "middle" "bottom"
-                (rectangle 50 2 "solid" "red")
-                (rectangle 50 50 "solid" "white"))
- 45 150
- SCREEN-BACKGROUND
- )
+
 
 
 ;(play-beats rock-loop)
