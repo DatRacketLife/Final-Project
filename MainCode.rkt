@@ -499,7 +499,7 @@
 (define (update-text-box tb k)
   (local
     [(define new-content
-       (cond [(key=? k "a") "A"]
+        (cond [(key=? k "a") "A"]
              [(key=? k "A") "A"]
              [(key=? k "b") "B"]
              [(key=? k "B") "B"]
@@ -513,6 +513,13 @@
              [(key=? k "F") "F"]
              [(key=? k "g") "G"]
              [(key=? k "G") "G"]
+             [(key=? k "1") "I"]
+             [(key=? k "2") "II"]
+             [(key=? k "3") "III"]
+             [(key=? k "4") "IV"]
+             [(key=? k "5") "V"]
+             [(key=? k "6") "VI"]
+             [(key=? k "7") "VII"]
              [(key=? k " ") #f]
              [(key=? k "\b") #f]
              
