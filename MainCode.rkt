@@ -545,7 +545,9 @@
            (text-box-content (first (world-tbs tb)))
            (text-box-content (second (world-tbs tb)))
            (text-box-content (third (world-tbs tb)))
-           (text-box-content (fourth (world-tbs tb))))]))
+           (text-box-content (fourth (world-tbs tb)))
+           (text-box-content (fifth (world-tbs tb)))
+           (text-box-content (sixth (world-tbs tb))))]))
 
 
 ;; calling update-appropriate-text-box with empty list is an error!
