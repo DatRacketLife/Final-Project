@@ -10,7 +10,7 @@
 (define-struct chord (first third fifth))
 ;; a note is (make-note note-num frames frames)
 (define-struct note (pitch time duration) #:transparent)
-(define t 60)
+(define t 62)
 
 (define ps (make-pstream))
 (define (both a b) b)
@@ -80,39 +80,39 @@
 (define (chordmaker x measure)
   (cond [(string-ci=? x "I")
          (list 
-          (make-note (+ t 0) (m measure) 88200)
-          (make-note (+ t 4) (m measure) 88200)
-          (make-note (+ t 7) (m measure) 88200))]
+          (make-note (+ t 0) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 4) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure)) 88200))]
         [(string-ci=? x "II")
          (list 
-          (make-note (+ t 2) (m measure) 88200)
-          (make-note (+ t 6) (m measure) 88200)
-          (make-note (+ t 9) (m measure) 88200))]
+          (make-note (+ t 2) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 6) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 9) (+ (pstream-current-frame ps) (m measure)) 88200))]
         [(string-ci=? x "III")
          (list 
-          (make-note (+ t 4) (m measure) 88200)
-          (make-note (+ t 7) (m measure) 88200)
-          (make-note (+ t 11) (m measure) 88200))]
+          (make-note (+ t 4) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure)) 88200))]
         [(string-ci=? x "IV")
          (list 
-          (make-note (+ t 5) (m measure) 88200)
-          (make-note (+ t 8) (m measure) 88200)
-          (make-note (+ t 11) (m measure) 88200))]
+          (make-note (+ t 5) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 9) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure)) 88200))]
         [(string-ci=? x "V")
          (list 
-          (make-note (+ t 7) (m measure) 88200)
-          (make-note (+ t 11) (m measure) 88200)
-          (make-note (+ t 14) (m measure) 88200))]
+          (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure)) 88200))]
         [(string-ci=? x "VI")
          (list 
-          (make-note (+ t 9) (m measure) 88200)
-          (make-note (+ t 12) (m measure) 88200)
-          (make-note (+ t 16) (m measure) 88200))]
+          (make-note (+ t 9) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 16) (+ (pstream-current-frame ps) (m measure)) 88200))]
         [(string-ci=? x "VII")
          (list 
-          (make-note (+ t 11) (m measure) 88200)
-          (make-note (+ t 14) (m measure) 88200)
-          (make-note (+ t 18) (m measure) 88200))]
+          (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 18) (+ (pstream-current-frame ps) (m measure)) 88200))]
         [else x]))
 
 ;; make a list-of-chords from chordmaker
@@ -124,19 +124,18 @@
                (progmaker (rest los) (+ 1 indx)))]))
 
 
-(check-equal? (progmaker empty 1)
+#;(check-equal? (progmaker empty 1)
               empty)
-(check-equal? (progmaker (list "i" "ii") 1)
+#;(check-equal? (progmaker (list "i" "ii") 1)
               (list
                (list 
-                (make-note (+ t 0) (m 1) 88200)
+                (make-note (+ t 0) (m 1)) 88200)
                 (make-note (+ t 4) (m 1) 88200)
                 (make-note (+ t 7) (m 1) 88200))
                (list
                 (make-note (+ t 2) (m 2) 88200)
                 (make-note (+ t 6) (m 2) 88200)
-                (make-note (+ t 9) (m 2) 88200))))
-
+                (make-note (+ t 9) (m 2) 88200)))
 
 
 
@@ -594,7 +593,7 @@
 
 
 
-#;(big-bang (make-world 
+(big-bang (make-world 
              (list (make-text-box #f 185 75)
                    (make-text-box #f 45 150)
                    (make-text-box #f 115 150)
@@ -627,6 +626,6 @@
 |#
 
 
-(play-beats rock-loop)
+;(play-beats rock-loop)
 ;(play-list let-it-be)
-(play-list (progmaker (list "i" "ii" "iii" "iv" "v" "vi" "vii" "i") 1))
+;(play-list (progmaker (list "i" "ii" "iii" "iv" "v" "vi" "vii" "i") 1))
