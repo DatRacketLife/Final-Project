@@ -9,7 +9,7 @@
 (define (m x)(* x (b 4)))
 (define-struct chord (first third fifth))
 ;; a note is (make-note note-num frames frames)
-(define-struct note (pitch time duration))
+(define-struct note (pitch time duration) #:transparent)
 (define t 60)
 
 (define ps (make-pstream))
@@ -87,7 +87,7 @@
          (list 
           (make-note (+ t 2) (m measure) 88200)
           (make-note (+ t 6) (m measure) 88200)
-          (make-note (+ t 1) (m measure) 88200))]
+          (make-note (+ t 9) (m measure) 88200))]
         [(string-ci=? x "III")
          (list 
           (make-note (+ t 4) (m measure) 88200)
@@ -96,8 +96,8 @@
         [(string-ci=? x "IV")
          (list 
           (make-note (+ t 5) (m measure) 88200)
-          (make-note (+ t 9) (m measure) 88200)
-          (make-note (+ t 12) (m measure) 88200))]
+          (make-note (+ t 8) (m measure) 88200)
+          (make-note (+ t 11) (m measure) 88200))]
         [(string-ci=? x "V")
          (list 
           (make-note (+ t 7) (m measure) 88200)
@@ -117,11 +117,29 @@
 
 ;; make a list-of-chords from chordmaker
 ;; list-of-strings -> list-of-chords
-(define (progmaker los)
+(define (progmaker los indx)
   (cond [(empty? los) empty]
         [else
-         (cons (chordmaker (first los) (first one-four))
-               (progmaker (rest los)))]))
+         (cons (chordmaker (first los) indx)
+               (progmaker (rest los) (+ 1 indx)))]))
+
+
+(check-equal? (progmaker empty 1)
+              empty)
+(check-equal? (progmaker (list "i" "ii") 1)
+              (list
+               (list 
+                (make-note (+ t 0) (m 1) 88200)
+                (make-note (+ t 4) (m 1) 88200)
+                (make-note (+ t 7) (m 1) 88200))
+               (list
+                (make-note (+ t 2) (m 2) 88200)
+                (make-note (+ t 6) (m 2) 88200)
+                (make-note (+ t 9) (m 2) 88200))))
+
+
+
+
 
 ;; a list-of-lists is either
 ;; - empty, or
@@ -183,31 +201,31 @@
 ;rock-loop is a list of beats
 (define rock-loop
   (list
-       (make-beat o-hi-hat (b 1))
+   (make-beat o-hi-hat (b 1))
    (make-beat o-hi-hat (b 3))
    (make-beat o-hi-hat (b 5))
    (make-beat o-hi-hat (b 7))
-       (make-beat o-hi-hat (+ (m 1) (b 2)))
+   (make-beat o-hi-hat (+ (m 1) (b 2)))
    (make-beat o-hi-hat (+ (m 1) (b 4)))
    (make-beat o-hi-hat (+ (m 1) (b 6)))
    (make-beat o-hi-hat (+ (m 1) (b 8)))
-      (make-beat o-hi-hat (+ (m 2) (b 2)))
+   (make-beat o-hi-hat (+ (m 2) (b 2)))
    (make-beat o-hi-hat (+ (m 2) (b 4)))
    (make-beat o-hi-hat (+ (m 2) (b 6)))
    (make-beat o-hi-hat (+ (m 2) (b 8)))
-      (make-beat o-hi-hat (+ (m 3) (b 2)))
+   (make-beat o-hi-hat (+ (m 3) (b 2)))
    (make-beat o-hi-hat (+ (m 3) (b 4)))
    (make-beat o-hi-hat (+ (m 3) (b 6)))
    (make-beat o-hi-hat (+ (m 3) (b 8)))
-      (make-beat o-hi-hat (+ (m 4) (b 2)))
+   (make-beat o-hi-hat (+ (m 4) (b 2)))
    (make-beat o-hi-hat (+ (m 4) (b 4)))
    (make-beat o-hi-hat (+ (m 4) (b 6)))
    (make-beat o-hi-hat (+ (m 4) (b 8)))
-      (make-beat o-hi-hat (+ (m 5) (b 2)))
+   (make-beat o-hi-hat (+ (m 5) (b 2)))
    (make-beat o-hi-hat (+ (m 5) (b 4)))
    (make-beat o-hi-hat (+ (m 5) (b 6)))
    (make-beat o-hi-hat (+ (m 5) (b 8)))
-      (make-beat o-hi-hat (+ (m 6) (b 2)))
+   (make-beat o-hi-hat (+ (m 6) (b 2)))
    (make-beat o-hi-hat (+ (m 6) (b 4)))
    (make-beat o-hi-hat (+ (m 6) (b 6)))
    (make-beat o-hi-hat (+ (m 6) (b 8)))
@@ -226,7 +244,7 @@
    (make-beat crash-cymbal (b 24))
    (make-beat crash-cymbal (b 32))
    
-  
+   
    (make-beat kick (b 1))
    (make-beat kick (b 2.5))
    (make-beat kick (b 4))
@@ -445,14 +463,27 @@
                                 [(= 0 (world-has-focus w)) (make-world (world-tbs w) 5)])
                           ]
         [(key=? k "\r") 
-         (cond [(empty? w) "empty"]
+         (cond [(empty? w) w]
                [else
-                (both (play-notes (list->notes (list->tones (list-tb w)) one-four)) w)])]
+                (both (play-list (progmaker (list-tb w) 1)) w)])]
         
         
         [else (make-world
                (update-appropriate-text-box (world-tbs w) k (world-has-focus w))
                (world-has-focus w))]))
+
+
+; make list from tbs
+(define (list-tb tb)
+  (cond
+    [(empty? tb) empty]
+    [else (list
+           ;(text-box-content (first (world-tbs tb)))
+           (text-box-content (second (world-tbs tb)))
+           (text-box-content (third (world-tbs tb)))
+           (text-box-content (fourth (world-tbs tb)))
+           (text-box-content (fifth (world-tbs tb)))
+           (text-box-content (sixth (world-tbs tb))))]))
 
 ;;list one to four
 
@@ -465,20 +496,22 @@
     [else
      (cons (make-note (first lon) (+ (pstream-current-frame ps) (m (first loc))) 44100)
            (list->notes (rest lon) (rest loc)))]))
-;;takes list of make-tones-> played sound
 
-(define (play-tone p)
-  (pstream-queue
-   ps
-   p
-   (rs-frames p)
-   ))
-
-(define (play-tones lot)
-  (cond [(empty? lot) ps]
+; takes list -> list of note pitches
+(define (list->tones lol)
+  (cond [(empty? lol) empty]
         [else
-         (both (play-tone (first lot)) 
-               (play-tones (rest lot)))]))
+         (if (string? (first lol)) 
+             (cond
+               [(string-ci=? (first lol) "a") (cons 69 (list->tones (rest lol)))]
+               [(string-ci=? (first lol) "b") (cons 71 (list->tones (rest lol)))]
+               [(string-ci=? (first lol) "c") (cons 60 (list->tones (rest lol)))]
+               [(string-ci=? (first lol) "d") (cons 62 (list->tones (rest lol)))]
+               [(string-ci=? (first lol) "e") (cons 64 (list->tones (rest lol)))]
+               [(string-ci=? (first lol) "f") (cons 65 (list->tones (rest lol)))]
+               [(string-ci=? (first lol) "g") (cons 67 (list->tones (rest lol)))]
+               )
+             (cons 0 (list->tones (rest lol))))]))
 
 ;; list-of-text-boxes key number -> list-of-text-boxes
 ;; update the text box corresponding to the idx
@@ -499,7 +532,7 @@
 (define (update-text-box tb k)
   (local
     [(define new-content
-        (cond [(key=? k "a") "A"]
+       (cond [(key=? k "a") "A"]
              [(key=? k "A") "A"]
              [(key=? k "b") "B"]
              [(key=? k "B") "B"]
@@ -529,32 +562,6 @@
                    (text-box-x tb)
                    (text-box-y tb))))
 
-; takes list -> list of note pitches
-(define (list->tones lol)
-  (cond [(empty? lol) empty]
-        [else
-         (if (string? (first lol)) 
-             (cond
-               [(string-ci=? (first lol) "a") (cons 69 (list->tones (rest lol)))]
-               [(string-ci=? (first lol) "b") (cons 71 (list->tones (rest lol)))]
-               [(string-ci=? (first lol) "c") (cons 60 (list->tones (rest lol)))]
-               [(string-ci=? (first lol) "d") (cons 62 (list->tones (rest lol)))]
-               [(string-ci=? (first lol) "e") (cons 64 (list->tones (rest lol)))]
-               [(string-ci=? (first lol) "f") (cons 65 (list->tones (rest lol)))]
-               [(string-ci=? (first lol) "g") (cons 67 (list->tones (rest lol)))])
-             (cons 0 (list->tones (rest lol))))]))
-
-; make list from tbs
-(define (list-tb tb)
-  (cond
-    [(empty? tb) empty]
-    [else (list
-           (text-box-content (first (world-tbs tb)))
-           (text-box-content (second (world-tbs tb)))
-           (text-box-content (third (world-tbs tb)))
-           (text-box-content (fourth (world-tbs tb)))
-           (text-box-content (fifth (world-tbs tb)))
-           (text-box-content (sixth (world-tbs tb))))]))
 
 
 ;; calling update-appropriate-text-box with empty list is an error!
@@ -587,23 +594,39 @@
 
 
 
-(big-bang (make-world 
-           (list (make-text-box #f 185 75)
-                 (make-text-box #f 45 150)
-                 (make-text-box #f 115 150)
-                 (make-text-box #f 185 150)
-                 (make-text-box #f 255 150)
-                 (make-text-box #f 325 150))
-           0)
-          
-          [to-draw draw-world]
-          [on-key text-box-input-key]
-          [state true])
+#;(big-bang (make-world 
+             (list (make-text-box #f 185 75)
+                   (make-text-box #f 45 150)
+                   (make-text-box #f 115 150)
+                   (make-text-box #f 185 150)
+                   (make-text-box #f 255 150)
+                   (make-text-box #f 325 150))
+             0)
+            
+            [to-draw draw-world]
+            [on-key text-box-input-key]
+            [state true])
 
 ;; TO BE IMPLEMENTED:
 
+ ;Do we need these functions?
+;;takes list of make-tones-> played sound
+#|
+(define (play-tone p)
+  (pstream-queue
+   ps
+   p
+   (rs-frames p)
+   ))
+
+(define (play-tones lot)
+  (cond [(empty? lot) ps]
+        [else
+         (both (play-tone (first lot)) 
+               (play-tones (rest lot)))]))
+|#
 
 
-
-;(play-beats rock-loop)
+(play-beats rock-loop)
 ;(play-list let-it-be)
+(play-list (progmaker (list "i" "ii" "iii" "iv" "v" "vi" "vii" "i") 1))
