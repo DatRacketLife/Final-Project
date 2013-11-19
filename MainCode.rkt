@@ -10,7 +10,8 @@
 (define-struct chord (first third fifth))
 ;; a note is (make-note note-num frames frames)
 (define-struct note (pitch time duration) #:transparent)
-(define t 62)
+(define-struct t (number))
+ 
 
 (define ps (make-pstream))
 (define (both a b) b)
@@ -18,7 +19,7 @@
 
 (require math/bigfloat)
 
-(define D 
+#;(define D 
   (list
    (make-note (+ t 0) (m 1) 88200)
    (make-note (+ t 4) (m 1) 88200)
@@ -39,7 +40,7 @@
 ;; string -> list-of-three-notes
 (define-struct prog (first third fifth))
 
-(define one (make-prog (make-note (+ t 0) 88200 88200)
+#;(define one (make-prog (make-note (+ t 0) 88200 88200)
                        (make-note (+ t 4) 88200 88200)
                        (make-note (+ t 7) 88200 88200)))
 
@@ -77,7 +78,7 @@
 
 ;; create chords from key
 ;; string -> list
-(define (chordmaker x measure)
+(define (chordmaker x t measure)
   (cond [(string-ci=? x "I")
          (list 
           (make-note (+ t 0) (+ (pstream-current-frame ps) (m measure)) 88200)
@@ -117,11 +118,11 @@
 
 ;; make a list-of-chords from chordmaker
 ;; list-of-strings -> list-of-chords
-(define (progmaker los indx)
+(define (progmaker los t indx)
   (cond [(empty? los) empty]
         [else
-         (cons (chordmaker (first los) indx)
-               (progmaker (rest los) (+ 1 indx)))]))
+         (cons (chordmaker (first los) t indx)
+               (progmaker (rest los) t (+ 1 indx)))]))
 
 
 #;(check-equal? (progmaker empty 1)
@@ -144,7 +145,7 @@
 ;; - empty, or
 ;; - (cons (cons list-of-lists empty) empty)
 
-(define let-it-be
+#;(define let-it-be
   (list 
    (list
     (make-note (+ t 0) (m 1) 88200)
@@ -464,8 +465,8 @@
         [(key=? k "\r") 
          (cond [(empty? w) w]
                [else
-                (both (play-list (progmaker (list-tb w) 1)) w)])]
-        
+                (both (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w)))  1)) w)])]
+       
         
         [else (make-world
                (update-appropriate-text-box (world-tbs w) k (world-has-focus w))
@@ -477,7 +478,7 @@
   (cond
     [(empty? tb) empty]
     [else (list
-           ;(text-box-content (first (world-tbs tb)))
+           (text-box-content (first (world-tbs tb)))
            (text-box-content (second (world-tbs tb)))
            (text-box-content (third (world-tbs tb)))
            (text-box-content (fourth (world-tbs tb)))
@@ -499,18 +500,18 @@
 ; takes list -> list of note pitches
 (define (list->tones lol)
   (cond [(empty? lol) empty]
-        [else
-         (if (string? (first lol)) 
+        [
+          (string? (first lol)) 
              (cond
-               [(string-ci=? (first lol) "a") (cons 69 (list->tones (rest lol)))]
-               [(string-ci=? (first lol) "b") (cons 71 (list->tones (rest lol)))]
-               [(string-ci=? (first lol) "c") (cons 60 (list->tones (rest lol)))]
-               [(string-ci=? (first lol) "d") (cons 62 (list->tones (rest lol)))]
-               [(string-ci=? (first lol) "e") (cons 64 (list->tones (rest lol)))]
-               [(string-ci=? (first lol) "f") (cons 65 (list->tones (rest lol)))]
-               [(string-ci=? (first lol) "g") (cons 67 (list->tones (rest lol)))]
-               )
-             (cons 0 (list->tones (rest lol))))]))
+               [(string-ci=? (first lol) "a") (cons  57 (list->tones (rest lol)))]
+               [(string-ci=? (first lol) "b") (cons  59 (list->tones (rest lol)))]
+               [(string-ci=? (first lol) "c") (cons  48 (list->tones (rest lol)))]
+               [(string-ci=? (first lol) "d") (cons  50 (list->tones (rest lol)))]
+               [(string-ci=? (first lol) "e") (cons  52 (list->tones (rest lol)))]
+               [(string-ci=? (first lol) "f") (cons  53 (list->tones (rest lol)))]
+               [(string-ci=? (first lol) "g") (cons  55 (list->tones (rest lol)))]
+               [else
+             (cons (first lol) (list->tones (rest lol)))])]))
 
 ;; list-of-text-boxes key number -> list-of-text-boxes
 ;; update the text box corresponding to the idx
@@ -629,3 +630,4 @@
 ;(play-beats rock-loop)
 ;(play-list let-it-be)
 ;(play-list (progmaker (list "i" "ii" "iii" "iv" "v" "vi" "vii" "i") 1))
+
