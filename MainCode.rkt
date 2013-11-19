@@ -114,6 +114,11 @@
           (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure)) 88200)
           (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure)) 88200)
           (make-note (+ t 18) (+ (pstream-current-frame ps) (m measure)) 88200))]
+        [(string-ci=? x " ")
+         (list 
+          (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure)) 0)
+          (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure)) 0)
+          (make-note (+ t 18) (+ (pstream-current-frame ps) (m measure)) 0))]
         [else x]))
 
 ;; make a list-of-chords from chordmaker
@@ -403,7 +408,7 @@
 
 
 (check-equal?
- (draw-text-box (make-text-box #f 150 80)
+ (draw-text-box (make-text-box " " 150 80)
                 SCREEN-BACKGROUND)
  (place-image
   (rectangle 50 50 "solid" "white")
@@ -416,8 +421,8 @@
  SCREEN-BACKGROUND)
 
 (check-equal?
- (draw-all-text-boxes (list (make-text-box #f 50 50)
-                            (make-text-box #f 150 80))
+ (draw-all-text-boxes (list (make-text-box " " 50 50)
+                            (make-text-box " " 150 80))
                       SCREEN-BACKGROUND)
  (place-image
   (rectangle 50 50 "solid" "white")
@@ -489,7 +494,7 @@
 
 (define one-four (list 1 2 3 4 5 6))
 
-;;takes list of numbers, returs list of notes
+;;takes list of numbers, returns list of notes
 (define (list->notes lon loc)
   (cond
     [(empty? lon) empty]
@@ -553,8 +558,8 @@
              [(key=? k "5") "V"]
              [(key=? k "6") "VI"]
              [(key=? k "7") "VII"]
-             [(key=? k " ") #f]
-             [(key=? k "\b") #f]
+             [(key=? k " ") " "]
+             [(key=? k "\b") " "]
              
              
              [else (text-box-content tb)]))]
@@ -578,29 +583,29 @@
 (check-equal? (update-text-box (make-text-box "A" 30 79) "B")
               (make-text-box "B" 30 79))
 
-(check-equal? (update-text-box (make-text-box #f 50 50) "a") 
+(check-equal? (update-text-box (make-text-box " " 50 50) "a") 
               (make-text-box "A" 50 50))
-(check-equal? (update-text-box (make-text-box #f 50 50) "A")
+(check-equal? (update-text-box (make-text-box " " 50 50) "A")
               (make-text-box "A" 50 50))
-(check-equal? (update-text-box (make-text-box #f 50 50) " ")
-              (make-text-box #f 50 50))
+(check-equal? (update-text-box (make-text-box " " 50 50) " ")
+              (make-text-box " " 50 50))
 (define boxes
   (make-world 
-   (list (make-text-box #f 45 150)
-         (make-text-box #f 115 150)
-         (make-text-box #f 185 150)
-         (make-text-box #f 255 150))
+   (list (make-text-box " " 45 150)
+         (make-text-box " " 115 150)
+         (make-text-box " " 185 150)
+         (make-text-box " " 255 150))
    0))
 
 
 
 (big-bang (make-world 
-             (list (make-text-box #f 185 75)
-                   (make-text-box #f 45 150)
-                   (make-text-box #f 115 150)
-                   (make-text-box #f 185 150)
-                   (make-text-box #f 255 150)
-                   (make-text-box #f 325 150))
+             (list (make-text-box "A" 185 75)
+                   (make-text-box " " 45 150)
+                   (make-text-box " " 115 150)
+                   (make-text-box " " 185 150)
+                   (make-text-box " " 255 150)
+                   (make-text-box " " 325 150))
              0)
             
             [to-draw draw-world]
@@ -630,4 +635,3 @@
 ;(play-beats rock-loop)
 ;(play-list let-it-be)
 ;(play-list (progmaker (list "i" "ii" "iii" "iv" "v" "vi" "vii" "i") 1))
-
