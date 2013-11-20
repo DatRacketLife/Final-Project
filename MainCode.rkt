@@ -6,7 +6,7 @@
 (define beats-per-minute 150)
 (define (s x)(* 44100 x))
 (define (b x)(inexact->exact (* x (s (/ 60 beats-per-minute)))))
-(define (m x)(* x (b 4)))
+(define (m x)(inexact->exact (round (* x (b 4)))))
 (define-struct chord (first third fifth))
 ;; a note is (make-note note-num frames frames)
 (define-struct note (pitch time duration) #:transparent)
@@ -142,9 +142,6 @@
                 (make-note (+ t 2) (m 2) 88200)
                 (make-note (+ t 6) (m 2) 88200)
                 (make-note (+ t 9) (m 2) 88200)))
-
-
-
 
 ;; a list-of-lists is either
 ;; - empty, or
@@ -295,22 +292,6 @@
          2htdp/image
          rackunit)
 
-(define TEXTBOX-ROW-HEIGHT 150)
-(define BOX-0-X 185)
-(define BOX-0-Y 75)
-(define BOX-1-X 45)
-(define BOX-1-Y TEXTBOX-ROW-HEIGHT)
-(define BOX-2-X 115)
-(define BOX-2-Y TEXTBOX-ROW-HEIGHT)
-(define BOX-3-X 185)
-(define BOX-3-Y TEXTBOX-ROW-HEIGHT)
-(define BOX-4-X 255)
-(define BOX-4-Y TEXTBOX-ROW-HEIGHT)
-(define BOX-5-X 325)
-(define BOX-5-Y TEXTBOX-ROW-HEIGHT)
-(define BOX-6-X 395)
-(define BOX-6-Y TEXTBOX-ROW-HEIGHT)
-
 ;; a text-box-content is a string or false
 
 ;; a text-box is (make-text-box text-box-content pixels pixels)
@@ -320,8 +301,42 @@
 ;; side condition: number can't be >= number of boxes
 (define-struct world (tbs has-focus) #:transparent)
 
+
+;; text box positions
+
+(define SBX 300)
+(define SBY 300)
+(define RIGHT-PAD (/ SBX 12))
+(define BOX-SPACE (* (- SBX (* 2 RIGHT-PAD)) 0.28))
+
+(define ROW1-HEIGHT 150)
+(define ROW2-HEIGHT 225)
+(define COLLUM1 (+ RIGHT-PAD (/ SBX 15)))
+(define COLLUM2 (+ COLLUM1 BOX-SPACE))
+(define COLLUM3 (+ COLLUM2 BOX-SPACE))
+(define COLLUM4 (+ COLLUM3 BOX-SPACE))
+
+(define BOX-0-X (/ SBX 2))
+(define BOX-0-Y 75)
+(define BOX-1-X COLLUM1)
+(define BOX-1-Y ROW1-HEIGHT)
+(define BOX-2-X COLLUM2)
+(define BOX-2-Y ROW1-HEIGHT)
+(define BOX-3-X COLLUM3)
+(define BOX-3-Y ROW1-HEIGHT)
+(define BOX-4-X COLLUM4)
+(define BOX-4-Y ROW1-HEIGHT)
+(define BOX-5-X COLLUM1)
+(define BOX-5-Y ROW2-HEIGHT)
+(define BOX-6-X COLLUM2)
+(define BOX-6-Y ROW2-HEIGHT)
+(define BOX-7-X COLLUM3)
+(define BOX-7-Y ROW2-HEIGHT)
+(define BOX-8-X COLLUM4)
+(define BOX-8-Y ROW2-HEIGHT)
+
 (define SCREEN-BACKGROUND 
-  (rectangle 370 300 "solid" "light gray"))
+  (rectangle SBX SBY "solid" "light gray"))
 (define TEXT-SIZE 40)
 (define TEXT-BOX-BACKGROUND 
   (rectangle 50 50 "solid" "white"))
@@ -382,6 +397,30 @@
          (place-image         
           (rectangle 50 2 "solid" "red")           
           BOX-5-X (+ 25 BOX-5-Y)
+          (draw-all-text-boxes
+           (world-tbs world)
+           SCREEN-BACKGROUND)
+          )]
+        [(= (world-has-focus world) 6)
+         (place-image
+          (rectangle 50 2 "solid" "red")
+          BOX-6-X (+ 25 BOX-6-Y)
+          (draw-all-text-boxes
+           (world-tbs world)
+           SCREEN-BACKGROUND)
+          )]
+        [(= (world-has-focus world) 7)
+         (place-image
+          (rectangle 50 2 "solid" "red")
+          BOX-7-X (+ 25 BOX-7-Y)
+          (draw-all-text-boxes
+           (world-tbs world)
+           SCREEN-BACKGROUND)
+          )]
+        [(= (world-has-focus world) 8)
+         (place-image
+          (rectangle 50 2 "solid" "red")
+          BOX-8-X (+ 25 BOX-8-Y)
           (draw-all-text-boxes
            (world-tbs world)
            SCREEN-BACKGROUND)
@@ -450,27 +489,32 @@
 ;; take the key, put the character in the world if necessary
 ;; w key -> world 
 (define (text-box-input-key w k)
-  (cond [(key=? k "\t") (cond [(<= (world-has-focus w) 4)
+  (cond [(key=? k "\t") (cond [(<= (world-has-focus w) 7)
                                (make-world (world-tbs w)
                                            (+ 1 (world-has-focus w)))]
-                              [(= 5 (world-has-focus w)) (make-world (world-tbs w) 0)])
+                              [(= 8 (world-has-focus w)) (make-world (world-tbs w) 0)])
                         ]
-        [(key=? k "right") (cond [(<= (world-has-focus w) 4)
+        [(key=? k "right") (cond [(<= (world-has-focus w) 7)
                                   (make-world (world-tbs w)
                                               (+ 1 (world-has-focus w)))]
-                                 [(= 5 (world-has-focus w)) (make-world (world-tbs w) 0)])
+                                 [(= 8 (world-has-focus w)) (make-world (world-tbs w) 0)])
                            ]
         [(key=? k "left") (cond [(= 5 (world-has-focus w)) (make-world (world-tbs w) 4)]
                                 [(= 4 (world-has-focus w)) (make-world (world-tbs w) 3)]
                                 [(= 3 (world-has-focus w)) (make-world (world-tbs w) 2)]
                                 [(= 2 (world-has-focus w)) (make-world (world-tbs w) 1)]
                                 [(= 1 (world-has-focus w)) (make-world (world-tbs w) 0)]
-                                [(= 0 (world-has-focus w)) (make-world (world-tbs w) 5)])
-                          ]
+                                [(= 0 (world-has-focus w)) (make-world (world-tbs w) 8)]
+                                [(= 6 (world-has-focus w)) (make-world (world-tbs w) 5)]
+                                [(= 7 (world-has-focus w)) (make-world (world-tbs w) 6)]
+                                [(= 8 (world-has-focus w)) (make-world (world-tbs w) 7)]
+                                )]
         [(key=? k "\r") 
          (cond [(empty? w) w]
-               [else
-                (both (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w)))  1)) w)])]
+               [else               
+                  (cond
+                    [(empty? (list->tones (list-tb w))) w]
+                    [(both (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)])])]
        
         
         [else (make-world
@@ -488,7 +532,11 @@
            (text-box-content (third (world-tbs tb)))
            (text-box-content (fourth (world-tbs tb)))
            (text-box-content (fifth (world-tbs tb)))
-           (text-box-content (sixth (world-tbs tb))))]))
+           (text-box-content (sixth (world-tbs tb)))
+           (text-box-content (seventh (world-tbs tb)))
+           (text-box-content (eighth (world-tbs tb)))
+           (text-box-content (ninth (world-tbs tb)))
+           )]))
 
 ;;list one to four
 
@@ -515,6 +563,7 @@
                [(string-ci=? (first lol) "e") (cons  52 (list->tones (rest lol)))]
                [(string-ci=? (first lol) "f") (cons  53 (list->tones (rest lol)))]
                [(string-ci=? (first lol) "g") (cons  55 (list->tones (rest lol)))]
+               [(string-ci=? (first lol) " ") empty]
                [else
              (cons (first lol) (list->tones (rest lol)))])]))
 
@@ -589,23 +638,20 @@
               (make-text-box "A" 50 50))
 (check-equal? (update-text-box (make-text-box " " 50 50) " ")
               (make-text-box " " 50 50))
-(define boxes
-  (make-world 
-   (list (make-text-box " " 45 150)
-         (make-text-box " " 115 150)
-         (make-text-box " " 185 150)
-         (make-text-box " " 255 150))
-   0))
+
 
 
 
 (big-bang (make-world 
-             (list (make-text-box "A" 185 75)
-                   (make-text-box " " 45 150)
-                   (make-text-box " " 115 150)
-                   (make-text-box " " 185 150)
-                   (make-text-box " " 255 150)
-                   (make-text-box " " 325 150))
+             (list (make-text-box " " BOX-0-X BOX-0-Y)
+                   (make-text-box " " BOX-1-X BOX-1-Y)
+                   (make-text-box " " BOX-2-X BOX-2-Y)
+                   (make-text-box " " BOX-3-X BOX-3-Y)
+                   (make-text-box " " BOX-4-X BOX-4-Y)
+                   (make-text-box " " BOX-5-X BOX-5-Y)
+                   (make-text-box " " BOX-6-X BOX-6-Y)
+                   (make-text-box " " BOX-7-X BOX-6-Y)
+                   (make-text-box " " BOX-8-X BOX-6-Y))
              0)
             
             [to-draw draw-world]
