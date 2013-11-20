@@ -76,49 +76,6 @@
 
 ; Chord Poop
 
-(define (minor-chordmaker x t measure)
-  (cond [(string-ci=? x "I")
-         (list 
-          (make-note (+ t 0) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 3) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure)) 88200))]
-        [(string-ci=? x "II")
-         (list 
-          (make-note (+ t 2) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 5) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 8) (+ (pstream-current-frame ps) (m measure)) 88200))]
-        [(string-ci=? x "III")
-         (list 
-          (make-note (+ t 3) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 10) (+ (pstream-current-frame ps) (m measure)) 88200))]
-        [(string-ci=? x "IV")
-         (list 
-          (make-note (+ t 5) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 8) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure)) 88200))]
-        [(string-ci=? x "V")
-         (list 
-          (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 10) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure)) 88200))]
-        [(string-ci=? x "VI")
-         (list 
-          (make-note (+ t 8) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 15) (+ (pstream-current-frame ps) (m measure)) 88200))]
-        [(string-ci=? x "VII")
-         (list 
-          (make-note (+ t 10) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 17) (+ (pstream-current-frame ps) (m measure)) 88200))]
-        [(string-ci=? x " ")
-         (list 
-          (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure)) 0)
-          (make-note (+ t 15) (+ (pstream-current-frame ps) (m measure)) 0)
-          (make-note (+ t 19) (+ (pstream-current-frame ps) (m measure)) 0))]
-        [else x]))
-
 ;; create chords from key
 ;; string -> list
 (define (chordmaker x t measure)
