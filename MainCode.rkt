@@ -11,7 +11,7 @@
 ;; a note is (make-note note-num frames frames)
 (define-struct note (pitch time duration) #:transparent)
 (define-struct t (number))
- 
+
 
 (define ps (make-pstream))
 (define (both a b) b)
@@ -20,29 +20,29 @@
 (require math/bigfloat)
 
 #;(define D 
-  (list
-   (make-note (+ t 0) (m 1) 88200)
-   (make-note (+ t 4) (m 1) 88200)
-   (make-note (+ t 7) (m 1) 88200)
-   
-   (make-note (+ t 2) (m 2) 88200)
-   (make-note (+ t 6) (m 2) 88200)
-   (make-note (+ t 9) (m 2) 88200)
-   
-   (make-note (+ t 5) (m 3) 88200)
-   (make-note (+ t 9) (m 3) 88200)
-   (make-note (+ t 12) (m 3) 88200)
-   
-   (make-note (+ t 7) (m 4) 88200)
-   (make-note (+ t 11) (m 4) 88200)
-   (make-note (+ t 14) (m 4) 88200)))
+    (list
+     (make-note (+ t 0) (m 1) 88200)
+     (make-note (+ t 4) (m 1) 88200)
+     (make-note (+ t 7) (m 1) 88200)
+     
+     (make-note (+ t 2) (m 2) 88200)
+     (make-note (+ t 6) (m 2) 88200)
+     (make-note (+ t 9) (m 2) 88200)
+     
+     (make-note (+ t 5) (m 3) 88200)
+     (make-note (+ t 9) (m 3) 88200)
+     (make-note (+ t 12) (m 3) 88200)
+     
+     (make-note (+ t 7) (m 4) 88200)
+     (make-note (+ t 11) (m 4) 88200)
+     (make-note (+ t 14) (m 4) 88200)))
 
 ;; string -> list-of-three-notes
 (define-struct prog (first third fifth))
 
 #;(define one (make-prog (make-note (+ t 0) 88200 88200)
-                       (make-note (+ t 4) 88200 88200)
-                       (make-note (+ t 7) 88200 88200)))
+                         (make-note (+ t 4) 88200 88200)
+                         (make-note (+ t 7) 88200 88200)))
 
 
 ;; play the notes in a list
@@ -75,49 +75,6 @@
 
 
 ; Chord Poop
-
-(define (minor-chordmaker x t measure)
-  (cond [(string-ci=? x "I")
-         (list 
-          (make-note (+ t 0) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 3) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure)) 88200))]
-        [(string-ci=? x "II")
-         (list 
-          (make-note (+ t 2) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 5) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 8) (+ (pstream-current-frame ps) (m measure)) 88200))]
-        [(string-ci=? x "III")
-         (list 
-          (make-note (+ t 3) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 10) (+ (pstream-current-frame ps) (m measure)) 88200))]
-        [(string-ci=? x "IV")
-         (list 
-          (make-note (+ t 5) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 8) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure)) 88200))]
-        [(string-ci=? x "V")
-         (list 
-          (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 10) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure)) 88200))]
-        [(string-ci=? x "VI")
-         (list 
-          (make-note (+ t 8) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 15) (+ (pstream-current-frame ps) (m measure)) 88200))]
-        [(string-ci=? x "VII")
-         (list 
-          (make-note (+ t 10) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 17) (+ (pstream-current-frame ps) (m measure)) 88200))]
-        [(string-ci=? x " ")
-         (list 
-          (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure)) 0)
-          (make-note (+ t 15) (+ (pstream-current-frame ps) (m measure)) 0)
-          (make-note (+ t 19) (+ (pstream-current-frame ps) (m measure)) 0))]
-        [else x]))
 
 ;; create chords from key
 ;; string -> list
@@ -174,14 +131,14 @@
 
 
 #;(check-equal? (progmaker empty 1)
-              empty)
+                empty)
 #;(check-equal? (progmaker (list "i" "ii") 1)
-              (list
+                (list
                (list 
                 (make-note (+ t 0) (m 1)) 88200)
                 (make-note (+ t 4) (m 1) 88200)
                 (make-note (+ t 7) (m 1) 88200))
-               (list
+                (list
                 (make-note (+ t 2) (m 2) 88200)
                 (make-note (+ t 6) (m 2) 88200)
                 (make-note (+ t 9) (m 2) 88200)))
@@ -191,7 +148,7 @@
 ;; - (cons (cons list-of-lists empty) empty)
 
 #;(define let-it-be
-  (list 
+    (list 
    (list
     (make-note (+ t 0) (m 1) 88200)
     (make-note (+ t 4) (m 1) 88200)
@@ -325,9 +282,6 @@
 
 
 
-
-
-
 ; GUI Poop
 
 
@@ -347,13 +301,14 @@
 
 ;; text box positions
 
-(define SBX 300)
-(define SBY 300)
+(define SBX 1000)
+(define SBY 700)
 (define RIGHT-PAD (/ SBX 12))
 (define BOX-SPACE (* (- SBX (* 2 RIGHT-PAD)) 0.28))
 
 (define ROW1-HEIGHT 150)
 (define ROW2-HEIGHT 225)
+(define ROW3-HEIGHT 300)
 (define COLLUM1 (+ RIGHT-PAD (/ SBX 15)))
 (define COLLUM2 (+ COLLUM1 BOX-SPACE))
 (define COLLUM3 (+ COLLUM2 BOX-SPACE))
@@ -369,6 +324,7 @@
 (define BOX-3-Y ROW1-HEIGHT)
 (define BOX-4-X COLLUM4)
 (define BOX-4-Y ROW1-HEIGHT)
+
 (define BOX-5-X COLLUM1)
 (define BOX-5-Y ROW2-HEIGHT)
 (define BOX-6-X COLLUM2)
@@ -377,6 +333,15 @@
 (define BOX-7-Y ROW2-HEIGHT)
 (define BOX-8-X COLLUM4)
 (define BOX-8-Y ROW2-HEIGHT)
+
+(define BOX-9-X COLLUM1)
+(define BOX-9-Y ROW3-HEIGHT)
+(define BOX-10-X COLLUM2)
+(define BOX-10-Y ROW3-HEIGHT)
+(define BOX-11-X COLLUM3)
+(define BOX-11-Y ROW3-HEIGHT)
+(define BOX-12-X COLLUM4)
+(define BOX-12-Y ROW3-HEIGHT)
 
 (define SCREEN-BACKGROUND 
   (rectangle SBX SBY "solid" "light gray"))
@@ -468,6 +433,38 @@
            (world-tbs world)
            SCREEN-BACKGROUND)
           )]
+        [(= (world-has-focus world) 9)
+         (place-image
+          (rectangle 50 2 "solid" "red")
+          BOX-9-X (+ 25 BOX-9-Y)
+          (draw-all-text-boxes
+           (world-tbs world)
+           SCREEN-BACKGROUND)
+          )]
+        [(= (world-has-focus world) 10)
+         (place-image
+          (rectangle 50 2 "solid" "red")
+          BOX-10-X (+ 25 BOX-10-Y)
+          (draw-all-text-boxes
+           (world-tbs world)
+           SCREEN-BACKGROUND)
+          )]
+        [(= (world-has-focus world) 11)
+         (place-image
+          (rectangle 50 2 "solid" "red")
+          BOX-11-X (+ 25 BOX-11-Y)
+          (draw-all-text-boxes
+           (world-tbs world)
+           SCREEN-BACKGROUND)
+          )]
+        [(= (world-has-focus world) 12)
+         (place-image
+          (rectangle 50 2 "solid" "red")
+          BOX-12-X (+ 25 BOX-12-Y)
+          (draw-all-text-boxes
+           (world-tbs world)
+           SCREEN-BACKGROUND)
+          )]
         [else (draw-all-text-boxes
                (world-tbs world)
                SCREEN-BACKGROUND)]))
@@ -532,33 +529,28 @@
 ;; take the key, put the character in the world if necessary
 ;; w key -> world 
 (define (text-box-input-key w k)
-  (cond [(key=? k "\t") (cond [(<= (world-has-focus w) 7)
+  (cond [(key=? k "\t") (cond [(<= (world-has-focus w) (- (length (list-tb w)) 2))
                                (make-world (world-tbs w)
                                            (+ 1 (world-has-focus w)))]
-                              [(= 8 (world-has-focus w)) (make-world (world-tbs w) 0)])
+                              [(= (- (length (list-tb w)) 1) (world-has-focus w)) (make-world (world-tbs w) 0)])
                         ]
-        [(key=? k "right") (cond [(<= (world-has-focus w) 7)
+        [(key=? k "right") (cond [(<= (world-has-focus w) (- (length (list-tb w)) 2))
                                   (make-world (world-tbs w)
                                               (+ 1 (world-has-focus w)))]
-                                 [(= 8 (world-has-focus w)) (make-world (world-tbs w) 0)])
+                                 [(= (- (length (list-tb w)) 1) (world-has-focus w)) (make-world (world-tbs w) 0)])
                            ]
-        [(key=? k "left") (cond [(= 5 (world-has-focus w)) (make-world (world-tbs w) 4)]
-                                [(= 4 (world-has-focus w)) (make-world (world-tbs w) 3)]
-                                [(= 3 (world-has-focus w)) (make-world (world-tbs w) 2)]
-                                [(= 2 (world-has-focus w)) (make-world (world-tbs w) 1)]
-                                [(= 1 (world-has-focus w)) (make-world (world-tbs w) 0)]
-                                [(= 0 (world-has-focus w)) (make-world (world-tbs w) 8)]
-                                [(= 6 (world-has-focus w)) (make-world (world-tbs w) 5)]
-                                [(= 7 (world-has-focus w)) (make-world (world-tbs w) 6)]
-                                [(= 8 (world-has-focus w)) (make-world (world-tbs w) 7)]
+        [(key=? k "left") (cond [(>= (world-has-focus w) 1)
+                                 (make-world (world-tbs w)
+                                             (- (world-has-focus w) 1))]
+                                [(= 0 (world-has-focus w)) (make-world (world-tbs w) (- (length (list-tb w)) 1))]
                                 )]
         [(key=? k "\r") 
          (cond [(empty? w) w]
                [else               
-                  (cond
-                    [(empty? (list->tones (list-tb w))) w]
-                    [(both (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)])])]
-       
+                (cond
+                  [(empty? (list->tones (list-tb w))) w]
+                  [(both (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)])])]
+        
         
         [else (make-world
                (update-appropriate-text-box (world-tbs w) k (world-has-focus w))
@@ -579,6 +571,10 @@
            (text-box-content (seventh (world-tbs tb)))
            (text-box-content (eighth (world-tbs tb)))
            (text-box-content (ninth (world-tbs tb)))
+           (text-box-content (tenth (world-tbs tb)))
+           (text-box-content (list-ref (world-tbs tb) 10))
+           (text-box-content (list-ref (world-tbs tb) 11))
+           (text-box-content (list-ref (world-tbs tb) 12))
            )]))
 
 ;;list one to four
@@ -597,18 +593,18 @@
 (define (list->tones lol)
   (cond [(empty? lol) empty]
         [
-          (string? (first lol)) 
-             (cond
-               [(string-ci=? (first lol) "a") (cons  57 (list->tones (rest lol)))]
-               [(string-ci=? (first lol) "b") (cons  59 (list->tones (rest lol)))]
-               [(string-ci=? (first lol) "c") (cons  48 (list->tones (rest lol)))]
-               [(string-ci=? (first lol) "d") (cons  50 (list->tones (rest lol)))]
-               [(string-ci=? (first lol) "e") (cons  52 (list->tones (rest lol)))]
-               [(string-ci=? (first lol) "f") (cons  53 (list->tones (rest lol)))]
-               [(string-ci=? (first lol) "g") (cons  55 (list->tones (rest lol)))]
-               [(string-ci=? (first lol) " ") empty]
-               [else
-             (cons (first lol) (list->tones (rest lol)))])]))
+         (string? (first lol)) 
+         (cond
+           [(string-ci=? (first lol) "a") (cons  57 (list->tones (rest lol)))]
+           [(string-ci=? (first lol) "b") (cons  59 (list->tones (rest lol)))]
+           [(string-ci=? (first lol) "c") (cons  48 (list->tones (rest lol)))]
+           [(string-ci=? (first lol) "d") (cons  50 (list->tones (rest lol)))]
+           [(string-ci=? (first lol) "e") (cons  52 (list->tones (rest lol)))]
+           [(string-ci=? (first lol) "f") (cons  53 (list->tones (rest lol)))]
+           [(string-ci=? (first lol) "g") (cons  55 (list->tones (rest lol)))]
+           [(string-ci=? (first lol) " ") empty]
+           [else
+            (cons (first lol) (list->tones (rest lol)))])]))
 
 ;; list-of-text-boxes key number -> list-of-text-boxes
 ;; update the text box corresponding to the idx
@@ -686,24 +682,29 @@
 
 
 (big-bang (make-world 
-             (list (make-text-box " " BOX-0-X BOX-0-Y)
-                   (make-text-box " " BOX-1-X BOX-1-Y)
-                   (make-text-box " " BOX-2-X BOX-2-Y)
-                   (make-text-box " " BOX-3-X BOX-3-Y)
-                   (make-text-box " " BOX-4-X BOX-4-Y)
-                   (make-text-box " " BOX-5-X BOX-5-Y)
-                   (make-text-box " " BOX-6-X BOX-6-Y)
-                   (make-text-box " " BOX-7-X BOX-6-Y)
-                   (make-text-box " " BOX-8-X BOX-6-Y))
-             0)
-            
-            [to-draw draw-world]
-            [on-key text-box-input-key]
-            [state true])
+           (list (make-text-box " " BOX-0-X BOX-0-Y)
+                 (make-text-box " " BOX-1-X BOX-1-Y)
+                 (make-text-box " " BOX-2-X BOX-2-Y)
+                 (make-text-box " " BOX-3-X BOX-3-Y)
+                 (make-text-box " " BOX-4-X BOX-4-Y)
+                 (make-text-box " " BOX-5-X BOX-5-Y)
+                 (make-text-box " " BOX-6-X BOX-6-Y)
+                 (make-text-box " " BOX-7-X BOX-7-Y)
+                 (make-text-box " " BOX-8-X BOX-8-Y)
+                 (make-text-box " " BOX-9-X BOX-9-Y)
+                 (make-text-box " " BOX-10-X BOX-10-Y)
+                 (make-text-box " " BOX-11-X BOX-11-Y)
+                 (make-text-box " " BOX-12-X BOX-12-Y)
+                 )
+           0)
+          
+          [to-draw draw-world]
+          [on-key text-box-input-key]
+          [state true])
 
 ;; TO BE IMPLEMENTED:
 
- ;Do we need these functions?
+;Do we need these functions?
 ;;takes list of make-tones-> played sound
 #|
 (define (play-tone p)
