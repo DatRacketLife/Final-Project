@@ -15,6 +15,7 @@
 
 (define ps (make-pstream))
 (define (both a b) b)
+(define (super-both a b c) c)
 (pstream-current-frame ps)
 
 (require math/bigfloat)
@@ -315,7 +316,7 @@
   (pstream-queue
    ps
    (rs-scale .25 (beat-sound p))
-   (round (beat-length p))))
+   (round (+ (pstream-current-frame ps) (beat-length p)))))
 
 (define (play-beats lop)
   (cond [(empty? lop) ps]
@@ -605,7 +606,7 @@
                [else               
                 (cond
                   [(empty? (list->tones (list-tb w))) w]
-                  [(both (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)])])]
+                  [(super-both (play-beats rock-loop) (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)])])]
         
         
         [else (make-world
