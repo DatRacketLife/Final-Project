@@ -178,14 +178,14 @@
                 empty)
 #;(check-equal? (progmaker (list "i" "ii") 1)
                 (list
-               (list 
-                (make-note (+ t 0) (m 1)) 88200)
-                (make-note (+ t 4) (m 1) 88200)
-                (make-note (+ t 7) (m 1) 88200))
+                 (list 
+                  (make-note (+ t 0) (m 1)) 88200)
+                 (make-note (+ t 4) (m 1) 88200)
+                 (make-note (+ t 7) (m 1) 88200))
                 (list
-                (make-note (+ t 2) (m 2) 88200)
-                (make-note (+ t 6) (m 2) 88200)
-                (make-note (+ t 9) (m 2) 88200)))
+                 (make-note (+ t 2) (m 2) 88200)
+                 (make-note (+ t 6) (m 2) 88200)
+                 (make-note (+ t 9) (m 2) 88200)))
 
 ;; a list-of-lists is either
 ;; - empty, or
@@ -193,49 +193,49 @@
 
 #;(define let-it-be
     (list 
-   (list
-    (make-note (+ t 0) (m 1) 88200)
-    (make-note (+ t 4) (m 1) 88200)
-    (make-note (+ t 7) (m 1) 88200)
-    (make-note (+ t -8) (+ (m 1) (b 3)) 44100)
-    (make-note (+ t -7) (+ (m 1) (b 3.5)) 44100))
-   (list 
-    (make-note (+ t -5) (m 2) 88200)
-    (make-note (+ t -1) (m 2) 88200)
-    (make-note (+ t 2) (m 2) 88200))
-   (list 
-    (make-note (+ t -3) (m 3) 88200)
-    (make-note (+ t 0) (m 3) 88200)
-    (make-note (+ t 4) (m 3) 88200)
-    (make-note (+ t -3) (+ (b 2) (m 3)) 88200)
-    (make-note (+ t 0) (+ (b 2) (m 3)) 88200)
-    (make-note (+ t 4) (+ (b 2) (m 3)) 88200)
-    (make-note (+ t -5) (+ (b 3) (m 3)) 88200)
-    (make-note (+ t -1) (+ (b 3) (m 3)) 88200)
-    (make-note (+ t 2) (+ (b 3) (m 3)) 88200))
-   (list 
-    (make-note (+ t -7) (m 4) 88200)
-    (make-note (+ t -3) (m 4) 88200)
-    (make-note (+ t 0) (m 4) 88200)
-    (make-note (+ t -12) (m 5) 88200)
-    (make-note (+ t -8) (m 5) 88200)
-    (make-note (+ t -5) (m 5) 88200)
-    (make-note (+ t 0) (m 5) 88200)
-    (make-note (+ t -8) (+ (m 5) (b 3)) (b 1))
-    (make-note (+ t -7) (+ (m 5) (b 3.5)) (b .5))
-    (make-note (+ t -5) (m 6) 88200)
-    (make-note (+ t -1) (m 6) 88200)
-    (make-note (+ t 2) (m 6) 88200)
-    (make-note (+ t 5) (m 7) 88200)
-    (make-note (+ t 9) (m 7) 88200)
-    (make-note (+ t 12) (m 7) 88200)
-    (make-note (+ t 4) (+ (b 2) (m 7)) (b .5))
-    (make-note (+ t 7) (+ (b 2) (m 7)) (b .5))
-    (make-note (+ t 2) (+ (b 3) (m 7)) (b 1))
-    (make-note (+ t 5) (+ (b 3) (m 7)) (b 1))
-    (make-note (+ t 0) (m 8) 88200)
-    (make-note (+ t 4) (m 8) 88200)
-    (make-note (+ t 7) (m 8) 88200))))
+     (list
+      (make-note (+ t 0) (m 1) 88200)
+      (make-note (+ t 4) (m 1) 88200)
+      (make-note (+ t 7) (m 1) 88200)
+      (make-note (+ t -8) (+ (m 1) (b 3)) 44100)
+      (make-note (+ t -7) (+ (m 1) (b 3.5)) 44100))
+     (list 
+      (make-note (+ t -5) (m 2) 88200)
+      (make-note (+ t -1) (m 2) 88200)
+      (make-note (+ t 2) (m 2) 88200))
+     (list 
+      (make-note (+ t -3) (m 3) 88200)
+      (make-note (+ t 0) (m 3) 88200)
+      (make-note (+ t 4) (m 3) 88200)
+      (make-note (+ t -3) (+ (b 2) (m 3)) 88200)
+      (make-note (+ t 0) (+ (b 2) (m 3)) 88200)
+      (make-note (+ t 4) (+ (b 2) (m 3)) 88200)
+      (make-note (+ t -5) (+ (b 3) (m 3)) 88200)
+      (make-note (+ t -1) (+ (b 3) (m 3)) 88200)
+      (make-note (+ t 2) (+ (b 3) (m 3)) 88200))
+     (list 
+      (make-note (+ t -7) (m 4) 88200)
+      (make-note (+ t -3) (m 4) 88200)
+      (make-note (+ t 0) (m 4) 88200)
+      (make-note (+ t -12) (m 5) 88200)
+      (make-note (+ t -8) (m 5) 88200)
+      (make-note (+ t -5) (m 5) 88200)
+      (make-note (+ t 0) (m 5) 88200)
+      (make-note (+ t -8) (+ (m 5) (b 3)) (b 1))
+      (make-note (+ t -7) (+ (m 5) (b 3.5)) (b .5))
+      (make-note (+ t -5) (m 6) 88200)
+      (make-note (+ t -1) (m 6) 88200)
+      (make-note (+ t 2) (m 6) 88200)
+      (make-note (+ t 5) (m 7) 88200)
+      (make-note (+ t 9) (m 7) 88200)
+      (make-note (+ t 12) (m 7) 88200)
+      (make-note (+ t 4) (+ (b 2) (m 7)) (b .5))
+      (make-note (+ t 7) (+ (b 2) (m 7)) (b .5))
+      (make-note (+ t 2) (+ (b 3) (m 7)) (b 1))
+      (make-note (+ t 5) (+ (b 3) (m 7)) (b 1))
+      (make-note (+ t 0) (m 8) 88200)
+      (make-note (+ t 4) (m 8) 88200)
+      (make-note (+ t 7) (m 8) 88200))))
 
 ; Beat Poop
 
@@ -336,11 +336,17 @@
 ;; a text-box-content is a string or false
 
 ;; a text-box is (make-text-box text-box-content pixels pixels)
-(define-struct text-box (content x y) #:transparent)
+(define-struct text-box (content x y))
 
 ;; a world is (make-world (listof text-box) number)
 ;; side condition: number can't be >= number of boxes
 (define-struct world (tbs has-focus butt) #:transparent)
+
+
+
+;A butts is a structure boolean x6
+(define-struct butts (major-butt minor-butt octave-butt rock-butt punk-butt funk-butt) #:transparent)
+(define starting-butts (make-butts false false false false false false ))
 
 
 ;; text box positions
@@ -350,16 +356,16 @@
 (define RIGHT-PAD (/ SBX 12))
 (define BOX-SPACE (* (- SBX (* 2 RIGHT-PAD)) 0.28))
 
-(define ROW1-HEIGHT 150)
-(define ROW2-HEIGHT 225)
-(define ROW3-HEIGHT 300)
+(define ROW1-HEIGHT 275)
+(define ROW2-HEIGHT 375)
+(define ROW3-HEIGHT 475)
 (define COLLUM1 (+ RIGHT-PAD (/ SBX 15)))
 (define COLLUM2 (+ COLLUM1 BOX-SPACE))
 (define COLLUM3 (+ COLLUM2 BOX-SPACE))
 (define COLLUM4 (+ COLLUM3 BOX-SPACE))
 
-(define BOX-0-X (/ SBX 2))
-(define BOX-0-Y 75)
+(define BOX-0-X COLLUM2)
+(define BOX-0-Y 150)
 (define BOX-1-X COLLUM1)
 (define BOX-1-Y ROW1-HEIGHT)
 (define BOX-2-X COLLUM2)
@@ -387,11 +393,54 @@
 (define BOX-12-X COLLUM4)
 (define BOX-12-Y ROW3-HEIGHT)
 
+(define x1 200)
+(define x2 300)
+(define x3 450)
+(define x4 550)
+(define x5 700)
+(define x6 800)
+
+(define y1 580)
+(define y2 620)
+(define y3 630)
+(define y4 6700)
+
+(define RECTANGLEa
+  (rectangle 100 40 "outline" "black"))
+
+(define RECT1-X 250)
+(define RECT2-X 500)
+(define RECT3-X 750)
+(define ROW1 600)
+(define ROW2 650)
+
+
 (define SCREEN-BACKGROUND 
-  (rectangle SBX SBY "solid" "light gray"))
+  (place-image 
+   RECTANGLEa
+   RECT1-X ROW1
+   (place-image
+    RECTANGLEa
+    RECT2-X ROW1
+    (place-image
+     RECTANGLEa
+     RECT3-X ROW1
+     (place-image
+      RECTANGLEa
+      RECT1-X ROW2
+      (place-image
+       RECTANGLEa
+       RECT2-X ROW2
+       (place-image
+        RECTANGLEa
+        RECT3-X ROW2
+        .)))))))
+
 (define TEXT-SIZE 40)
 (define TEXT-BOX-BACKGROUND 
-  (rectangle 50 50 "solid" "white"))
+  .)
+(define FOCUS-BAR
+  .)
 
 ;; draw the text box
 ;; content boolean -> image
@@ -415,7 +464,7 @@
           )]
         [(= (world-has-focus world) 1)
          (place-image
-          (rectangle 50 2 "solid" "red")
+          FOCUS-BAR
           BOX-1-X (+ 25 BOX-1-Y)
           (draw-all-text-boxes
            (world-tbs world)
@@ -423,7 +472,7 @@
           )]
         [(= (world-has-focus world) 2)
          (place-image
-          (rectangle 50 2 "solid" "red")
+          FOCUS-BAR
           BOX-2-X (+ 25 BOX-2-Y)
           (draw-all-text-boxes
            (world-tbs world)
@@ -431,7 +480,7 @@
           )]
         [(= (world-has-focus world) 3)
          (place-image         
-          (rectangle 50 2 "solid" "red")           
+          FOCUS-BAR           
           BOX-3-X (+ 25 BOX-3-Y)
           (draw-all-text-boxes
            (world-tbs world)
@@ -439,7 +488,7 @@
           )]
         [(= (world-has-focus world) 4)
          (place-image         
-          (rectangle 50 2 "solid" "red")           
+          FOCUS-BAR           
           BOX-4-X (+ 25 BOX-4-Y)
           (draw-all-text-boxes
            (world-tbs world)
@@ -447,7 +496,7 @@
           )]
         [(= (world-has-focus world) 5)
          (place-image         
-          (rectangle 50 2 "solid" "red")           
+          FOCUS-BAR           
           BOX-5-X (+ 25 BOX-5-Y)
           (draw-all-text-boxes
            (world-tbs world)
@@ -455,7 +504,7 @@
           )]
         [(= (world-has-focus world) 6)
          (place-image
-          (rectangle 50 2 "solid" "red")
+          FOCUS-BAR
           BOX-6-X (+ 25 BOX-6-Y)
           (draw-all-text-boxes
            (world-tbs world)
@@ -463,7 +512,7 @@
           )]
         [(= (world-has-focus world) 7)
          (place-image
-          (rectangle 50 2 "solid" "red")
+          FOCUS-BAR
           BOX-7-X (+ 25 BOX-7-Y)
           (draw-all-text-boxes
            (world-tbs world)
@@ -471,7 +520,7 @@
           )]
         [(= (world-has-focus world) 8)
          (place-image
-          (rectangle 50 2 "solid" "red")
+          FOCUS-BAR
           BOX-8-X (+ 25 BOX-8-Y)
           (draw-all-text-boxes
            (world-tbs world)
@@ -479,7 +528,7 @@
           )]
         [(= (world-has-focus world) 9)
          (place-image
-          (rectangle 50 2 "solid" "red")
+          FOCUS-BAR
           BOX-9-X (+ 25 BOX-9-Y)
           (draw-all-text-boxes
            (world-tbs world)
@@ -487,7 +536,7 @@
           )]
         [(= (world-has-focus world) 10)
          (place-image
-          (rectangle 50 2 "solid" "red")
+          FOCUS-BAR
           BOX-10-X (+ 25 BOX-10-Y)
           (draw-all-text-boxes
            (world-tbs world)
@@ -495,7 +544,7 @@
           )]
         [(= (world-has-focus world) 11)
          (place-image
-          (rectangle 50 2 "solid" "red")
+          FOCUS-BAR
           BOX-11-X (+ 25 BOX-11-Y)
           (draw-all-text-boxes
            (world-tbs world)
@@ -503,7 +552,7 @@
           )]
         [(= (world-has-focus world) 12)
          (place-image
-          (rectangle 50 2 "solid" "red")
+          FOCUS-BAR
           BOX-12-X (+ 25 BOX-12-Y)
           (draw-all-text-boxes
            (world-tbs world)
@@ -530,30 +579,30 @@
    back))
 
 
-(check-equal?
- (draw-text-box (make-text-box " " 150 80)
-                SCREEN-BACKGROUND)
- (place-image
-  (rectangle 50 50 "solid" "white")
-  150 80
-  SCREEN-BACKGROUND))
+#;(check-equal?
+   (draw-text-box (make-text-box " " 150 80)
+                  SCREEN-BACKGROUND)
+   (place-image
+    (rectangle 50 50 "solid" "white")
+    150 80
+    SCREEN-BACKGROUND))
 
 
-(check-equal? 
- (draw-all-text-boxes empty SCREEN-BACKGROUND)
- SCREEN-BACKGROUND)
+#;(check-equal? 
+   (draw-all-text-boxes empty SCREEN-BACKGROUND)
+   SCREEN-BACKGROUND)
 
-(check-equal?
- (draw-all-text-boxes (list (make-text-box " " 50 50)
-                            (make-text-box " " 150 80))
-                      SCREEN-BACKGROUND)
- (place-image
-  (rectangle 50 50 "solid" "white")
-  150 80
-  (place-image
-   (rectangle 50 50 "solid" "white")
-   50 50
-   SCREEN-BACKGROUND)))
+#;(check-equal?
+   (draw-all-text-boxes (list (make-text-box " " 50 50)
+                              (make-text-box " " 150 80))
+                        SCREEN-BACKGROUND)
+   (place-image
+    (rectangle 50 50 "solid" "white")
+    150 80
+    (place-image
+     (rectangle 50 50 "solid" "white")
+     50 50
+     SCREEN-BACKGROUND)))
 
 (check-equal? 
  (draw-all-text-boxes (list (make-text-box "E" 50 80)
@@ -606,7 +655,7 @@
                [else               
                 (cond
                   [(empty? (list->tones (list-tb w))) w]
-                  [(super-both (play-beats rock-loop) (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)])])]
+                  [(both (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)])])]
         
         
         [else (make-world
@@ -736,7 +785,39 @@
 (check-equal? (update-text-box (make-text-box " " 50 50) " ")
               (make-text-box " " 50 50))
 
-
+(define (butt-handler w x y evt)
+  (cond 
+    [(and (>= y y1)
+          (and (<= y y2)
+               (and (>= x x1) 
+                    (and (<= x x2) (string=? evt "button-down")))))
+     (make-world (world-tbs w) (world-has-focus w) (make-butts true false false (butts-rock-butt (world-butt w)) (butts-punk-butt (world-butt w))  (butts-funk-butt (world-butt w))))]
+    [(and (>= y y1)
+          (and (<= y y2)
+               (and (>= x x3) 
+                    (and (<= x x4) (string=? evt "button-down")))))
+     (make-world (world-tbs w) (world-has-focus w)(make-butts false true false (butts-rock-butt (world-butt w)) (butts-punk-butt (world-butt w))  (butts-funk-butt (world-butt w))))] 
+    [(and (>= y y1)
+          (and (<= y y2)
+               (and (>= x x5) 
+                    (and (<= x x6) (string=? evt "button-down")))))
+     (make-world (world-tbs w) (world-has-focus w) (make-butts false false true (butts-rock-butt (world-butt w)) (butts-punk-butt (world-butt w))  (butts-funk-butt (world-butt w))))] 
+    [(and (>= y y3)
+          (and (<= y y4)
+               (and (>= x x1) 
+                    (and (<= x x2) (string=? evt "button-down")))))
+     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-major-butt (world-butt w)) (butts-minor-butt (world-butt w))(butts-octave-butt (world-butt w)) true false false))] 
+    [(and (>= y y3)
+          (and (<= y y4)
+               (and (>= x x3) 
+                    (and (<= x x4) (string=? evt "button-down")))))
+     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-major-butt (world-butt w)) (butts-minor-butt (world-butt w))(butts-octave-butt (world-butt w)) false true false))] 
+    [(and (>= y y3)
+          (and (<= y y4)
+               (and (>= x x5) 
+                    (and (<= x x6) (string=? evt "button-down")))))
+     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-major-butt (world-butt w)) (butts-minor-butt (world-butt w))(butts-octave-butt (world-butt w)) false false true))]
+    [else w]))
 
 
 (big-bang (make-world 
@@ -755,30 +836,14 @@
                  (make-text-box " " BOX-12-X BOX-12-Y)
                  )
            0
-           "butt")
+           starting-butts)
           
           [to-draw draw-world]
           [on-key text-box-input-key]
+          [on-mouse butt-handler]
           [state true])
 
-;; TO BE IMPLEMENTED:
-
-;Do we need these functions?
-;;takes list of make-tones-> played sound
-#|
-(define (play-tone p)
-  (pstream-queue
-   ps
-   p
-   (rs-frames p)
-   ))
-
-(define (play-tones lot)
-  (cond [(empty? lot) ps]
-        [else
-         (both (play-tone (first lot)) 
-               (play-tones (rest lot)))]))
-|#
+;; TO BE IMPLEMENTED
 
 
 ;(play-beats rock-loop)
