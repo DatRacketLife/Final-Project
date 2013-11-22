@@ -400,54 +400,70 @@
 (define x5 700)
 (define x6 800)
 
-(define y1 580)
+(define y1 558)
 (define y2 620)
 (define y3 630)
 (define y4 6700)
 
 (define RECTANGLEa
   (rectangle 100 40 "outline" "black"))
+(define ROCK
+  .)
+(define JAZZ
+  .)
+(define FUNK
+  .)
 
-(define RECT1-X 250)
-(define RECT2-X 500)
-(define RECT3-X 750)
-(define ROW1 600)
-(define ROW2 650)
+(define MAJOR
+  .)
+(define MINOR
+ .)
+(define OCTAVE
+  .)
+
+(define RECT1-X 196)
+(define RECT2-X 484)
+(define RECT3-X 793)
+(define RECT4-X 251)
+(define RECT5-X 504)
+(define RECT6-X 763)
+
+(define ROW1 558)
+(define ROW2 635)
 
 
 (define SCREEN-BACKGROUND 
   (place-image 
-   RECTANGLEa
+   ROCK
    RECT1-X ROW1
    (place-image
-    RECTANGLEa
+    JAZZ
     RECT2-X ROW1
     (place-image
-     RECTANGLEa
-     RECT3-X ROW1
+     FUNK
+     RECT3-X (+ 3 ROW1)
      (place-image
-      RECTANGLEa
-      RECT1-X ROW2
+      MAJOR
+      RECT4-X ROW2
       (place-image
-       RECTANGLEa
-       RECT2-X ROW2
+       MINOR
+       RECT5-X (+ 2 ROW2)
        (place-image
-        RECTANGLEa
-        RECT3-X ROW2
+        OCTAVE
+        RECT6-X ROW2
         .)))))))
 
 (define TEXT-SIZE 40)
 (define TEXT-BOX-BACKGROUND 
-  .)
-(define FOCUS-BAR
-  .)
+ . )
+(define FOCUS-BAR .)
 
 ;; draw the text box
 ;; content boolean -> image
 (define (draw-text-box-content w)
   (cond [w
          (overlay
-          (text w TEXT-SIZE "black")
+        (text/font w 40 "dim gray" "Trebuchet MS" 'swiss 'normal 'bold #f)
           TEXT-BOX-BACKGROUND)]
         [else TEXT-BOX-BACKGROUND]))
 
@@ -456,7 +472,7 @@
 (define (draw-world world)
   (cond [(= (world-has-focus world) 0)
          (place-image
-          (rectangle 50 2 "solid" "blue")
+          FOCUS-BAR
           BOX-0-X (+ 25 BOX-0-Y)
           (draw-all-text-boxes
            (world-tbs world)
@@ -766,7 +782,7 @@
 
 ;; calling update-appropriate-text-box with empty list is an error!
 
-(check-equal? (update-appropriate-text-box (list (make-text-box "A" 10 12)
+#| (check-equal? (update-appropriate-text-box (list (make-text-box "A" 10 12)
                                                  (make-text-box "B" 20 132)
                                                  (make-text-box "C" 30 112342))
                                            "A"
@@ -784,6 +800,7 @@
               (make-text-box "A" 50 50))
 (check-equal? (update-text-box (make-text-box " " 50 50) " ")
               (make-text-box " " 50 50))
+|#
 
 (define (butt-handler w x y evt)
   (cond 
