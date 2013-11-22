@@ -740,7 +740,7 @@
 
 
 (big-bang (make-world 
-           (list (make-text-box " " BOX-0-X BOX-0-Y)
+           (list (make-text-box "A" BOX-0-X BOX-0-Y)
                  (make-text-box " " BOX-1-X BOX-1-Y)
                  (make-text-box " " BOX-2-X BOX-2-Y)
                  (make-text-box " " BOX-3-X BOX-3-Y)
