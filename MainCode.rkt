@@ -434,7 +434,7 @@
 (define MAJOR
   (bitmap/file "./images/major.png"))
 (define MINOR
- (bitmap/file "./images/minor.png"))
+  (bitmap/file "./images/minor.png"))
 (define OCTAVE
   (bitmap/file "./images/octave.png"))
 
@@ -462,7 +462,7 @@
 
 (define TEXT-SIZE 40)
 (define TEXT-BOX-BACKGROUND 
- (bitmap/file "./images/textbox2.png"))
+  (bitmap/file "./images/textbox2.png"))
 (define FOCUS-BAR (bitmap/file "./images/focus.png"))
 
 ;; draw the text box
@@ -470,7 +470,7 @@
 (define (draw-text-box-content w)
   (cond [w
          (overlay
-        (text/font w 40 "dim gray" "Trebuchet MS" 'swiss 'normal 'bold #f)
+          (text/font w 40 "dim gray" "Trebuchet MS" 'swiss 'normal 'bold #f)
           TEXT-BOX-BACKGROUND)]
         [else TEXT-BOX-BACKGROUND]))
 
@@ -628,18 +628,18 @@
      SCREEN-BACKGROUND)))
 
 #;(check-equal? 
- (draw-all-text-boxes (list (make-text-box "E" 50 80)
-                            (make-text-box "Q" 150 80))
-                      SCREEN-BACKGROUND)
- (place-image
-  (draw-text-box-content "Q")
-  150 80
-  (place-image
-   (overlay
-    (text "E" 40 "black")
-    TEXT-BOX-BACKGROUND)
-   50 80
-   SCREEN-BACKGROUND)))
+   (draw-all-text-boxes (list (make-text-box "E" 50 80)
+                              (make-text-box "Q" 150 80))
+                        SCREEN-BACKGROUND)
+   (place-image
+    (draw-text-box-content "Q")
+    150 80
+    (place-image
+     (overlay
+      (text "E" 40 "black")
+      TEXT-BOX-BACKGROUND)
+     50 80
+     SCREEN-BACKGROUND)))
 
 
 ;; take the key, put the character in the world if necessary
@@ -672,6 +672,23 @@
         [(key=? k "k") (make-world (world-tbs w)
                                    0
                                    (world-butt w))]
+        [(key=? k "\b") (make-world 
+                          (list (make-text-box " " BOX-0-X BOX-0-Y)
+                                (make-text-box " " BOX-1-X BOX-1-Y)
+                                (make-text-box " " BOX-2-X BOX-2-Y)
+                                (make-text-box " " BOX-3-X BOX-3-Y)
+                                (make-text-box " " BOX-4-X BOX-4-Y)
+                                (make-text-box " " BOX-5-X BOX-5-Y)
+                                (make-text-box " " BOX-6-X BOX-6-Y)
+                                (make-text-box " " BOX-7-X BOX-7-Y)
+                                (make-text-box " " BOX-8-X BOX-8-Y)
+                                (make-text-box " " BOX-9-X BOX-9-Y)
+                                (make-text-box " " BOX-10-X BOX-10-Y)
+                                (make-text-box " " BOX-11-X BOX-11-Y)
+                                (make-text-box " " BOX-12-X BOX-12-Y)
+                                )
+                          (world-has-focus w)
+                          (world-butt w))]
         
         [(key=? k "\r") 
          (cond [(empty? w) w]
