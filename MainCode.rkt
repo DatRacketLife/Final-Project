@@ -3,7 +3,7 @@
 (require rsound
          rsound/piano-tones)
 
-(define beats-per-minute 150)
+(define beats-per-minute 160)
 (define (s x)(* 44100 x))
 (define (b x)(inexact->exact (* x (s (/ 60 beats-per-minute)))))
 (define (m x)(inexact->exact (round (* x (b 4)))))
@@ -393,7 +393,7 @@
 (define BOX-12-X COLLUM4)
 (define BOX-12-Y ROW3-HEIGHT)
 
-(define x1 200)
+(define x1 180)
 (define x2 300)
 (define x3 450)
 (define x4 550)
@@ -408,18 +408,18 @@
 (define RECTANGLEa
   (rectangle 100 40 "outline" "black"))
 (define ROCK
-  .)
+  (bitmap/file "./images/rock.png"))
 (define JAZZ
-  .)
+  (bitmap/file "./images/jazz.png"))
 (define FUNK
-  .)
+  (bitmap/file "./images/funk.png"))
 
 (define MAJOR
-  .)
+  (bitmap/file "./images/major.png"))
 (define MINOR
- .)
+ (bitmap/file "./images/minor.png"))
 (define OCTAVE
-  .)
+  (bitmap/file "./images/octave.png"))
 
 (define RECT1-X 196)
 (define RECT2-X 484)
@@ -451,12 +451,12 @@
        (place-image
         OCTAVE
         RECT6-X ROW2
-        .)))))))
+        (bitmap/file "./images/background5.png"))))))))
 
 (define TEXT-SIZE 40)
 (define TEXT-BOX-BACKGROUND 
- . )
-(define FOCUS-BAR .)
+ (bitmap/file "./images/textbox2.png"))
+(define FOCUS-BAR (bitmap/file "./images/focus.png"))
 
 ;; draw the text box
 ;; content boolean -> image
@@ -838,7 +838,7 @@
 
 
 (big-bang (make-world 
-           (list (make-text-box "A" BOX-0-X BOX-0-Y)
+           (list (make-text-box " " BOX-0-X BOX-0-Y)
                  (make-text-box " " BOX-1-X BOX-1-Y)
                  (make-text-box " " BOX-2-X BOX-2-Y)
                  (make-text-box " " BOX-3-X BOX-3-Y)
