@@ -393,17 +393,34 @@
 (define BOX-12-X COLLUM4)
 (define BOX-12-Y ROW3-HEIGHT)
 
-(define x1 180)
-(define x2 300)
-(define x3 450)
-(define x4 550)
-(define x5 700)
-(define x6 800)
+(define RECT1-X 197)
+(define RECT2-X 484)
+(define RECT3-X 793)
+(define RECT4-X 250)
+(define RECT5-X 503)
+(define RECT6-X 761)
 
-(define y1 558)
-(define y2 620)
+(define ROW1 560)
+(define ROW2 635)
+
+(define x1a (- RECT1-X 77))
+(define x1b (+ RECT1-X 77))
+(define x2a (- RECT2-X 77))
+(define x2b (+ RECT2-X 77))
+(define x3a (- RECT3-X 77))
+(define x3b (+ RECT3-X 77))
+(define x4a (- RECT4-X 77))
+(define x4b (+ RECT4-X 77))
+(define x5a (- RECT5-X 77))
+(define x5b (+ RECT5-X 77))
+(define x6a (- RECT6-X 77))
+(define x6b (+ RECT6-X 77))
+
+(define y1 538)
+(define y2 588)
 (define y3 630)
-(define y4 6700)
+(define y4 670)
+
 
 (define RECTANGLEa
   (rectangle 100 40 "outline" "black"))
@@ -420,16 +437,6 @@
  (bitmap/file "./images/minor.png"))
 (define OCTAVE
   (bitmap/file "./images/octave.png"))
-
-(define RECT1-X 196)
-(define RECT2-X 484)
-(define RECT3-X 793)
-(define RECT4-X 251)
-(define RECT5-X 504)
-(define RECT6-X 763)
-
-(define ROW1 558)
-(define ROW2 635)
 
 
 (define SCREEN-BACKGROUND 
@@ -620,7 +627,7 @@
      50 50
      SCREEN-BACKGROUND)))
 
-(check-equal? 
+#;(check-equal? 
  (draw-all-text-boxes (list (make-text-box "E" 50 80)
                             (make-text-box "Q" 150 80))
                       SCREEN-BACKGROUND)
@@ -806,33 +813,33 @@
   (cond 
     [(and (>= y y1)
           (and (<= y y2)
-               (and (>= x x1) 
-                    (and (<= x x2) (string=? evt "button-down")))))
+               (and (>= x x1a) 
+                    (and (<= x x1b) (string=? evt "button-down")))))
      (make-world (world-tbs w) (world-has-focus w) (make-butts true false false (butts-rock-butt (world-butt w)) (butts-punk-butt (world-butt w))  (butts-funk-butt (world-butt w))))]
     [(and (>= y y1)
           (and (<= y y2)
-               (and (>= x x3) 
-                    (and (<= x x4) (string=? evt "button-down")))))
+               (and (>= x x2a) 
+                    (and (<= x x2b) (string=? evt "button-down")))))
      (make-world (world-tbs w) (world-has-focus w)(make-butts false true false (butts-rock-butt (world-butt w)) (butts-punk-butt (world-butt w))  (butts-funk-butt (world-butt w))))] 
     [(and (>= y y1)
           (and (<= y y2)
-               (and (>= x x5) 
-                    (and (<= x x6) (string=? evt "button-down")))))
+               (and (>= x x3a) 
+                    (and (<= x x3b) (string=? evt "button-down")))))
      (make-world (world-tbs w) (world-has-focus w) (make-butts false false true (butts-rock-butt (world-butt w)) (butts-punk-butt (world-butt w))  (butts-funk-butt (world-butt w))))] 
     [(and (>= y y3)
           (and (<= y y4)
-               (and (>= x x1) 
-                    (and (<= x x2) (string=? evt "button-down")))))
+               (and (>= x x4a) 
+                    (and (<= x x4b) (string=? evt "button-down")))))
      (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-major-butt (world-butt w)) (butts-minor-butt (world-butt w))(butts-octave-butt (world-butt w)) true false false))] 
     [(and (>= y y3)
           (and (<= y y4)
-               (and (>= x x3) 
-                    (and (<= x x4) (string=? evt "button-down")))))
+               (and (>= x x5a) 
+                    (and (<= x x5b) (string=? evt "button-down")))))
      (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-major-butt (world-butt w)) (butts-minor-butt (world-butt w))(butts-octave-butt (world-butt w)) false true false))] 
     [(and (>= y y3)
           (and (<= y y4)
-               (and (>= x x5) 
-                    (and (<= x x6) (string=? evt "button-down")))))
+               (and (>= x x6a) 
+                    (and (<= x x6b) (string=? evt "button-down")))))
      (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-major-butt (world-butt w)) (butts-minor-butt (world-butt w))(butts-octave-butt (world-butt w)) false false true))]
     [else w]))
 
