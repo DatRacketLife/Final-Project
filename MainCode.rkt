@@ -173,6 +173,13 @@
          (cons (chordmaker (first los) t indx)
                (progmaker (rest los) t (+ 1 indx)))]))
 
+;plays minors 
+(define (minor-progmaker los t indx)
+  (cond [(empty? los) empty]
+        [else
+         (cons (minor-chordmaker (first los) t indx)
+               (progmaker (rest los) t (+ 1 indx)))]))
+
 
 #;(check-equal? (progmaker empty 1)
                 empty)
@@ -695,7 +702,8 @@
                [else               
                 (cond
                   [(empty? (list->tones (list-tb w))) w]
-                  [(both (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)])])]
+                  [(equal? (butts-rock-butt (world-butt w)) true)(both (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)]
+                  [(equal? (butts-punk-butt (world-butt w)) true)(both (play-list (minor-progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)])])]
         
         
         [else (make-world
