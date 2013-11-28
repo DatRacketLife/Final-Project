@@ -3,7 +3,7 @@
 (require rsound
          rsound/piano-tones)
 
-(define beats-per-minute 160)
+(define beats-per-minute 140)
 (define (s x)(* 44100 x))
 (define (b x)(inexact->exact (* x (s (/ 60 beats-per-minute)))))
 (define (m x)(inexact->exact (round (* x (b 4)))))
@@ -352,8 +352,8 @@
 
 
 ;A butts is a structure boolean x6
-(define-struct butts (major-butt minor-butt octave-butt rock-butt punk-butt funk-butt) #:transparent)
-(define starting-butts (make-butts false false false false false false ))
+(define-struct butts (rockb punkb funkb majb minb octb) #:transparent)
+(define starting-butts (make-butts false false false true false false ))
 
 
 ;; text box positions
@@ -702,8 +702,8 @@
                [else               
                 (cond
                   [(empty? (list->tones (list-tb w))) w]
-                  [(equal? (butts-rock-butt (world-butt w)) true)(both (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)]
-                  [(equal? (butts-punk-butt (world-butt w)) true)(both (play-list (minor-progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)])])]
+                  [(equal? (butts-majb (world-butt w)) true)(both (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)]
+                  [(equal? (butts-minb (world-butt w)) true)(both (play-list (minor-progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)])])]
         
         
         [else (make-world
@@ -840,32 +840,32 @@
           (and (<= y y2)
                (and (>= x x1a) 
                     (and (<= x x1b) (string=? evt "button-down")))))
-     (make-world (world-tbs w) (world-has-focus w) (make-butts true false false (butts-rock-butt (world-butt w)) (butts-punk-butt (world-butt w))  (butts-funk-butt (world-butt w))))]
+     (make-world (world-tbs w) (world-has-focus w) (make-butts true false false (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w))))]
     [(and (>= y y1)
           (and (<= y y2)
                (and (>= x x2a) 
                     (and (<= x x2b) (string=? evt "button-down")))))
-     (make-world (world-tbs w) (world-has-focus w)(make-butts false true false (butts-rock-butt (world-butt w)) (butts-punk-butt (world-butt w))  (butts-funk-butt (world-butt w))))] 
+     (make-world (world-tbs w) (world-has-focus w)(make-butts false true false (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w))))]
     [(and (>= y y1)
           (and (<= y y2)
                (and (>= x x3a) 
                     (and (<= x x3b) (string=? evt "button-down")))))
-     (make-world (world-tbs w) (world-has-focus w) (make-butts false false true (butts-rock-butt (world-butt w)) (butts-punk-butt (world-butt w))  (butts-funk-butt (world-butt w))))] 
+     (make-world (world-tbs w) (world-has-focus w) (make-butts false false true (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w))))] 
     [(and (>= y y3)
           (and (<= y y4)
                (and (>= x x4a) 
                     (and (<= x x4b) (string=? evt "button-down")))))
-     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-major-butt (world-butt w)) (butts-minor-butt (world-butt w))(butts-octave-butt (world-butt w)) true false false))] 
+     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-rockb (world-butt w)) (butts-punkb (world-butt w))(butts-funkb (world-butt w)) true false false))] 
     [(and (>= y y3)
           (and (<= y y4)
                (and (>= x x5a) 
                     (and (<= x x5b) (string=? evt "button-down")))))
-     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-major-butt (world-butt w)) (butts-minor-butt (world-butt w))(butts-octave-butt (world-butt w)) false true false))] 
+     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-rockb (world-butt w)) (butts-punkb (world-butt w))(butts-funkb (world-butt w)) false true false))] 
     [(and (>= y y3)
           (and (<= y y4)
                (and (>= x x6a) 
                     (and (<= x x6b) (string=? evt "button-down")))))
-     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-major-butt (world-butt w)) (butts-minor-butt (world-butt w))(butts-octave-butt (world-butt w)) false false true))]
+     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-rockb (world-butt w)) (butts-punkb (world-butt w))(butts-funkb (world-butt w)) false false true))]
     [else w]))
 
 
