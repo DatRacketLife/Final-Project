@@ -74,6 +74,51 @@
                (play-list (rest loch)))]))
 
 
+;;Beat Maker
+(define (beat-maker x measure)
+  (cond [(string-ci=? x " ") (list (make-beat silence (+ (m measure) (b 4))) empty)]
+        [else 
+         (list
+          (make-beat c-hi-hat-1 (+ (m measure ) (b 0)))
+          (make-beat c-hi-hat-1 (+ (m measure ) (b .5)))
+          (make-beat c-hi-hat-1 (+ (m measure ) (b 1)))
+          (make-beat c-hi-hat-1 (+ (m measure ) (b 1.5)))
+          (make-beat c-hi-hat-1 (+ (m measure ) (b 2)))
+          (make-beat c-hi-hat-1 (+ (m measure ) (b 2.5)))
+          (make-beat c-hi-hat-1 (+ (m measure ) (b 3)))
+          (make-beat c-hi-hat-1 (+ (m measure ) (b 3.5)))
+   
+          (make-beat kick (+ (m measure ) (b 0)))
+          (make-beat kick (+ (m measure ) (b 1.5)))
+          (make-beat kick (+ (m measure ) (b 2)))
+          (make-beat kick (+ (m measure ) (b 3.5)))
+   
+          (make-beat snare (+ (m measure ) (b 1)))
+          (make-beat snare (+ (m measure ) (b 3))))]))
+
+(define (kit-maker los indx)
+  (cond [(empty? los) empty]
+        [else
+         (cons (beat-maker (first los) indx)
+               (kit-maker (rest los) (+ 1 indx)))]))
+
+(define (play-beat p)
+  (pstream-queue
+   ps
+   (rs-scale .15 (beat-sound p))
+   (round (+ (pstream-current-frame ps) (beat-length p)))))
+
+(define (play-beats lop)
+  (cond [(empty? lop) ps]
+        [else
+         (both (play-beat (first lop)) 
+               (play-beats (rest lop)))]))
+
+(define (play-list-2 loch)
+  (cond [(empty? loch) empty]
+        [else
+         (both (play-beats (first loch))
+               (play-list-2 (rest loch)))]))
 
 ; Chord Poop
 
@@ -702,8 +747,8 @@
                [else               
                 (cond
                   [(empty? (list->tones (list-tb w))) w]
-                  [(equal? (butts-majb (world-butt w)) true)(both (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)]
-                  [(equal? (butts-minb (world-butt w)) true)(both (play-list (minor-progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)])])]
+                  [(equal? (butts-majb (world-butt w)) true)(super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))(play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)]
+                  [(equal? (butts-minb (world-butt w)) true)(super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))(play-list (minor-progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)])])]
         
         
         [else (make-world
