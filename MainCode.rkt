@@ -178,7 +178,7 @@
   (cond [(empty? los) empty]
         [else
          (cons (minor-chordmaker (first los) t indx)
-               (progmaker (rest los) t (+ 1 indx)))]))
+               (minor-progmaker (rest los) t (+ 1 indx)))]))
 
 
 #;(check-equal? (progmaker empty 1)
