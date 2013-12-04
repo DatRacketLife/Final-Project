@@ -364,20 +364,6 @@
    (make-beat kick (+ (m 4)(b 14.5)))
    (make-beat kick (+ (m 4)(b 16)))))
 
-(define (play-beat p)
-  (pstream-queue
-   ps
-   (rs-scale .25 (beat-sound p))
-   (round (+ (pstream-current-frame ps) (beat-length p)))))
-
-(define (play-beats lop)
-  (cond [(empty? lop) ps]
-        [else
-         (both (play-beat (first lop)) 
-               (play-beats (rest lop)))]))
-
-
-
 ; GUI Poop
 
 
