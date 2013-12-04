@@ -494,9 +494,9 @@
 (define RECT1-X 197)
 (define RECT2-X 484)
 (define RECT3-X 793)
-(define RECT4-X 250)
-(define RECT5-X 503)
-(define RECT6-X 761)
+(define RECT4-X 240)
+(define RECT5-X 493)
+(define RECT6-X 751)
 
 (define ROW1 560)
 (define ROW2 635)
