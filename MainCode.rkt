@@ -210,6 +210,59 @@
           (make-note (+ t 18) (+ (pstream-current-frame ps) (m measure)) 0))]
         [else x]))
 
+;; create chords from key
+;; string -> list
+(define (octavemaker x t measure)
+  (cond [(string-ci=? x "I")
+         (list 
+          (make-note (- t 12) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 0) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure)) 88200)
+          )]
+        [(string-ci=? x "II")
+         (list 
+          (make-note (- t 10) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 2) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure)) 88200)
+          )]
+        [(string-ci=? x "III")
+         (list 
+          (make-note (- t 8) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 4) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 16) (+ (pstream-current-frame ps) (m measure)) 88200)
+          )]
+        [(string-ci=? x "IV")
+         (list 
+          (make-note (- t 7) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 5) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 17) (+ (pstream-current-frame ps) (m measure)) 88200)
+          )]
+        [(string-ci=? x "V")
+         (list 
+          (make-note (- t 5) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 19) (+ (pstream-current-frame ps) (m measure)) 88200)
+          )]
+        [(string-ci=? x "VI")
+         (list 
+          (make-note (- t 3) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 9) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 21) (+ (pstream-current-frame ps) (m measure)) 88200)
+          )]
+        [(string-ci=? x "VII")
+         (list 
+          (make-note (- t 1) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 23) (+ (pstream-current-frame ps) (m measure)) 88200)
+          )]
+        [(string-ci=? x " ")
+         (list 
+          (make-note (- t 1) (+ (pstream-current-frame ps) (m measure)) 88200)
+          (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure)) 0)
+          (make-note (+ t 23) (+ (pstream-current-frame ps) (m measure)) 0)
+          )]
+        [else x]))
+
 ;; make a list-of-chords from chordmaker
 ;; list-of-strings -> list-of-chords
 (define (progmaker los t indx)
@@ -224,6 +277,13 @@
         [else
          (cons (minor-chordmaker (first los) t indx)
                (minor-progmaker (rest los) t (+ 1 indx)))]))
+
+;plays octaves 
+(define (octaveprog los t indx)
+  (cond [(empty? los) empty]
+        [else
+         (cons (octavemaker (first los) t indx)
+               (octaveprog (rest los) t (+ 1 indx)))]))
 
 
 #;(check-equal? (progmaker empty 1)
@@ -734,7 +794,8 @@
                 (cond
                   [(empty? (list->tones (list-tb w))) w]
                   [(equal? (butts-majb (world-butt w)) true)(super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))(play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)]
-                  [(equal? (butts-minb (world-butt w)) true)(super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))(play-list (minor-progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)])])]
+                  [(equal? (butts-minb (world-butt w)) true)(super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))(play-list (minor-progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)]
+                  [(equal? (butts-octb (world-butt w)) true)(super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))(play-list (octaveprog (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)])])]
         
         
         [else (make-world
