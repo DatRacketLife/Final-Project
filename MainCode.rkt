@@ -711,43 +711,43 @@
                   [(empty? (list->tones (list-tb w))) w]
                   [(cond 
                      [(and 
-                       (equal? (butts-majb (world-butt w)) true)
-                       (equal? (butts-beatsb (world-butt w)) true))
-                      (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))
-                                  (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
-                                  w)])
-                   (both 
-                    (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
-                    w)]
+                       (equal? (world-butt w) (butts true true false false))
+                       (equal? (butts-beatsb (world-butt w)) true)
+                       (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))
+                                   (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                                   w))]
+                     [else (both 
+                            (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                            w)])]
                   [(cond 
                      [(and 
-                       (equal? (butts-minb (world-butt w)) true)
-                       (equal? (butts-beatsb (world-butt w)) true))
-                      (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))
-                                  (play-list (minor-progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
-                                  w)])
-                   (both 
-                    (play-list (progmaker (rest (list->tones (list-tb w)))(first (list->tones (list-tb w))) 0))
-                    w)]
+                       (equal? (world-butt w) (butts true false true false))
+                       (equal? (butts-beatsb (world-butt w)) true)
+                       (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))
+                                   (play-list (minor-progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                                   w))]
+                     [else (both 
+                            (play-list (minor-progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                            w)])]
                   [(cond 
                      [(and 
-                       (equal? (butts-octb (world-butt w)) true)
-                       (equal? (butts-beatsb (world-butt w)) true))
-                      (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))
-                                  (play-list (octavemaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
-                                  w)])
-                   (both 
-                    (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) 
-                    w)]
+                       (equal? (world-butt w) (butts true false false true))
+                       (equal? (butts-beatsb (world-butt w)) true)
+                       (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))
+                                   (play-list (octaveprog (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                                   w))]
+                     [else (both 
+                            (play-list (octaveprog (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                            w)])]
                   
                   )])]
-         
-         
-         
-         [else (make-world
-                (update-appropriate-text-box (world-tbs w) k (world-has-focus w))
-                (world-has-focus w)
-                (world-butt w))]))
+        
+        
+        
+        [else (make-world
+               (update-appropriate-text-box (world-tbs w) k (world-has-focus w))
+               (world-has-focus w)
+               (world-butt w))]))
 
 
 ; make list from tbs
