@@ -710,37 +710,30 @@
                 (cond
                   [(empty? (list->tones (list-tb w))) w]
                   [(cond 
-                     [(and 
-                       (equal? (world-butt w) (butts true true false false))
-                       (equal? (butts-beatsb (world-butt w)) true)
+                     [(equal? (world-butt w) (butts true true false false))                     
                        (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))
                                    (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
-                                   w))]
-                     [else (both 
-                            (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
-                            w)])]
-                  [(cond 
-                     [(and 
-                       (equal? (world-butt w) (butts true false true false))
-                       (equal? (butts-beatsb (world-butt w)) true)
+                                   w)]
+                     [(equal? (world-butt w) (butts false true false false))                     
+                       (both (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                                   w)]
+                     [(equal? (world-butt w) (butts true false true false))
                        (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))
                                    (play-list (minor-progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
-                                   w))]
-                     [else (both 
-                            (play-list (minor-progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
-                            w)])]
-                  [(cond 
-                     [(and 
-                       (equal? (world-butt w) (butts true false false true))
-                       (equal? (butts-beatsb (world-butt w)) true)
+                                   w)]
+                     [(equal? (world-butt w) (butts false false true false))                     
+                       (both (play-list (minor-progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                                   w)]
+                     [(equal? (world-butt w) (butts true false false true))                       
                        (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))
                                    (play-list (octaveprog (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
-                                   w))]
-                     [else (both 
-                            (play-list (octaveprog (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
-                            w)])]
+                                   w)]
+                     [(equal? (world-butt w) (butts false true false true))                     
+                       (both (play-list (octaveprog (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                                   w)]
+                     
                   
-                  )])]
+                  )])])]
         
         
         
