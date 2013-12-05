@@ -303,126 +303,14 @@
 ;; - empty, or
 ;; - (cons (cons list-of-lists empty) empty)
 
-#;(define let-it-be
-    (list 
-     (list
-      (make-note (+ t 0) (m 1) 88200)
-      (make-note (+ t 4) (m 1) 88200)
-      (make-note (+ t 7) (m 1) 88200)
-      (make-note (+ t -8) (+ (m 1) (b 3)) 44100)
-      (make-note (+ t -7) (+ (m 1) (b 3.5)) 44100))
-     (list 
-      (make-note (+ t -5) (m 2) 88200)
-      (make-note (+ t -1) (m 2) 88200)
-      (make-note (+ t 2) (m 2) 88200))
-     (list 
-      (make-note (+ t -3) (m 3) 88200)
-      (make-note (+ t 0) (m 3) 88200)
-      (make-note (+ t 4) (m 3) 88200)
-      (make-note (+ t -3) (+ (b 2) (m 3)) 88200)
-      (make-note (+ t 0) (+ (b 2) (m 3)) 88200)
-      (make-note (+ t 4) (+ (b 2) (m 3)) 88200)
-      (make-note (+ t -5) (+ (b 3) (m 3)) 88200)
-      (make-note (+ t -1) (+ (b 3) (m 3)) 88200)
-      (make-note (+ t 2) (+ (b 3) (m 3)) 88200))
-     (list 
-      (make-note (+ t -7) (m 4) 88200)
-      (make-note (+ t -3) (m 4) 88200)
-      (make-note (+ t 0) (m 4) 88200)
-      (make-note (+ t -12) (m 5) 88200)
-      (make-note (+ t -8) (m 5) 88200)
-      (make-note (+ t -5) (m 5) 88200)
-      (make-note (+ t 0) (m 5) 88200)
-      (make-note (+ t -8) (+ (m 5) (b 3)) (b 1))
-      (make-note (+ t -7) (+ (m 5) (b 3.5)) (b .5))
-      (make-note (+ t -5) (m 6) 88200)
-      (make-note (+ t -1) (m 6) 88200)
-      (make-note (+ t 2) (m 6) 88200)
-      (make-note (+ t 5) (m 7) 88200)
-      (make-note (+ t 9) (m 7) 88200)
-      (make-note (+ t 12) (m 7) 88200)
-      (make-note (+ t 4) (+ (b 2) (m 7)) (b .5))
-      (make-note (+ t 7) (+ (b 2) (m 7)) (b .5))
-      (make-note (+ t 2) (+ (b 3) (m 7)) (b 1))
-      (make-note (+ t 5) (+ (b 3) (m 7)) (b 1))
-      (make-note (+ t 0) (m 8) 88200)
-      (make-note (+ t 4) (m 8) 88200)
-      (make-note (+ t 7) (m 8) 88200))))
 
-; Beat Poop
+
 
 (define (psq a b) (pstream-queue ps a b))
 ;beat is a structure
 
 (define-struct beat (sound length))
 
-;rock-loop is a list of beats
-(define rock-loop
-  (list
-   (make-beat o-hi-hat (b 1))
-   (make-beat o-hi-hat (b 3))
-   (make-beat o-hi-hat (b 5))
-   (make-beat o-hi-hat (b 7))
-   (make-beat o-hi-hat (+ (m 1) (b 2)))
-   (make-beat o-hi-hat (+ (m 1) (b 4)))
-   (make-beat o-hi-hat (+ (m 1) (b 6)))
-   (make-beat o-hi-hat (+ (m 1) (b 8)))
-   (make-beat o-hi-hat (+ (m 2) (b 2)))
-   (make-beat o-hi-hat (+ (m 2) (b 4)))
-   (make-beat o-hi-hat (+ (m 2) (b 6)))
-   (make-beat o-hi-hat (+ (m 2) (b 8)))
-   (make-beat o-hi-hat (+ (m 3) (b 2)))
-   (make-beat o-hi-hat (+ (m 3) (b 4)))
-   (make-beat o-hi-hat (+ (m 3) (b 6)))
-   (make-beat o-hi-hat (+ (m 3) (b 8)))
-   (make-beat o-hi-hat (+ (m 4) (b 2)))
-   (make-beat o-hi-hat (+ (m 4) (b 4)))
-   (make-beat o-hi-hat (+ (m 4) (b 6)))
-   (make-beat o-hi-hat (+ (m 4) (b 8)))
-   (make-beat o-hi-hat (+ (m 5) (b 2)))
-   (make-beat o-hi-hat (+ (m 5) (b 4)))
-   (make-beat o-hi-hat (+ (m 5) (b 6)))
-   (make-beat o-hi-hat (+ (m 5) (b 8)))
-   (make-beat o-hi-hat (+ (m 6) (b 2)))
-   (make-beat o-hi-hat (+ (m 6) (b 4)))
-   (make-beat o-hi-hat (+ (m 6) (b 6)))
-   (make-beat o-hi-hat (+ (m 6) (b 8)))
-   
-   (make-beat snare (b 2))
-   (make-beat snare (+ (m 1) (b 2)))
-   (make-beat snare (+ (m 2) (b 2)))
-   (make-beat snare (+ (m 3) (b 2)))
-   (make-beat snare (+ (m 4) (b 2)))
-   (make-beat snare (+ (m 5) (b 2)))
-   (make-beat snare (+ (m 6) (b 2)))
-   (make-beat snare (+ (m 7) (b 2)))
-   
-   (make-beat crash-cymbal (b 8))
-   (make-beat crash-cymbal (b 16))
-   (make-beat crash-cymbal (b 24))
-   (make-beat crash-cymbal (b 32))
-   
-   
-   (make-beat kick (b 1))
-   (make-beat kick (b 2.5))
-   (make-beat kick (b 4))
-   (make-beat kick (b 6.5))
-   (make-beat kick (b 8))
-   (make-beat kick (b 9))
-   (make-beat kick (b 10.5))
-   (make-beat kick (b 12))
-   (make-beat kick (b 14.5))
-   (make-beat kick (b 16))
-   (make-beat kick (+ (m 4)(b 1)))
-   (make-beat kick (+ (m 4)(b 2.5)))
-   (make-beat kick (+ (m 4) (b 4)))
-   (make-beat kick (+ (m 4)(b 6.5)))
-   (make-beat kick (+ (m 4)(b 8)))
-   (make-beat kick (+ (m 4)(b 9)))
-   (make-beat kick (+ (m 4)(b 10.5)))
-   (make-beat kick (+ (m 4)(b 12)))
-   (make-beat kick (+ (m 4)(b 14.5)))
-   (make-beat kick (+ (m 4)(b 16)))))
 
 ; GUI Poop
 
