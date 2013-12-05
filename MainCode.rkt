@@ -424,27 +424,57 @@
 (define OCTAVE
   (bitmap/file "./images/octave.png"))
 
+(define MAJOR_PRESSED
+  (bitmap/file "./images/majorpressed.png"))
+(define MINOR_PRESSED
+  (bitmap/file "./images/minorpressed.png"))
+(define OCTAVE_PRESSED
+  (bitmap/file "./images/octavepressed.png"))
 
-(define SCREEN-BACKGROUND 
-  (place-image 
-   ROCK
-   RECT1-X ROW1
-   (place-image
-    JAZZ
-    RECT2-X ROW1
-    (place-image
-     FUNK
-     RECT3-X (+ 3 ROW1)
+(define BEATS
+  (bitmap/file "./images/beats.png"))
+(define BEATS_PRESSED
+  (bitmap/file "./images/beatson.png"))
+
+(define (MAJOR-CHECKER world)
+  (cond [(equal? (butts-majb (world-butt world)) true) 
+         MAJOR_PRESSED]
+        [(equal? (butts-majb (world-butt world)) false) 
+         MAJOR]
+        [else world]))
+(define (MINOR-CHECKER world)
+  (cond [(equal? (butts-minb (world-butt world)) true) 
+        MINOR_PRESSED]
+        [(equal? (butts-minb (world-butt world)) false) 
+         MINOR]
+        [else world]))
+(define (OCTAVE-CHECKER world)
+  (cond [(equal? (butts-octb (world-butt world)) true) 
+         OCTAVE_PRESSED]
+        [(equal? (butts-octb (world-butt world)) false) 
+         OCTAVE]
+        [else world]))
+
+(define (BEATS-CHECKER world)
+  (cond [(equal? (butts-punkb (world-butt world)) true) 
+         BEATS_PRESSED]
+        [(equal? (butts-punkb (world-butt world)) false) 
+         BEATS]
+        [else world]))
+
+(define (SCREEN-BACKGROUND world)
+  (place-image (BEATS-CHECKER world)
+   RECT2-X ROW1
      (place-image
-      MAJOR
+      (MAJOR-CHECKER world)
       RECT4-X ROW2
       (place-image
-       MINOR
-       RECT5-X (+ 2 ROW2)
+       (MINOR-CHECKER world)
+       RECT5-X ROW2
        (place-image
-        OCTAVE
+        (OCTAVE-CHECKER world)
         RECT6-X ROW2
-        (bitmap/file "./images/background5.png"))))))))
+        (bitmap/file "./images/background5.png"))))))
 
 (define TEXT-SIZE 40)
 (define TEXT-BOX-BACKGROUND 
