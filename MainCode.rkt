@@ -460,8 +460,6 @@
           TEXT-BOX-BACKGROUND)]
         [else TEXT-BOX-BACKGROUND]))
 
-;; draw a world
-;; world -> image
 (define (draw-world world)
   (cond [(= (world-has-focus world) 0)
          (place-image
@@ -469,104 +467,104 @@
           BOX-0-X (+ 25 BOX-0-Y)
           (draw-all-text-boxes
            (world-tbs world)
-           SCREEN-BACKGROUND)
-          )]
+           (SCREEN-BACKGROUND world)
+          ))]
         [(= (world-has-focus world) 1)
          (place-image
           FOCUS-BAR
           BOX-1-X (+ 25 BOX-1-Y)
           (draw-all-text-boxes
            (world-tbs world)
-           SCREEN-BACKGROUND)
-          )]
+           (SCREEN-BACKGROUND world)
+          ))]
         [(= (world-has-focus world) 2)
          (place-image
           FOCUS-BAR
           BOX-2-X (+ 25 BOX-2-Y)
           (draw-all-text-boxes
            (world-tbs world)
-           SCREEN-BACKGROUND)
-          )]
+           (SCREEN-BACKGROUND world)
+          ))]
         [(= (world-has-focus world) 3)
          (place-image         
           FOCUS-BAR           
           BOX-3-X (+ 25 BOX-3-Y)
           (draw-all-text-boxes
            (world-tbs world)
-           SCREEN-BACKGROUND)
-          )]
+           (SCREEN-BACKGROUND world)
+          ))]
         [(= (world-has-focus world) 4)
          (place-image         
           FOCUS-BAR           
           BOX-4-X (+ 25 BOX-4-Y)
           (draw-all-text-boxes
            (world-tbs world)
-           SCREEN-BACKGROUND)
-          )]
+           (SCREEN-BACKGROUND world)
+          ))]
         [(= (world-has-focus world) 5)
          (place-image         
           FOCUS-BAR           
           BOX-5-X (+ 25 BOX-5-Y)
           (draw-all-text-boxes
            (world-tbs world)
-           SCREEN-BACKGROUND)
-          )]
+           (SCREEN-BACKGROUND world)
+          ))]
         [(= (world-has-focus world) 6)
          (place-image
           FOCUS-BAR
           BOX-6-X (+ 25 BOX-6-Y)
           (draw-all-text-boxes
            (world-tbs world)
-           SCREEN-BACKGROUND)
-          )]
+           (SCREEN-BACKGROUND world)
+          ))]
         [(= (world-has-focus world) 7)
          (place-image
           FOCUS-BAR
           BOX-7-X (+ 25 BOX-7-Y)
           (draw-all-text-boxes
            (world-tbs world)
-           SCREEN-BACKGROUND)
-          )]
+           (SCREEN-BACKGROUND world)
+          ))]
         [(= (world-has-focus world) 8)
          (place-image
           FOCUS-BAR
           BOX-8-X (+ 25 BOX-8-Y)
           (draw-all-text-boxes
            (world-tbs world)
-           SCREEN-BACKGROUND)
-          )]
+           (SCREEN-BACKGROUND world)
+          ))]
         [(= (world-has-focus world) 9)
          (place-image
           FOCUS-BAR
           BOX-9-X (+ 25 BOX-9-Y)
           (draw-all-text-boxes
            (world-tbs world)
-           SCREEN-BACKGROUND)
-          )]
+           (SCREEN-BACKGROUND world)
+          ))]
         [(= (world-has-focus world) 10)
          (place-image
           FOCUS-BAR
           BOX-10-X (+ 25 BOX-10-Y)
           (draw-all-text-boxes
            (world-tbs world)
-           SCREEN-BACKGROUND)
-          )]
+           (SCREEN-BACKGROUND world)
+          ))]
         [(= (world-has-focus world) 11)
          (place-image
           FOCUS-BAR
           BOX-11-X (+ 25 BOX-11-Y)
           (draw-all-text-boxes
            (world-tbs world)
-           SCREEN-BACKGROUND)
-          )]
+           (SCREEN-BACKGROUND world)
+          ))]
         [(= (world-has-focus world) 12)
          (place-image
           FOCUS-BAR
           BOX-12-X (+ 25 BOX-12-Y)
           (draw-all-text-boxes
            (world-tbs world)
-           SCREEN-BACKGROUND)
-          )]
+           (SCREEN-BACKGROUND world)
+          ))]
         [else (draw-all-text-boxes
                (world-tbs world)
                SCREEN-BACKGROUND)]))
@@ -825,7 +823,9 @@
           (and (<= y y2)
                (and (>= x x2a) 
                     (and (<= x x2b) (string=? evt "button-down")))))
-     (make-world (world-tbs w) (world-has-focus w)(make-butts false true false (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w))))]
+     (if
+       (equal? (butts-punkb (world-butt w)) false) (make-world (world-tbs w) (world-has-focus w)(make-butts false true false (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w))))
+       (make-world (world-tbs w) (world-has-focus w)(make-butts false false false (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w)))))]
     [(and (>= y y1)
           (and (<= y y2)
                (and (>= x x3a) 
