@@ -87,12 +87,12 @@
           (make-beat c-hi-hat-1 (+ (m measure ) (b 2.5)))
           (make-beat c-hi-hat-1 (+ (m measure ) (b 3)))
           (make-beat c-hi-hat-1 (+ (m measure ) (b 3.5)))
-   
+          
           (make-beat kick (+ (m measure ) (b 0)))
           (make-beat kick (+ (m measure ) (b 1.5)))
           (make-beat kick (+ (m measure ) (b 2)))
           (make-beat kick (+ (m measure ) (b 3.5)))
-   
+          
           (make-beat snare (+ (m measure ) (b 1)))
           (make-beat snare (+ (m measure ) (b 3))))]))
 
@@ -331,8 +331,8 @@
 
 
 ;A butts is a structure boolean x6
-(define-struct butts (rockb punkb funkb majb minb octb) #:transparent)
-(define starting-butts (make-butts false false false true false false ))
+(define-struct butts (beatsb majb minb octb) #:transparent)
+(define starting-butts (make-butts true true false false ))
 
 
 ;; text box positions
@@ -444,7 +444,7 @@
         [else world]))
 (define (MINOR-CHECKER world)
   (cond [(equal? (butts-minb (world-butt world)) true) 
-        MINOR_PRESSED]
+         MINOR_PRESSED]
         [(equal? (butts-minb (world-butt world)) false) 
          MINOR]
         [else world]))
@@ -456,25 +456,25 @@
         [else world]))
 
 (define (BEATS-CHECKER world)
-  (cond [(equal? (butts-punkb (world-butt world)) true) 
+  (cond [(equal? (butts-beatsb (world-butt world)) true) 
          BEATS_PRESSED]
-        [(equal? (butts-punkb (world-butt world)) false) 
+        [(equal? (butts-beatsb (world-butt world)) false) 
          BEATS]
         [else world]))
 
 (define (SCREEN-BACKGROUND world)
   (place-image (BEATS-CHECKER world)
-   RECT2-X ROW1
-     (place-image
-      (MAJOR-CHECKER world)
-      RECT4-X ROW2
-      (place-image
-       (MINOR-CHECKER world)
-       RECT5-X ROW2
-       (place-image
-        (OCTAVE-CHECKER world)
-        RECT6-X ROW2
-        (bitmap/file "./images/background5.png"))))))
+               RECT2-X ROW1
+               (place-image
+                (MAJOR-CHECKER world)
+                RECT4-X ROW2
+                (place-image
+                 (MINOR-CHECKER world)
+                 RECT5-X ROW2
+                 (place-image
+                  (OCTAVE-CHECKER world)
+                  RECT6-X ROW2
+                  (bitmap/file "./images/background5.png"))))))
 
 (define TEXT-SIZE 40)
 (define TEXT-BOX-BACKGROUND 
@@ -498,7 +498,7 @@
           (draw-all-text-boxes
            (world-tbs world)
            (SCREEN-BACKGROUND world)
-          ))]
+           ))]
         [(= (world-has-focus world) 1)
          (place-image
           FOCUS-BAR
@@ -506,7 +506,7 @@
           (draw-all-text-boxes
            (world-tbs world)
            (SCREEN-BACKGROUND world)
-          ))]
+           ))]
         [(= (world-has-focus world) 2)
          (place-image
           FOCUS-BAR
@@ -514,7 +514,7 @@
           (draw-all-text-boxes
            (world-tbs world)
            (SCREEN-BACKGROUND world)
-          ))]
+           ))]
         [(= (world-has-focus world) 3)
          (place-image         
           FOCUS-BAR           
@@ -522,7 +522,7 @@
           (draw-all-text-boxes
            (world-tbs world)
            (SCREEN-BACKGROUND world)
-          ))]
+           ))]
         [(= (world-has-focus world) 4)
          (place-image         
           FOCUS-BAR           
@@ -530,7 +530,7 @@
           (draw-all-text-boxes
            (world-tbs world)
            (SCREEN-BACKGROUND world)
-          ))]
+           ))]
         [(= (world-has-focus world) 5)
          (place-image         
           FOCUS-BAR           
@@ -538,7 +538,7 @@
           (draw-all-text-boxes
            (world-tbs world)
            (SCREEN-BACKGROUND world)
-          ))]
+           ))]
         [(= (world-has-focus world) 6)
          (place-image
           FOCUS-BAR
@@ -546,7 +546,7 @@
           (draw-all-text-boxes
            (world-tbs world)
            (SCREEN-BACKGROUND world)
-          ))]
+           ))]
         [(= (world-has-focus world) 7)
          (place-image
           FOCUS-BAR
@@ -554,7 +554,7 @@
           (draw-all-text-boxes
            (world-tbs world)
            (SCREEN-BACKGROUND world)
-          ))]
+           ))]
         [(= (world-has-focus world) 8)
          (place-image
           FOCUS-BAR
@@ -562,7 +562,7 @@
           (draw-all-text-boxes
            (world-tbs world)
            (SCREEN-BACKGROUND world)
-          ))]
+           ))]
         [(= (world-has-focus world) 9)
          (place-image
           FOCUS-BAR
@@ -570,7 +570,7 @@
           (draw-all-text-boxes
            (world-tbs world)
            (SCREEN-BACKGROUND world)
-          ))]
+           ))]
         [(= (world-has-focus world) 10)
          (place-image
           FOCUS-BAR
@@ -578,7 +578,7 @@
           (draw-all-text-boxes
            (world-tbs world)
            (SCREEN-BACKGROUND world)
-          ))]
+           ))]
         [(= (world-has-focus world) 11)
          (place-image
           FOCUS-BAR
@@ -586,7 +586,7 @@
           (draw-all-text-boxes
            (world-tbs world)
            (SCREEN-BACKGROUND world)
-          ))]
+           ))]
         [(= (world-has-focus world) 12)
          (place-image
           FOCUS-BAR
@@ -594,7 +594,7 @@
           (draw-all-text-boxes
            (world-tbs world)
            (SCREEN-BACKGROUND world)
-          ))]
+           ))]
         [else (draw-all-text-boxes
                (world-tbs world)
                SCREEN-BACKGROUND)]))
@@ -687,37 +687,67 @@
                                    0
                                    (world-butt w))]
         [(key=? k "\b") (make-world 
-                          (list (make-text-box " " BOX-0-X BOX-0-Y)
-                                (make-text-box " " BOX-1-X BOX-1-Y)
-                                (make-text-box " " BOX-2-X BOX-2-Y)
-                                (make-text-box " " BOX-3-X BOX-3-Y)
-                                (make-text-box " " BOX-4-X BOX-4-Y)
-                                (make-text-box " " BOX-5-X BOX-5-Y)
-                                (make-text-box " " BOX-6-X BOX-6-Y)
-                                (make-text-box " " BOX-7-X BOX-7-Y)
-                                (make-text-box " " BOX-8-X BOX-8-Y)
-                                (make-text-box " " BOX-9-X BOX-9-Y)
-                                (make-text-box " " BOX-10-X BOX-10-Y)
-                                (make-text-box " " BOX-11-X BOX-11-Y)
-                                (make-text-box " " BOX-12-X BOX-12-Y)
-                                )
-                          (world-has-focus w)
-                          (world-butt w))]
+                         (list (make-text-box " " BOX-0-X BOX-0-Y)
+                               (make-text-box " " BOX-1-X BOX-1-Y)
+                               (make-text-box " " BOX-2-X BOX-2-Y)
+                               (make-text-box " " BOX-3-X BOX-3-Y)
+                               (make-text-box " " BOX-4-X BOX-4-Y)
+                               (make-text-box " " BOX-5-X BOX-5-Y)
+                               (make-text-box " " BOX-6-X BOX-6-Y)
+                               (make-text-box " " BOX-7-X BOX-7-Y)
+                               (make-text-box " " BOX-8-X BOX-8-Y)
+                               (make-text-box " " BOX-9-X BOX-9-Y)
+                               (make-text-box " " BOX-10-X BOX-10-Y)
+                               (make-text-box " " BOX-11-X BOX-11-Y)
+                               (make-text-box " " BOX-12-X BOX-12-Y)
+                               )
+                         (world-has-focus w)
+                         (world-butt w))]
         
         [(key=? k "\r") 
          (cond [(empty? w) w]
                [else               
                 (cond
                   [(empty? (list->tones (list-tb w))) w]
-                  [(equal? (butts-majb (world-butt w)) true)(super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))(play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)]
-                  [(equal? (butts-minb (world-butt w)) true)(super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))(play-list (minor-progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)]
-                  [(equal? (butts-octb (world-butt w)) true)(super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))(play-list (octaveprog (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) w)])])]
-        
-        
-        [else (make-world
-               (update-appropriate-text-box (world-tbs w) k (world-has-focus w))
-               (world-has-focus w)
-               (world-butt w))]))
+                  [(cond 
+                     [(and 
+                       (equal? (butts-majb (world-butt w)) true)
+                       (equal? (butts-beatsb (world-butt w)) true))
+                      (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))
+                                  (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                                  w)])
+                   (both 
+                    (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                    w)]
+                  [(cond 
+                     [(and 
+                       (equal? (butts-minb (world-butt w)) true)
+                       (equal? (butts-beatsb (world-butt w)) true))
+                      (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))
+                                  (play-list (minor-progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                                  w)])
+                   (both 
+                    (play-list (progmaker (rest (list->tones (list-tb w)))(first (list->tones (list-tb w))) 0))
+                    w)]
+                  [(cond 
+                     [(and 
+                       (equal? (butts-octb (world-butt w)) true)
+                       (equal? (butts-beatsb (world-butt w)) true))
+                      (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))
+                                  (play-list (octavemaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                                  w)])
+                   (both 
+                    (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0)) 
+                    w)]
+                  
+                  )])]
+         
+         
+         
+         [else (make-world
+                (update-appropriate-text-box (world-tbs w) k (world-has-focus w))
+                (world-has-focus w)
+                (world-butt w))]))
 
 
 ; make list from tbs
@@ -844,38 +874,38 @@
 
 (define (butt-handler w x y evt)
   (cond 
-    [(and (>= y y1)
-          (and (<= y y2)
-               (and (>= x x1a) 
-                    (and (<= x x1b) (string=? evt "button-down")))))
-     (make-world (world-tbs w) (world-has-focus w) (make-butts true false false (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w))))]
+    #;[(and (>= y y1)
+            (and (<= y y2)
+                 (and (>= x x1a) 
+                      (and (<= x x1b) (string=? evt "button-down")))))
+       (make-world (world-tbs w) (world-has-focus w) (make-butts true false false (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w))))]
     [(and (>= y y1)
           (and (<= y y2)
                (and (>= x x2a) 
                     (and (<= x x2b) (string=? evt "button-down")))))
      (if
-       (equal? (butts-punkb (world-butt w)) false) (make-world (world-tbs w) (world-has-focus w)(make-butts false true false (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w))))
-       (make-world (world-tbs w) (world-has-focus w)(make-butts false false false (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w)))))]
-    [(and (>= y y1)
-          (and (<= y y2)
-               (and (>= x x3a) 
-                    (and (<= x x3b) (string=? evt "button-down")))))
-     (make-world (world-tbs w) (world-has-focus w) (make-butts false false true (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w))))] 
+      (equal? (butts-beatsb (world-butt w)) false) (make-world (world-tbs w) (world-has-focus w)(make-butts true (butts-majb (world-butt w)) (butts-minb (world-butt w))(butts-octb (world-butt w))))
+      (make-world (world-tbs w) (world-has-focus w)(make-butts false (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w)))))]
+    #;[(and (>= y y1)
+            (and (<= y y2)
+                 (and (>= x x3a) 
+                      (and (<= x x3b) (string=? evt "button-down")))))
+       (make-world (world-tbs w) (world-has-focus w) (make-butts false false true (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w))))] 
     [(and (>= y y3)
           (and (<= y y4)
                (and (>= x x4a) 
                     (and (<= x x4b) (string=? evt "button-down")))))
-     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-rockb (world-butt w)) (butts-punkb (world-butt w))(butts-funkb (world-butt w)) true false false))] 
+     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-beatsb (world-butt w)) true false false))] 
     [(and (>= y y3)
           (and (<= y y4)
                (and (>= x x5a) 
                     (and (<= x x5b) (string=? evt "button-down")))))
-     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-rockb (world-butt w)) (butts-punkb (world-butt w))(butts-funkb (world-butt w)) false true false))] 
+     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-beatsb (world-butt w)) false true false))] 
     [(and (>= y y3)
           (and (<= y y4)
                (and (>= x x6a) 
                     (and (<= x x6b) (string=? evt "button-down")))))
-     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-rockb (world-butt w)) (butts-punkb (world-butt w))(butts-funkb (world-butt w)) false false true))]
+     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-beatsb (world-butt w)) false false true))]
     [else w]))
 
 
