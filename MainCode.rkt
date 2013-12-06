@@ -285,18 +285,18 @@
                (progmaker (rest los) t (+ 1 indx) tmp))]))
 
 ;plays minors 
-(define (minor-progmaker los t indx)
+(define (minor-progmaker los t indx tmp)
   (cond [(empty? los) empty]
         [else
-         (cons (minor-chordmaker (first los) t indx)
-               (minor-progmaker (rest los) t (+ 1 indx)))]))
+         (cons (minor-chordmaker (first los) t indx tmp)
+               (minor-progmaker (rest los) t (+ 1 indx) tmp))]))
 
 ;plays octaves 
-(define (octaveprog los t indx)
+(define (octaveprog los t indx tmp)
   (cond [(empty? los) empty]
         [else
-         (cons (octavemaker (first los) t indx)
-               (octaveprog (rest los) t (+ 1 indx)))]))
+         (cons (octavemaker (first los) t indx tmp)
+               (octaveprog (rest los) t (+ 1 indx) tmp))]))
 
 
 #;(check-equal? (progmaker empty 1)
@@ -339,7 +339,7 @@
 
 ;; a world is (make-world (listof text-box) number butt tempo)
 ;; side condition: number can't be >= number of boxes
-(define-struct world (tbs has-focus butt tempo) #:transparent)
+(define-struct world (tbs has-focus butt tempo screen) #:transparent)
 
 
 
@@ -444,6 +444,9 @@
 (define OCTAVE_PRESSED
   (bitmap/file "./images/octavepressed.png"))
 
+(define MENU
+  (bitmap/file "./images/menu.png"))
+
 (define BEATS
   (bitmap/file "./images/beats.png"))
 (define BEATS_PRESSED
@@ -504,113 +507,117 @@
         [else TEXT-BOX-BACKGROUND]))
 
 (define (draw-world world)
-  (cond [(= (world-has-focus world) 0)
-         (place-image
-          FOCUS-BAR
-          BOX-0-X (+ 25 BOX-0-Y)
-          (draw-all-text-boxes
-           (world-tbs world)
-           (SCREEN-BACKGROUND world)
-           ))]
-        [(= (world-has-focus world) 1)
-         (place-image
-          FOCUS-BAR
-          BOX-1-X (+ 25 BOX-1-Y)
-          (draw-all-text-boxes
-           (world-tbs world)
-           (SCREEN-BACKGROUND world)
-           ))]
-        [(= (world-has-focus world) 2)
-         (place-image
-          FOCUS-BAR
-          BOX-2-X (+ 25 BOX-2-Y)
-          (draw-all-text-boxes
-           (world-tbs world)
-           (SCREEN-BACKGROUND world)
-           ))]
-        [(= (world-has-focus world) 3)
-         (place-image         
-          FOCUS-BAR           
-          BOX-3-X (+ 25 BOX-3-Y)
-          (draw-all-text-boxes
-           (world-tbs world)
-           (SCREEN-BACKGROUND world)
-           ))]
-        [(= (world-has-focus world) 4)
-         (place-image         
-          FOCUS-BAR           
-          BOX-4-X (+ 25 BOX-4-Y)
-          (draw-all-text-boxes
-           (world-tbs world)
-           (SCREEN-BACKGROUND world)
-           ))]
-        [(= (world-has-focus world) 5)
-         (place-image         
-          FOCUS-BAR           
-          BOX-5-X (+ 25 BOX-5-Y)
-          (draw-all-text-boxes
-           (world-tbs world)
-           (SCREEN-BACKGROUND world)
-           ))]
-        [(= (world-has-focus world) 6)
-         (place-image
-          FOCUS-BAR
-          BOX-6-X (+ 25 BOX-6-Y)
-          (draw-all-text-boxes
-           (world-tbs world)
-           (SCREEN-BACKGROUND world)
-           ))]
-        [(= (world-has-focus world) 7)
-         (place-image
-          FOCUS-BAR
-          BOX-7-X (+ 25 BOX-7-Y)
-          (draw-all-text-boxes
-           (world-tbs world)
-           (SCREEN-BACKGROUND world)
-           ))]
-        [(= (world-has-focus world) 8)
-         (place-image
-          FOCUS-BAR
-          BOX-8-X (+ 25 BOX-8-Y)
-          (draw-all-text-boxes
-           (world-tbs world)
-           (SCREEN-BACKGROUND world)
-           ))]
-        [(= (world-has-focus world) 9)
-         (place-image
-          FOCUS-BAR
-          BOX-9-X (+ 25 BOX-9-Y)
-          (draw-all-text-boxes
-           (world-tbs world)
-           (SCREEN-BACKGROUND world)
-           ))]
-        [(= (world-has-focus world) 10)
-         (place-image
-          FOCUS-BAR
-          BOX-10-X (+ 25 BOX-10-Y)
-          (draw-all-text-boxes
-           (world-tbs world)
-           (SCREEN-BACKGROUND world)
-           ))]
-        [(= (world-has-focus world) 11)
-         (place-image
-          FOCUS-BAR
-          BOX-11-X (+ 25 BOX-11-Y)
-          (draw-all-text-boxes
-           (world-tbs world)
-           (SCREEN-BACKGROUND world)
-           ))]
-        [(= (world-has-focus world) 12)
-         (place-image
-          FOCUS-BAR
-          BOX-12-X (+ 25 BOX-12-Y)
-          (draw-all-text-boxes
-           (world-tbs world)
-           (SCREEN-BACKGROUND world)
-           ))]
-        [else (draw-all-text-boxes
-               (world-tbs world)
-               SCREEN-BACKGROUND)]))
+  (cond
+    [(equal? (world-screen world) #t)
+     (cond [(= (world-has-focus world) 0)
+            (place-image
+             FOCUS-BAR
+             BOX-0-X (+ 25 BOX-0-Y)
+             (draw-all-text-boxes
+              (world-tbs world)
+              (SCREEN-BACKGROUND world)
+              ))]
+           [(= (world-has-focus world) 1)
+            (place-image
+             FOCUS-BAR
+             BOX-1-X (+ 25 BOX-1-Y)
+             (draw-all-text-boxes
+              (world-tbs world)
+              (SCREEN-BACKGROUND world)
+              ))]
+           [(= (world-has-focus world) 2)
+            (place-image
+             FOCUS-BAR
+             BOX-2-X (+ 25 BOX-2-Y)
+             (draw-all-text-boxes
+              (world-tbs world)
+              (SCREEN-BACKGROUND world)
+              ))]
+           [(= (world-has-focus world) 3)
+            (place-image         
+             FOCUS-BAR           
+             BOX-3-X (+ 25 BOX-3-Y)
+             (draw-all-text-boxes
+              (world-tbs world)
+              (SCREEN-BACKGROUND world)
+              ))]
+           [(= (world-has-focus world) 4)
+            (place-image         
+             FOCUS-BAR           
+             BOX-4-X (+ 25 BOX-4-Y)
+             (draw-all-text-boxes
+              (world-tbs world)
+              (SCREEN-BACKGROUND world)
+              ))]
+           [(= (world-has-focus world) 5)
+            (place-image         
+             FOCUS-BAR           
+             BOX-5-X (+ 25 BOX-5-Y)
+             (draw-all-text-boxes
+              (world-tbs world)
+              (SCREEN-BACKGROUND world)
+              ))]
+           [(= (world-has-focus world) 6)
+            (place-image
+             FOCUS-BAR
+             BOX-6-X (+ 25 BOX-6-Y)
+             (draw-all-text-boxes
+              (world-tbs world)
+              (SCREEN-BACKGROUND world)
+              ))]
+           [(= (world-has-focus world) 7)
+            (place-image
+             FOCUS-BAR
+             BOX-7-X (+ 25 BOX-7-Y)
+             (draw-all-text-boxes
+              (world-tbs world)
+              (SCREEN-BACKGROUND world)
+              ))]
+           [(= (world-has-focus world) 8)
+            (place-image
+             FOCUS-BAR
+             BOX-8-X (+ 25 BOX-8-Y)
+             (draw-all-text-boxes
+              (world-tbs world)
+              (SCREEN-BACKGROUND world)
+              ))]
+           [(= (world-has-focus world) 9)
+            (place-image
+             FOCUS-BAR
+             BOX-9-X (+ 25 BOX-9-Y)
+             (draw-all-text-boxes
+              (world-tbs world)
+              (SCREEN-BACKGROUND world)
+              ))]
+           [(= (world-has-focus world) 10)
+            (place-image
+             FOCUS-BAR
+             BOX-10-X (+ 25 BOX-10-Y)
+             (draw-all-text-boxes
+              (world-tbs world)
+              (SCREEN-BACKGROUND world)
+              ))]
+           [(= (world-has-focus world) 11)
+            (place-image
+             FOCUS-BAR
+             BOX-11-X (+ 25 BOX-11-Y)
+             (draw-all-text-boxes
+              (world-tbs world)
+              (SCREEN-BACKGROUND world)
+              ))]
+           [(= (world-has-focus world) 12)
+            (place-image
+             FOCUS-BAR
+             BOX-12-X (+ 25 BOX-12-Y)
+             (draw-all-text-boxes
+              (world-tbs world)
+              (SCREEN-BACKGROUND world)
+              ))]
+           [else (draw-all-text-boxes
+                  (world-tbs world)
+                  SCREEN-BACKGROUND)])]
+    [(equal? (world-screen world) #f)
+     MENU]))
 
 ;; list-of-text-boxes image -> image
 ;; draw all of the text boxes on the given image
@@ -676,36 +683,61 @@
                                (make-world (world-tbs w)
                                            (+ 1 (world-has-focus w))
                                            (world-butt w)
-                                           (world-tempo w))]
+                                           (world-tempo w)
+                                           (world-screen w))]
                               [(= (- (length (list-tb w)) 1) (world-has-focus w)) (make-world (world-tbs w)
                                                                                               0
                                                                                               (world-butt w)
-                                                                                              (world-tempo w))])
-                        ]
+                                                                                              (world-tempo w)
+                                                                                              (world-screen w))])]
+                        
         [(key=? k "right") (cond [(<= (world-has-focus w) (- (length (list-tb w)) 2))
                                   (make-world (world-tbs w)
                                               (+ 1 (world-has-focus w))
                                               (world-butt w)
-                                              (world-tempo w))]
+                                              (world-tempo w)
+                                              (world-screen w))]
                                  [(= (- (length (list-tb w)) 1) (world-has-focus w)) (make-world (world-tbs w)
                                                                                                  0
                                                                                                  (world-butt w)
-                                                                                                 (world-tempo w))])
-                           ]
+                                                                                                 (world-tempo w)
+                                                                                                 (world-screen w))])]
+                           
         [(key=? k "left") (cond [(>= (world-has-focus w) 1)
                                  (make-world (world-tbs w)
                                              (- (world-has-focus w) 1)
                                              (world-butt w)
-                                             (world-tempo w))]
+                                             (world-tempo w)
+                                             (world-screen w))]
                                 [(= 0 (world-has-focus w)) (make-world (world-tbs w) 
                                                                        (- (length (list-tb w)) 1)
                                                                        (world-butt w)
-                                                                       (world-tempo w))]
+                                                                       (world-tempo w)
+                                                                       (world-screen w))]
                                 )]
         [(key=? k "k") (make-world (world-tbs w)
                                    0
                                    (world-butt w)
-                                   (world-tempo w))]
+                                   (world-tempo w)
+                                   (world-screen w))]
+        [(key=? k "t") (make-world (world-tbs w)
+                                   (world-has-focus w)
+                                   (world-butt w)
+                                   140
+                                   (world-screen w))]
+        [(key=? k "i") 
+         (cond
+           [(equal? #t (world-screen w))
+            (make-world (world-tbs w)
+                                   (world-has-focus w)
+                                   (world-butt w)
+                                   (world-tempo w)
+                                   #f)]
+           [else (make-world (world-tbs w)
+                                   (world-has-focus w)
+                                   (world-butt w)
+                                   (world-tempo w)
+                                   #t)])]
         [(key=? k "\b") (make-world 
                          (list (make-text-box " " BOX-0-X BOX-0-Y)
                                (make-text-box " " BOX-1-X BOX-1-Y)
@@ -723,18 +755,21 @@
                                )
                          (world-has-focus w)
                          (world-butt w)
-                         (world-tempo w))]
+                         (world-tempo w)
+                         (world-screen w))]
         
         [(key=? k "up") 
                    (make-world (world-tbs w) 
                                (world-has-focus w)
                                (world-butt w)
-                               (+ (world-tempo w) 20))]
+                               (+ (world-tempo w) 20)
+                               (world-screen w))]
                [(key=? k "down") 
                    (make-world (world-tbs w) 
                                (world-has-focus w)
                                (world-butt w)
-                               (- (world-tempo w) 20))]
+                               (- (world-tempo w) 20)
+                               (world-screen w))]
         
         [(key=? k "\r") 
          (cond [(empty? w) w]
@@ -774,7 +809,8 @@
                (update-appropriate-text-box (world-tbs w) k (world-has-focus w))
                (world-has-focus w)
                (world-butt w)
-               (world-tempo w))]))
+               (world-tempo w)
+               (world-screen w))]))
 
 
 ; make list from tbs
@@ -905,34 +941,34 @@
             (and (<= y y2)
                  (and (>= x x1a) 
                       (and (<= x x1b) (string=? evt "button-down")))))
-       (make-world (world-tbs w) (world-has-focus w) (make-butts true false false (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w))) (world-tempo w))]
+       (make-world (world-tbs w) (world-has-focus w) (make-butts true false false (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w))) (world-tempo w) (world-screen w))]
     [(and (>= y y1)
           (and (<= y y2)
                (and (>= x x2a) 
                     (and (<= x x2b) (string=? evt "button-down")))))
      (if
-      (equal? (butts-beatsb (world-butt w)) false) (make-world (world-tbs w) (world-has-focus w)(make-butts true (butts-majb (world-butt w)) (butts-minb (world-butt w))(butts-octb (world-butt w)))(world-tempo w))
-      (make-world (world-tbs w) (world-has-focus w)(make-butts false (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w)))(world-tempo w)))]
+      (equal? (butts-beatsb (world-butt w)) false) (make-world (world-tbs w) (world-has-focus w)(make-butts true (butts-majb (world-butt w)) (butts-minb (world-butt w))(butts-octb (world-butt w)))(world-tempo w) (world-screen w))
+      (make-world (world-tbs w) (world-has-focus w)(make-butts false (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w)))(world-tempo w) (world-screen w)))]
     #;[(and (>= y y1)
             (and (<= y y2)
                  (and (>= x x3a) 
                       (and (<= x x3b) (string=? evt "button-down")))))
-       (make-world (world-tbs w) (world-has-focus w) (make-butts false false true (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w)))(world-tempo w))] 
+       (make-world (world-tbs w) (world-has-focus w) (make-butts false false true (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w)))(world-tempo w) (world-screen w))] 
     [(and (>= y y3)
           (and (<= y y4)
                (and (>= x x4a) 
                     (and (<= x x4b) (string=? evt "button-down")))))
-     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-beatsb (world-butt w)) true false false)(world-tempo w))] 
+     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-beatsb (world-butt w)) true false false)(world-tempo w)(world-screen w))] 
     [(and (>= y y3)
           (and (<= y y4)
                (and (>= x x5a) 
                     (and (<= x x5b) (string=? evt "button-down")))))
-     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-beatsb (world-butt w)) false true false)(world-tempo w))] 
+     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-beatsb (world-butt w)) false true false)(world-tempo w)(world-screen w))] 
     [(and (>= y y3)
           (and (<= y y4)
                (and (>= x x6a) 
                     (and (<= x x6b) (string=? evt "button-down")))))
-     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-beatsb (world-butt w)) false false true)(world-tempo w))]
+     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-beatsb (world-butt w)) false false true)(world-tempo w)(world-screen w))]
     [else w]))
 
 
@@ -953,7 +989,8 @@
                  )
            0
            starting-butts
-           140)
+           140
+           #t)
           
           [to-draw draw-world]
           [on-key text-box-input-key]
