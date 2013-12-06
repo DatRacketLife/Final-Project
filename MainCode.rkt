@@ -3,10 +3,10 @@
 (require rsound
          rsound/piano-tones)
 
-(define beats-per-minute 140)
+
 (define (s x)(* 44100 x))
-(define (b x)(inexact->exact (* x (s (/ 60 beats-per-minute)))))
-(define (m x)(inexact->exact (round (* x (b 4)))))
+(define (b x tmp)(inexact->exact (* x (s (/ 60 tmp)))))
+(define (m x tmp)(inexact->exact (round (* x (b 4 tmp)))))
 (define-struct chord (first third fifth))
 ;; a note is (make-note note-num frames frames)
 (define-struct note (pitch time duration) #:transparent)
@@ -75,35 +75,35 @@
 
 
 ;;Beat Maker
-(define (beat-maker x measure)
+(define (beat-maker x measure tmp)
   (cond
     [(string? x)
-     (cond [(string-ci=? x " ") (list (make-beat silence (+ (m measure) (b 4))) empty)]
+     (cond [(string-ci=? x " ") (list (make-beat silence (+ (m measure tmp) (b 4))) empty)]
         [else 
          (list
-          (make-beat c-hi-hat-1 (+ (m measure ) (b 0)))
-          (make-beat c-hi-hat-1 (+ (m measure ) (b .5)))
-          (make-beat c-hi-hat-1 (+ (m measure ) (b 1)))
-          (make-beat c-hi-hat-1 (+ (m measure ) (b 1.5)))
-          (make-beat c-hi-hat-1 (+ (m measure ) (b 2)))
-          (make-beat c-hi-hat-1 (+ (m measure ) (b 2.5)))
-          (make-beat c-hi-hat-1 (+ (m measure ) (b 3)))
-          (make-beat c-hi-hat-1 (+ (m measure ) (b 3.5)))
+          (make-beat c-hi-hat-1 (+ (m measure tmp) (b 0 tmp)))
+          (make-beat c-hi-hat-1 (+ (m measure tmp) (b .5 tmp)))
+          (make-beat c-hi-hat-1 (+ (m measure tmp) (b 1 tmp)))
+          (make-beat c-hi-hat-1 (+ (m measure tmp) (b 1.5 tmp)))
+          (make-beat c-hi-hat-1 (+ (m measure tmp) (b 2 tmp)))
+          (make-beat c-hi-hat-1 (+ (m measure tmp) (b 2.5 tmp)))
+          (make-beat c-hi-hat-1 (+ (m measure tmp) (b 3 tmp)))
+          (make-beat c-hi-hat-1 (+ (m measure tmp) (b 3.5 tmp)))
           
-          (make-beat kick (+ (m measure ) (b 0)))
-          (make-beat kick (+ (m measure ) (b 1.5)))
-          (make-beat kick (+ (m measure ) (b 2)))
-          (make-beat kick (+ (m measure ) (b 3.5)))
+          (make-beat kick (+ (m measure tmp) (b 0 tmp)))
+          (make-beat kick (+ (m measure tmp) (b 1.5 tmp)))
+          (make-beat kick (+ (m measure tmp) (b 2 tmp)))
+          (make-beat kick (+ (m measure tmp) (b 3.5 tmp)))
           
-          (make-beat snare (+ (m measure ) (b 1)))
-          (make-beat snare (+ (m measure ) (b 3))))])]
+          (make-beat snare (+ (m measure tmp) (b 1 tmp)))
+          (make-beat snare (+ (m measure tmp) (b 3 tmp))))])]
     [else empty]))
 
-(define (kit-maker los indx)
+(define (kit-maker los indx tmp)
   (cond [(empty? los) empty]
         [else
-         (cons (beat-maker (first los) indx)
-               (kit-maker (rest los) (+ 1 indx)))]))
+         (cons (beat-maker (first los) indx tmp)
+               (kit-maker (rest los) (+ 1 indx) tmp))]))
 
 (define (play-beat p)
   (pstream-queue
@@ -125,164 +125,164 @@
 
 ; Chord Poop
 
-(define (minor-chordmaker x t measure)
+(define (minor-chordmaker x t measure tmp)
   (cond
     [(string? x)
      (cond [(string-ci=? x "I")
          (list 
-          (make-note (+ t 0) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 3) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure)) 88200))]
+          (make-note (+ t 0) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 3) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure tmp)) 88200))]
         [(string-ci=? x "II")
          (list 
-          (make-note (+ t 2) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 5) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 8) (+ (pstream-current-frame ps) (m measure)) 88200))]
+          (make-note (+ t 2) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 5) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 8) (+ (pstream-current-frame ps) (m measure tmp)) 88200))]
         [(string-ci=? x "III")
          (list 
-          (make-note (+ t 3) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 10) (+ (pstream-current-frame ps) (m measure)) 88200))]
+          (make-note (+ t 3) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 10) (+ (pstream-current-frame ps) (m measure tmp)) 88200))]
         [(string-ci=? x "IV")
          (list 
-          (make-note (+ t 5) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 8) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure)) 88200))]
+          (make-note (+ t 5) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 8) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure tmp)) 88200))]
         [(string-ci=? x "V")
          (list 
-          (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 10) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure)) 88200))]
+          (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 10) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure tmp)) 88200))]
         [(string-ci=? x "VI")
          (list 
-          (make-note (+ t 8) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 15) (+ (pstream-current-frame ps) (m measure)) 88200))]
+          (make-note (+ t 8) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 15) (+ (pstream-current-frame ps) (m measure tmp)) 88200))]
         [(string-ci=? x "VII")
          (list 
-          (make-note (+ t 10) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 17) (+ (pstream-current-frame ps) (m measure)) 88200))]
+          (make-note (+ t 10) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 17) (+ (pstream-current-frame ps) (m measure tmp)) 88200))]
         [(string-ci=? x " ")
          (list 
-          (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure)) 0)
-          (make-note (+ t 15) (+ (pstream-current-frame ps) (m measure)) 0)
-          (make-note (+ t 19) (+ (pstream-current-frame ps) (m measure)) 0))]
+          (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure tmp)) 0)
+          (make-note (+ t 15) (+ (pstream-current-frame ps) (m measure tmp)) 0)
+          (make-note (+ t 19) (+ (pstream-current-frame ps) (m measure tmp)) 0))]
         [else x])]
     [else empty]))
 
 ;; create chords from key
 ;; string -> list
-(define (chordmaker x t measure)
+(define (chordmaker x t measure tmp)
   (cond
     [(string? x)
      (cond [(string-ci=? x "I")
          (list 
-          (make-note (+ t 0) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 4) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure)) 88200))]
+          (make-note (+ t 0) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 4) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure tmp)) 88200))]
         [(string-ci=? x "II")
          (list 
-          (make-note (+ t 2) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 6) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 9) (+ (pstream-current-frame ps) (m measure)) 88200))]
+          (make-note (+ t 2) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 6) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 9) (+ (pstream-current-frame ps) (m measure tmp)) 88200))]
         [(string-ci=? x "III")
          (list 
-          (make-note (+ t 4) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure)) 88200))]
+          (make-note (+ t 4) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure tmp)) 88200))]
         [(string-ci=? x "IV")
          (list 
-          (make-note (+ t 5) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 9) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure)) 88200))]
+          (make-note (+ t 5) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 9) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure tmp)) 88200))]
         [(string-ci=? x "V")
          (list 
-          (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure)) 88200))]
+          (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure tmp)) 88200))]
         [(string-ci=? x "VI")
          (list 
-          (make-note (+ t 9) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 16) (+ (pstream-current-frame ps) (m measure)) 88200))]
+          (make-note (+ t 9) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 16) (+ (pstream-current-frame ps) (m measure tmp)) 88200))]
         [(string-ci=? x "VII")
          (list 
-          (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 18) (+ (pstream-current-frame ps) (m measure)) 88200))]
+          (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+          (make-note (+ t 18) (+ (pstream-current-frame ps) (m measure tmp)) 88200))]
         [(string-ci=? x " ")
          (list 
-          (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure)) 0)
-          (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure)) 0)
-          (make-note (+ t 18) (+ (pstream-current-frame ps) (m measure)) 0))]
+          (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure tmp)) 0)
+          (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure tmp)) 0)
+          (make-note (+ t 18) (+ (pstream-current-frame ps) (m measure tmp)) 0))]
         [else x])]
     [else empty]))
 
 ;; create chords from key
 ;; string -> list
-(define (octavemaker x t measure)
+(define (octavemaker x t measure tmp)
   (cond
     [(string? x)
     (cond 
       [(string-ci=? x "I")
        (list 
-        (make-note (- t 12) (+ (pstream-current-frame ps) (m measure)) 88200)
-        (make-note (+ t 0) (+ (pstream-current-frame ps) (m measure)) 88200)
-        (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure)) 88200)
+        (make-note (- t 12) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+        (make-note (+ t 0) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+        (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
         )]
       [(string-ci=? x "II")
        (list 
-        (make-note (- t 10) (+ (pstream-current-frame ps) (m measure)) 88200)
-        (make-note (+ t 2) (+ (pstream-current-frame ps) (m measure)) 88200)
-        (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure)) 88200)
+        (make-note (- t 10) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+        (make-note (+ t 2) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+        (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
         )]
       [(string-ci=? x "III")
        (list 
-        (make-note (- t 8) (+ (pstream-current-frame ps) (m measure)) 88200)
-        (make-note (+ t 4) (+ (pstream-current-frame ps) (m measure)) 88200)
-        (make-note (+ t 16) (+ (pstream-current-frame ps) (m measure)) 88200)
+        (make-note (- t 8) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+        (make-note (+ t 4) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+        (make-note (+ t 16) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
         )]
       [(string-ci=? x "IV")
        (list 
-        (make-note (- t 7) (+ (pstream-current-frame ps) (m measure)) 88200)
-        (make-note (+ t 5) (+ (pstream-current-frame ps) (m measure)) 88200)
-        (make-note (+ t 17) (+ (pstream-current-frame ps) (m measure)) 88200)
+        (make-note (- t 7) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+        (make-note (+ t 5) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+        (make-note (+ t 17) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
         )]
       [(string-ci=? x "V")
        (list 
-        (make-note (- t 5) (+ (pstream-current-frame ps) (m measure)) 88200)
-        (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure)) 88200)
-        (make-note (+ t 19) (+ (pstream-current-frame ps) (m measure)) 88200)
+        (make-note (- t 5) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+        (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+        (make-note (+ t 19) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
         )]
       [(string-ci=? x "VI")
        (list 
-        (make-note (- t 3) (+ (pstream-current-frame ps) (m measure)) 88200)
-        (make-note (+ t 9) (+ (pstream-current-frame ps) (m measure)) 88200)
-        (make-note (+ t 21) (+ (pstream-current-frame ps) (m measure)) 88200)
+        (make-note (- t 3) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+        (make-note (+ t 9) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+        (make-note (+ t 21) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
         )]
       [(string-ci=? x "VII")
        (list 
-        (make-note (- t 1) (+ (pstream-current-frame ps) (m measure)) 88200)
-        (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure)) 88200)
-        (make-note (+ t 23) (+ (pstream-current-frame ps) (m measure)) 88200)
+        (make-note (- t 1) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+        (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+        (make-note (+ t 23) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
         )]
       [(string-ci=? x " ")
        (list 
-        (make-note (- t 1) (+ (pstream-current-frame ps) (m measure)) 88200)
-        (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure)) 0)
-        (make-note (+ t 23) (+ (pstream-current-frame ps) (m measure)) 0)
+        (make-note (- t 1) (+ (pstream-current-frame ps) (m measure tmp)) 88200)
+        (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure tmp)) 0)
+        (make-note (+ t 23) (+ (pstream-current-frame ps) (m measure tmp)) 0)
         )]
       [else x])]
     [else empty]))
 
 ;; make a list-of-chords from chordmaker
 ;; list-of-strings -> list-of-chords
-(define (progmaker los t indx)
+(define (progmaker los t indx tmp)
   (cond [(empty? los) empty]
         [else
-         (cons (chordmaker (first los) t indx)
-               (progmaker (rest los) t (+ 1 indx)))]))
+         (cons (chordmaker (first los) t indx tmp)
+               (progmaker (rest los) t (+ 1 indx) tmp))]))
 
 ;plays minors 
 (define (minor-progmaker los t indx)
@@ -337,9 +337,9 @@
 ;; a text-box is (make-text-box text-box-content pixels pixels)
 (define-struct text-box (content x y))
 
-;; a world is (make-world (listof text-box) number)
+;; a world is (make-world (listof text-box) number butt tempo)
 ;; side condition: number can't be >= number of boxes
-(define-struct world (tbs has-focus butt) #:transparent)
+(define-struct world (tbs has-focus butt tempo) #:transparent)
 
 
 
@@ -675,30 +675,37 @@
   (cond [(key=? k "\t") (cond [(<= (world-has-focus w) (- (length (list-tb w)) 2))
                                (make-world (world-tbs w)
                                            (+ 1 (world-has-focus w))
-                                           (world-butt w))]
+                                           (world-butt w)
+                                           (world-tempo w))]
                               [(= (- (length (list-tb w)) 1) (world-has-focus w)) (make-world (world-tbs w)
                                                                                               0
-                                                                                              (world-butt w))])
+                                                                                              (world-butt w)
+                                                                                              (world-tempo w))])
                         ]
         [(key=? k "right") (cond [(<= (world-has-focus w) (- (length (list-tb w)) 2))
                                   (make-world (world-tbs w)
                                               (+ 1 (world-has-focus w))
-                                              (world-butt w))]
+                                              (world-butt w)
+                                              (world-tempo w))]
                                  [(= (- (length (list-tb w)) 1) (world-has-focus w)) (make-world (world-tbs w)
                                                                                                  0
-                                                                                                 (world-butt w))])
+                                                                                                 (world-butt w)
+                                                                                                 (world-tempo w))])
                            ]
         [(key=? k "left") (cond [(>= (world-has-focus w) 1)
                                  (make-world (world-tbs w)
                                              (- (world-has-focus w) 1)
-                                             (world-butt w))]
+                                             (world-butt w)
+                                             (world-tempo w))]
                                 [(= 0 (world-has-focus w)) (make-world (world-tbs w) 
                                                                        (- (length (list-tb w)) 1)
-                                                                       (world-butt w))]
+                                                                       (world-butt w)
+                                                                       (world-tempo w))]
                                 )]
         [(key=? k "k") (make-world (world-tbs w)
                                    0
-                                   (world-butt w))]
+                                   (world-butt w)
+                                   (world-tempo w))]
         [(key=? k "\b") (make-world 
                          (list (make-text-box " " BOX-0-X BOX-0-Y)
                                (make-text-box " " BOX-1-X BOX-1-Y)
@@ -715,7 +722,19 @@
                                (make-text-box " " BOX-12-X BOX-12-Y)
                                )
                          (world-has-focus w)
-                         (world-butt w))]
+                         (world-butt w)
+                         (world-tempo w))]
+        
+        [(key=? k "up") 
+                   (make-world (world-tbs w) 
+                               (world-has-focus w)
+                               (world-butt w)
+                               (+ (world-tempo w) 20))]
+               [(key=? k "down") 
+                   (make-world (world-tbs w) 
+                               (world-has-focus w)
+                               (world-butt w)
+                               (- (world-tempo w) 20))]
         
         [(key=? k "\r") 
          (cond [(empty? w) w]
@@ -724,36 +743,38 @@
                   [(empty? (list->tones (list-tb w))) w]
                   [(cond 
                      [(equal? (world-butt w) (butts true true false false))                     
-                      (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))
-                                  (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                      (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0 (world-tempo w)))
+                                  (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0 (world-tempo w)))
                                   w)]
                      [(equal? (world-butt w) (butts false true false false))                     
-                      (both (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                      (both (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0 (world-tempo w)))
                             w)]
                      [(equal? (world-butt w) (butts true false true false))
-                      (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))
-                                  (play-list (minor-progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                      (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0 (world-tempo w)))
+                                  (play-list (minor-progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0 (world-tempo w)))
                                   w)]
                      [(equal? (world-butt w) (butts false false true false))                     
-                      (both (play-list (minor-progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                      (both (play-list (minor-progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0 (world-tempo w)))
                             w)]
                      [(equal? (world-butt w) (butts true false false true))                       
-                      (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))
-                                  (play-list (octaveprog (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                      (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0 (world-tempo w)))
+                                  (play-list (octaveprog (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0 (world-tempo w)))
                                   w)]
                      [(equal? (world-butt w) (butts false false false true))                     
-                      (both (play-list (octaveprog (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                      (both (play-list (octaveprog (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0 (world-tempo w)))
                             w)]
                      
                      
                      )])])]
+                  
         
         
         
         [else (make-world
                (update-appropriate-text-box (world-tbs w) k (world-has-focus w))
                (world-has-focus w)
-               (world-butt w))]))
+               (world-butt w)
+               (world-tempo w))]))
 
 
 ; make list from tbs
@@ -884,34 +905,34 @@
             (and (<= y y2)
                  (and (>= x x1a) 
                       (and (<= x x1b) (string=? evt "button-down")))))
-       (make-world (world-tbs w) (world-has-focus w) (make-butts true false false (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w))))]
+       (make-world (world-tbs w) (world-has-focus w) (make-butts true false false (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w))) (world-tempo w))]
     [(and (>= y y1)
           (and (<= y y2)
                (and (>= x x2a) 
                     (and (<= x x2b) (string=? evt "button-down")))))
      (if
-      (equal? (butts-beatsb (world-butt w)) false) (make-world (world-tbs w) (world-has-focus w)(make-butts true (butts-majb (world-butt w)) (butts-minb (world-butt w))(butts-octb (world-butt w))))
-      (make-world (world-tbs w) (world-has-focus w)(make-butts false (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w)))))]
+      (equal? (butts-beatsb (world-butt w)) false) (make-world (world-tbs w) (world-has-focus w)(make-butts true (butts-majb (world-butt w)) (butts-minb (world-butt w))(butts-octb (world-butt w)))(world-tempo w))
+      (make-world (world-tbs w) (world-has-focus w)(make-butts false (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w)))(world-tempo w)))]
     #;[(and (>= y y1)
             (and (<= y y2)
                  (and (>= x x3a) 
                       (and (<= x x3b) (string=? evt "button-down")))))
-       (make-world (world-tbs w) (world-has-focus w) (make-butts false false true (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w))))] 
+       (make-world (world-tbs w) (world-has-focus w) (make-butts false false true (butts-majb (world-butt w)) (butts-minb (world-butt w))  (butts-octb (world-butt w)))(world-tempo w))] 
     [(and (>= y y3)
           (and (<= y y4)
                (and (>= x x4a) 
                     (and (<= x x4b) (string=? evt "button-down")))))
-     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-beatsb (world-butt w)) true false false))] 
+     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-beatsb (world-butt w)) true false false)(world-tempo w))] 
     [(and (>= y y3)
           (and (<= y y4)
                (and (>= x x5a) 
                     (and (<= x x5b) (string=? evt "button-down")))))
-     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-beatsb (world-butt w)) false true false))] 
+     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-beatsb (world-butt w)) false true false)(world-tempo w))] 
     [(and (>= y y3)
           (and (<= y y4)
                (and (>= x x6a) 
                     (and (<= x x6b) (string=? evt "button-down")))))
-     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-beatsb (world-butt w)) false false true))]
+     (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-beatsb (world-butt w)) false false true)(world-tempo w))]
     [else w]))
 
 
@@ -931,7 +952,8 @@
                  (make-text-box " " BOX-12-X BOX-12-Y)
                  )
            0
-           starting-butts)
+           starting-butts
+           140)
           
           [to-draw draw-world]
           [on-key text-box-input-key]
