@@ -603,45 +603,6 @@
    back))
 
 
-#;(check-equal?
-   (draw-text-box (make-text-box " " 150 80)
-                  SCREEN-BACKGROUND)
-   (place-image
-    (rectangle 50 50 "solid" "white")
-    150 80
-    SCREEN-BACKGROUND))
-
-
-#;(check-equal? 
-   (draw-all-text-boxes empty SCREEN-BACKGROUND)
-   SCREEN-BACKGROUND)
-
-#;(check-equal?
-   (draw-all-text-boxes (list (make-text-box " " 50 50)
-                              (make-text-box " " 150 80))
-                        SCREEN-BACKGROUND)
-   (place-image
-    (rectangle 50 50 "solid" "white")
-    150 80
-    (place-image
-     (rectangle 50 50 "solid" "white")
-     50 50
-     SCREEN-BACKGROUND)))
-
-#;(check-equal? 
-   (draw-all-text-boxes (list (make-text-box "E" 50 80)
-                              (make-text-box "Q" 150 80))
-                        SCREEN-BACKGROUND)
-   (place-image
-    (draw-text-box-content "Q")
-    150 80
-    (place-image
-     (overlay
-      (text "E" 40 "black")
-      TEXT-BOX-BACKGROUND)
-     50 80
-     SCREEN-BACKGROUND)))
-
 
 ;;Key Handler
 ;; take the key, put the character in the world if necessary
