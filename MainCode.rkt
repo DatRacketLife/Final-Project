@@ -2,50 +2,28 @@
 
 (require rsound
          rsound/piano-tones)
+(require math/bigfloat)
 
-
+;;Time and Tempo Handlers
 (define (s x)(* 44100 x))
 (define (b x tmp)(inexact->exact (* x (s (/ 60 tmp)))))
 (define (m x tmp)(inexact->exact (round (* x (b 4 tmp)))))
 (define-struct chord (first third fifth))
+
 ;; a note is (make-note note-num frames frames)
 (define-struct note (pitch time duration) #:transparent)
 (define-struct t (number))
-
+(define-struct beat (sound length))
 
 (define ps (make-pstream))
 (define (both a b) b)
 (define (super-both a b c) c)
-(pstream-current-frame ps)
 
-(require math/bigfloat)
+;;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -|
+;;Chord and Beat Code
 
-#;(define D 
-    (list
-     (make-note (+ t 0) (m 1) 88200)
-     (make-note (+ t 4) (m 1) 88200)
-     (make-note (+ t 7) (m 1) 88200)
-     
-     (make-note (+ t 2) (m 2) 88200)
-     (make-note (+ t 6) (m 2) 88200)
-     (make-note (+ t 9) (m 2) 88200)
-     
-     (make-note (+ t 5) (m 3) 88200)
-     (make-note (+ t 9) (m 3) 88200)
-     (make-note (+ t 12) (m 3) 88200)
-     
-     (make-note (+ t 7) (m 4) 88200)
-     (make-note (+ t 11) (m 4) 88200)
-     (make-note (+ t 14) (m 4) 88200)))
-
-;; string -> list-of-three-notes
-(define-struct prog (first third fifth))
-
-#;(define one (make-prog (make-note (+ t 0) 88200 88200)
-                         (make-note (+ t 4) 88200 88200)
-                         (make-note (+ t 7) 88200 88200)))
-
-
+;;Play Note Functions
+;; list-of-notes -> Play-Notes -> Play-Note -> pstream
 ;; play the notes in a list
 ;; list-of-notes -> pstream
 (define (play-notes lon)
@@ -53,6 +31,7 @@
         [else
          (both (play-note (first lon)) 
                (play-notes (rest lon)))]))
+
 ;; play a single note
 ;; note -> pstream
 (define (play-note n)
@@ -75,6 +54,7 @@
 
 
 ;;Beat Maker
+;;Takes a value ->Beat for the measure
 (define (beat-maker x measure tmp)
   (cond
     [(string? x)
@@ -123,8 +103,7 @@
          (both (play-beats (first loch))
                (play-list-2 (rest loch)))]))
 
-; Chord Poop
-
+; Chord Maker
 (define (minor-chordmaker x t measure tmp)
   (cond
     [(string? x)
@@ -312,20 +291,10 @@
                  (make-note (+ t 6) (m 2) 88200)
                  (make-note (+ t 9) (m 2) 88200)))
 
-;; a list-of-lists is either
-;; - empty, or
-;; - (cons (cons list-of-lists empty) empty)
 
 
-
-
-(define (psq a b) (pstream-queue ps a b))
-;beat is a structure
-
-(define-struct beat (sound length))
-
-
-; GUI Poop
+;;- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -|
+; GUI Code
 
 
 (require 2htdp/universe
@@ -340,8 +309,6 @@
 ;; a world is (make-world (listof text-box) number butt tempo)
 ;; side condition: number can't be >= number of boxes
 (define-struct world (tbs has-focus butt tempo screen) #:transparent)
-
-
 
 ;A butts is a structure boolean x6
 (define-struct butts (beatsb majb minb octb) #:transparent)
@@ -676,6 +643,7 @@
      SCREEN-BACKGROUND)))
 
 
+;;Key Handler
 ;; take the key, put the character in the world if necessary
 ;; w key -> world 
 (define (text-box-input-key w k)
@@ -833,9 +801,6 @@
            (text-box-content (list-ref (world-tbs tb) 12))
            )]))
 
-;;list one to four
-
-(define one-four (list 1 2 3 4 5 6))
 
 ;;takes list of numbers, returns list of notes
 (define (list->notes lon loc)
@@ -919,29 +884,7 @@
                    (text-box-y tb))))
 
 
-
-;; calling update-appropriate-text-box with empty list is an error!
-
-#| (check-equal? (update-appropriate-text-box (list (make-text-box "A" 10 12)
-                                                 (make-text-box "B" 20 132)
-                                                 (make-text-box "C" 30 112342))
-                                           "A"
-                                           1)
-              (list (make-text-box "A" 10 12)
-                    (make-text-box "A" 20 132)
-                    (make-text-box "C" 30 112342)))
-
-(check-equal? (update-text-box (make-text-box "A" 30 79) "B")
-              (make-text-box "B" 30 79))
-
-(check-equal? (update-text-box (make-text-box " " 50 50) "a") 
-              (make-text-box "A" 50 50))
-(check-equal? (update-text-box (make-text-box " " 50 50) "A")
-              (make-text-box "A" 50 50))
-(check-equal? (update-text-box (make-text-box " " 50 50) " ")
-              (make-text-box " " 50 50))
-|#
-
+;;Button handler
 (define (butt-handler w x y evt)
   (cond 
     #;[(and (>= y y1)
@@ -978,7 +921,7 @@
      (make-world (world-tbs w) (world-has-focus w) (make-butts (butts-beatsb (world-butt w)) false false true)(world-tempo w)(world-screen w))]
     [else w]))
 
-
+;;Big Bang 
 (big-bang (make-world 
            (list (make-text-box " " BOX-0-X BOX-0-Y)
                  (make-text-box " " BOX-1-X BOX-1-Y)
@@ -1004,9 +947,3 @@
           [on-mouse butt-handler]
           [state true])
 
-;; TO BE IMPLEMENTED
-
-
-;(play-beats rock-loop)
-;(play-list let-it-be)
-;(play-list (progmaker (list "i" "ii" "iii" "iv" "v" "vi" "vii" "i") 1))
