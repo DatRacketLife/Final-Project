@@ -76,7 +76,9 @@
 
 ;;Beat Maker
 (define (beat-maker x measure)
-  (cond [(string-ci=? x " ") (list (make-beat silence (+ (m measure) (b 4))) empty)]
+  (cond
+    [(string? x)
+     (cond [(string-ci=? x " ") (list (make-beat silence (+ (m measure) (b 4))) empty)]
         [else 
          (list
           (make-beat c-hi-hat-1 (+ (m measure ) (b 0)))
@@ -94,7 +96,8 @@
           (make-beat kick (+ (m measure ) (b 3.5)))
           
           (make-beat snare (+ (m measure ) (b 1)))
-          (make-beat snare (+ (m measure ) (b 3))))]))
+          (make-beat snare (+ (m measure ) (b 3))))])]
+    [else empty]))
 
 (define (kit-maker los indx)
   (cond [(empty? los) empty]
@@ -123,7 +126,9 @@
 ; Chord Poop
 
 (define (minor-chordmaker x t measure)
-  (cond [(string-ci=? x "I")
+  (cond
+    [(string? x)
+     (cond [(string-ci=? x "I")
          (list 
           (make-note (+ t 0) (+ (pstream-current-frame ps) (m measure)) 88200)
           (make-note (+ t 3) (+ (pstream-current-frame ps) (m measure)) 88200)
@@ -163,12 +168,15 @@
           (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure)) 0)
           (make-note (+ t 15) (+ (pstream-current-frame ps) (m measure)) 0)
           (make-note (+ t 19) (+ (pstream-current-frame ps) (m measure)) 0))]
-        [else x]))
+        [else x])]
+    [else empty]))
 
 ;; create chords from key
 ;; string -> list
 (define (chordmaker x t measure)
-  (cond [(string-ci=? x "I")
+  (cond
+    [(string? x)
+     (cond [(string-ci=? x "I")
          (list 
           (make-note (+ t 0) (+ (pstream-current-frame ps) (m measure)) 88200)
           (make-note (+ t 4) (+ (pstream-current-frame ps) (m measure)) 88200)
@@ -208,60 +216,65 @@
           (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure)) 0)
           (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure)) 0)
           (make-note (+ t 18) (+ (pstream-current-frame ps) (m measure)) 0))]
-        [else x]))
+        [else x])]
+    [else empty]))
 
 ;; create chords from key
 ;; string -> list
 (define (octavemaker x t measure)
-  (cond [(string-ci=? x "I")
-         (list 
-          (make-note (- t 12) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 0) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure)) 88200)
-          )]
-        [(string-ci=? x "II")
-         (list 
-          (make-note (- t 10) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 2) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure)) 88200)
-          )]
-        [(string-ci=? x "III")
-         (list 
-          (make-note (- t 8) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 4) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 16) (+ (pstream-current-frame ps) (m measure)) 88200)
-          )]
-        [(string-ci=? x "IV")
-         (list 
-          (make-note (- t 7) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 5) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 17) (+ (pstream-current-frame ps) (m measure)) 88200)
-          )]
-        [(string-ci=? x "V")
-         (list 
-          (make-note (- t 5) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 19) (+ (pstream-current-frame ps) (m measure)) 88200)
-          )]
-        [(string-ci=? x "VI")
-         (list 
-          (make-note (- t 3) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 9) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 21) (+ (pstream-current-frame ps) (m measure)) 88200)
-          )]
-        [(string-ci=? x "VII")
-         (list 
-          (make-note (- t 1) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 23) (+ (pstream-current-frame ps) (m measure)) 88200)
-          )]
-        [(string-ci=? x " ")
-         (list 
-          (make-note (- t 1) (+ (pstream-current-frame ps) (m measure)) 88200)
-          (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure)) 0)
-          (make-note (+ t 23) (+ (pstream-current-frame ps) (m measure)) 0)
-          )]
-        [else x]))
+  (cond
+    [(string? x)
+    (cond 
+      [(string-ci=? x "I")
+       (list 
+        (make-note (- t 12) (+ (pstream-current-frame ps) (m measure)) 88200)
+        (make-note (+ t 0) (+ (pstream-current-frame ps) (m measure)) 88200)
+        (make-note (+ t 12) (+ (pstream-current-frame ps) (m measure)) 88200)
+        )]
+      [(string-ci=? x "II")
+       (list 
+        (make-note (- t 10) (+ (pstream-current-frame ps) (m measure)) 88200)
+        (make-note (+ t 2) (+ (pstream-current-frame ps) (m measure)) 88200)
+        (make-note (+ t 14) (+ (pstream-current-frame ps) (m measure)) 88200)
+        )]
+      [(string-ci=? x "III")
+       (list 
+        (make-note (- t 8) (+ (pstream-current-frame ps) (m measure)) 88200)
+        (make-note (+ t 4) (+ (pstream-current-frame ps) (m measure)) 88200)
+        (make-note (+ t 16) (+ (pstream-current-frame ps) (m measure)) 88200)
+        )]
+      [(string-ci=? x "IV")
+       (list 
+        (make-note (- t 7) (+ (pstream-current-frame ps) (m measure)) 88200)
+        (make-note (+ t 5) (+ (pstream-current-frame ps) (m measure)) 88200)
+        (make-note (+ t 17) (+ (pstream-current-frame ps) (m measure)) 88200)
+        )]
+      [(string-ci=? x "V")
+       (list 
+        (make-note (- t 5) (+ (pstream-current-frame ps) (m measure)) 88200)
+        (make-note (+ t 7) (+ (pstream-current-frame ps) (m measure)) 88200)
+        (make-note (+ t 19) (+ (pstream-current-frame ps) (m measure)) 88200)
+        )]
+      [(string-ci=? x "VI")
+       (list 
+        (make-note (- t 3) (+ (pstream-current-frame ps) (m measure)) 88200)
+        (make-note (+ t 9) (+ (pstream-current-frame ps) (m measure)) 88200)
+        (make-note (+ t 21) (+ (pstream-current-frame ps) (m measure)) 88200)
+        )]
+      [(string-ci=? x "VII")
+       (list 
+        (make-note (- t 1) (+ (pstream-current-frame ps) (m measure)) 88200)
+        (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure)) 88200)
+        (make-note (+ t 23) (+ (pstream-current-frame ps) (m measure)) 88200)
+        )]
+      [(string-ci=? x " ")
+       (list 
+        (make-note (- t 1) (+ (pstream-current-frame ps) (m measure)) 88200)
+        (make-note (+ t 11) (+ (pstream-current-frame ps) (m measure)) 0)
+        (make-note (+ t 23) (+ (pstream-current-frame ps) (m measure)) 0)
+        )]
+      [else x])]
+    [else empty]))
 
 ;; make a list-of-chords from chordmaker
 ;; list-of-strings -> list-of-chords
@@ -711,29 +724,29 @@
                   [(empty? (list->tones (list-tb w))) w]
                   [(cond 
                      [(equal? (world-butt w) (butts true true false false))                     
-                       (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))
-                                   (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
-                                   w)]
+                      (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))
+                                  (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                                  w)]
                      [(equal? (world-butt w) (butts false true false false))                     
-                       (both (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
-                                   w)]
+                      (both (play-list (progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                            w)]
                      [(equal? (world-butt w) (butts true false true false))
-                       (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))
-                                   (play-list (minor-progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
-                                   w)]
+                      (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))
+                                  (play-list (minor-progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                                  w)]
                      [(equal? (world-butt w) (butts false false true false))                     
-                       (both (play-list (minor-progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
-                                   w)]
+                      (both (play-list (minor-progmaker (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                            w)]
                      [(equal? (world-butt w) (butts true false false true))                       
-                       (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))
-                                   (play-list (octaveprog (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
-                                   w)]
-                     [(equal? (world-butt w) (butts false true false true))                     
-                       (both (play-list (octaveprog (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
-                                   w)]
+                      (super-both (play-list-2 (kit-maker (rest (list->tones (list-tb w))) 0))
+                                  (play-list (octaveprog (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                                  w)]
+                     [(equal? (world-butt w) (butts false false false true))                     
+                      (both (play-list (octaveprog (rest (list->tones (list-tb w))) (first (list->tones (list-tb w))) 0))
+                            w)]
                      
-                  
-                  )])])]
+                     
+                     )])])]
         
         
         
