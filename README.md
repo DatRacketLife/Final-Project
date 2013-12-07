@@ -3,6 +3,9 @@ Final-Project
 
 Musician's Assistant
 
+Downloadable zip file with images and code. 
+https://www.dropbox.com/s/ptmtpimlgx7itp0/FINAL.zip
+
 download image file and save main code in the same directory as unzipped file 
 https://www.dropbox.com/s/scz93cevopd9h6h/images.zip
 
